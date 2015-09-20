@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Kronos.iml" filepath="$PROJECT_DIR$/Kronos.iml" />
       <module fileurl="file://$PROJECT_DIR$/Kronos.iml" filepath="$PROJECT_DIR$/Kronos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Kronos3.iml" filepath="$PROJECT_DIR$/Kronos3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Kronos.iml" filepath="$PROJECT_DIR$/Kronos.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
