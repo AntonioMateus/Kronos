@@ -7,7 +7,7 @@ public class Atividade {
     private String nome;
     private double duracao; //em horas
 
-    private double qualidade;
+    private double qualidade; //qualidade do tempo gasto para realizar a tarefa
     private String data; //ddmmyyyy
 
     public boolean setNome( String nome ){

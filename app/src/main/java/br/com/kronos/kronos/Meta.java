@@ -10,7 +10,7 @@ public class Meta {
     private List<Atividade> atividadesAssociadas;
     private String categoria;
 
-    private int prazo; //
+    private int prazo; //em dias, o prazo que se tem para cumprir a meta
     public static final int SEM_LIMITES = 0;
     public static final int DIARIA = 1;
     public static final int SEMANAL = 7;
