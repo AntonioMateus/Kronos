@@ -5,9 +5,10 @@ package br.com.kronos.kronos;
  */
 public class Atividade {
     private String nome;
-    private double tempo; //em horas
+    private double duracao; //em horas
 
     private double qualidade;
+    private String data; //ddmmyyyy
 
     public boolean setNome( String nome ){
         this.nome = nome;
@@ -18,13 +19,13 @@ public class Atividade {
         return nome;
     }
 
-    public boolean setTempo(double tempo){
-        this.tempo = tempo;
+    public boolean setDuracao(double duracao){
+        this.duracao = duracao;
         return true;
     }
 
     public double getTempo(){
-        return this.tempo;
+        return this.duracao;
     }
 
     public boolean setQualidade(double qualidade) {
@@ -36,4 +37,11 @@ public class Atividade {
         return qualidade;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 }

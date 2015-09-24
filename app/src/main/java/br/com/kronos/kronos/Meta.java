@@ -8,17 +8,29 @@ import java.util.List;
 public class Meta {
     private String descricao;
     private List<Atividade> atividadesAssociadas;
-    private double tempoAcumulado; //em horas
-    private int prazo;
-    private boolean notificar; //ponderado somente se categoria == CUSTOM
+    private String categoria;
 
-    private int frequencia;
+    private int prazo; //
     public static final int SEM_LIMITES = 0;
     public static final int DIARIA = 1;
-    public static final int SEMANAL = 2;
-    public static final int MENSAL = 3;
-    public static final int CUSTOM = 4;
-    public static final int[] FREQUENCIAS = {SEM_LIMITES, DIARIA, SEMANAL, MENSAL, CUSTOM};
+    public static final int SEMANAL = 7;
+    public static final int MENSAL = 30;
+    public static final int[] PRAZOS_PADRAO = {SEM_LIMITES, DIARIA, SEMANAL, MENSAL};
+
+    /*
+    se repetir==true,
+        depois que o prazo for satisfeito, o check da Meta sera feito mais de uma vez continuamente
+   se nao
+        o check da Meta na sera mais feito mais de uma vez
+     */
+    private boolean repetir;
+
+    private double tempoAcumulado; //Tempo acumulado em horas de todas as atividades associadas dentro do prazo
+    private double tempoEstipulado; //Tempo estipulado pelo usuario em horas que o usuario define para considerar que a Meta foi cumprida
+
+    private String dataInicio; //ddmmyyyy
+
+    private boolean notificar;
 
     public boolean setDescricao(String descricao){
         this.descricao = descricao;
@@ -47,26 +59,28 @@ public class Meta {
         return this.tempoAcumulado;
     }
 
-    public boolean setFrequencia( int frequencia ) throws FrequenciaInvalidaException {
-        for (int FREQUENCIA : FREQUENCIAS) {
-            if (frequencia == FREQUENCIA) {
-                this.frequencia = frequencia;
-                return true;
-            }
-        }
-        throw new FrequenciaInvalidaException();
-    }
-
-    public int getFrequencia( ){
-        return this.frequencia;
-    }
-
-    public boolean setPrazo( int prazo ){
+    public boolean setPrazo( int prazo ) {
         this.prazo = prazo;
         return true;
     }
 
-    public int getPrazo(){
+    public int getPrazo( ){
         return this.prazo;
+    }
+
+    public boolean isRepetir() {
+        return repetir;
+    }
+
+    public void setRepetir(boolean repetir) {
+        this.repetir = repetir;
+    }
+
+    public boolean isNotificar() {
+        return notificar;
+    }
+
+    public void setNotificar(boolean notificar) {
+        this.notificar = notificar;
     }
 }
