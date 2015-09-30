@@ -3,4 +3,20 @@
 
     <string name="hello_world">Hello world! Git funcionando</string>
     <string name="action_settings">Settings</string>
+
+    <!-- MainActivity -->
+    <string name="button_myDay">My Day</string>
+
+    <!-- MyDayActivity -->
+    <string name="title_activity_my_day">MyDayActivity</string>
+    <string name="textView_title">How was your day?</string>
+    <string name="editText_activityName">Name</string>
+    <string name="editText_activityTimeHour">Hour</string>
+    <string name="editText_activityTimeMinute">Minute</string>
+    <string name="editText_activityRating">Rating</string>
+    <string name="editText_activityCancel">Cancel</string>
+    <string name="editText_activityOK">OK</string>
+    <string name="editText_activityAdd">+ Add a new Activity</string>
+
+
 </resources>

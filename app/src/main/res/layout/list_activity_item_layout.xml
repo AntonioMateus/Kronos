@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/imageButton_activityRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_title"
+        android:layout_toEndOf="@+id/editText_activityTimeMinute"
+
+        android:src="@drawable/ic_action_important"/>
+
+    <EditText
+        android:id="@+id/editText_activityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageButton_activityRating"
+
+        android:hint="@string/editText_activityName"/>
+
+    <EditText
+        android:id="@+id/editText_activityTimeHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_toEndOf="@+id/editText_activityName"
+
+        android:hint="@string/editText_activityTimeHour"/>
+
+    <EditText
+        android:id="@+id/editText_activityTimeMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_toEndOf="@+id/editText_activityTimeHour"
+
+        android:hint="@string/editText_activityTimeMinute"/>
+
+    <EditText
+        android:id="@+id/editText_activityCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imageButton_activityRating"
+        android:layout_alignBottom="@id/imageButton_activityRating"
+
+        android:hint="@string/editText_activityCancel"/>
+
+    <EditText
+        android:id="@+id/editText_activityOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_toEndOf="@+id/editText_activityCancel"
+
+        android:hint="@string/editText_activityOK"/>
+
+</RelativeLayout>

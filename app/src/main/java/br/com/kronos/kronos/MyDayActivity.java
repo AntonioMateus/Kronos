@@ -1,37 +1,22 @@
 package br.com.kronos.kronos;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-
-public class MainActivity extends Activity implements View.OnClickListener {
-
-    private Button buttonMyDay;
+public class MyDayActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        buttonMyDay = (Button) findViewById(R.id.button_myDay);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        buttonMyDay.setOnClickListener(this);
+        setContentView(R.layout.activity_my_day);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_my_day, menu);
         return true;
     }
 
@@ -48,13 +33,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.button_myDay) {
-            Intent intentMyDay = new Intent(this, MyDayActivity.class);
-            startActivity(intentMyDay);
-        }
     }
 }
