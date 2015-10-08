@@ -10,38 +10,48 @@ public class Atividade {
     private double qualidade; //qualidade do tempo gasto para realizar a tarefa
     private String data; //ddmmyyyy
 
-    public boolean setNome( String nome ){
+    public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
         this.nome = nome;
-        return true;
-    }
-
-    public String getNome(){
-        return nome;
-    }
-
-    public boolean setDuracao(double duracao){
         this.duracao = duracao;
-        return true;
-    }
-
-    public double getTempo(){
-        return this.duracao;
-    }
-
-    public boolean setQualidade(double qualidade) {
         this.qualidade = qualidade;
-        return true;
+        this.data = setData(dia, mes, ano);
     }
 
-    public double getQualidade(){
-        return qualidade;
-    }
+    /*
+    Esse método formata a data da maneira certa para salvar no banco de dados: ddmmaaaa
+     */
+    private String setData(int dia, int mes, int ano) {
+        String data = "";
 
-    public String getData() {
+        //Caso a dia seja de apenas um digito (menor que 10), acrescentar dígito '0'
+        if (dia < 10) {
+            data += 0 + ""+dia;
+        }else{
+            data += ""+dia;
+        }
+
+        //Caso a mes seja de apenas um digito (menor que 10), acrescentar dígito '0'
+        if (mes < 10) {
+            data += 0 + ""+mes;
+        }else{
+            data += ""+mes;
+        }
+
+        data += ""+ano;
+
         return data;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public String getNome() {
+        return nome;
+    }
+
+    public int getHora() {
+        return (int) duracao;
+    }
+
+
+    public int getMinuto() {
+        return (int) (duracao*60)%60;
     }
 }

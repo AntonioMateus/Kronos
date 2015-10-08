@@ -15,17 +15,21 @@
         android:text="@string/textView_title"
         android:textColor="@color/textView_title"/>
 
-    <ListView
-        android:id="@+id/listView_activities"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
+    <Button
         android:id="@+id/editText_activityAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/listView_activities"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:hint="@string/editText_activityAdd"
+        style="?android:attr/borderlessButtonStyle"/>
 
-        android:hint="@string/editText_activityAdd"/>
+    <ListView
+        android:id="@+id/listView_activities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_title"
+        android:layout_above="@id/editText_activityAdd"/>
 
 </RelativeLayout>
