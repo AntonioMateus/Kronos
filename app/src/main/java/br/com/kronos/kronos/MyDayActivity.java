@@ -14,11 +14,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
+import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 
-public class MyDayActivity extends Activity implements View.OnClickListener {
+public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener {
 
     private ListView listViewAtividades;
     private List<Atividade> atividades;
+    private ListAtividadesAdapter listAtividadesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener {
         Atividade atividade2 = new Atividade("Estudar", 2.5 , 1, dia, mes, ano);
         atividades.add(atividade2);
 
-        ListAtividadesAdapter listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades);
+        listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, this);
         listViewAtividades.setAdapter(listAtividadesAdapter);
     }
 
@@ -80,8 +82,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener {
             Atividade atividade = new Atividade(activityName, 0, 0, 0, 0, 0);
             atividades.add(atividade);
 
-            ListAdapter adapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades);
-            listViewAtividades.setAdapter(adapter);
+            listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, this);
+            listViewAtividades.setAdapter(listAtividadesAdapter);
         }
+    }
+
+    @Override
+    public void onAdapterUpdate() {
+        listViewAtividades.setAdapter(listAtividadesAdapter);
     }
 }

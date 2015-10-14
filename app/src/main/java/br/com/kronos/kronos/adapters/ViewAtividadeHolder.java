@@ -1,12 +1,16 @@
 package br.com.kronos.kronos.adapters;
 
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class ViewAtividadeHolder {
 
     private EditText editTextNome;
     private EditText editTextHora;
     private EditText editTextMinuto;
+
+    private ImageButton buttonDelete;
+
     public int rowNumber;
 
     public void setEditTextNome(EditText editTextNome) {
@@ -31,5 +35,13 @@ public class ViewAtividadeHolder {
 
     public EditText getEditTextMinuto() {
         return editTextMinuto;
+    }
+
+    public ImageButton getImageButtonDelete() {
+        return buttonDelete;
+    }
+
+    public void setButtonDelete(ImageButton buttonDelete) {
+        this.buttonDelete = buttonDelete;
     }
 }
