@@ -26,6 +26,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_my_day);
 
         listViewAtividades = (ListView) findViewById(R.id.listView_activities);
+        listViewAtividades.setItemsCanFocus(true);
         setListaAtividades();
 
         Button buttonAddAtividade = (Button) findViewById(R.id.button_activityAdd);
