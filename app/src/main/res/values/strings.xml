@@ -3,7 +3,7 @@
 
     <!-- MainActivity -->
     <string name="button_myDay">My Day</string>
-    <string name="imageButton_activityRating">rating's activity</string>
+    <string name="imageButton_activityRating">ratings activity</string>
 
     <!-- MyDayActivity -->
     <string name="title_activity_my_day">MyDayActivity</string>
@@ -14,6 +14,7 @@
     <string name="editText_activityCancel">Cancel</string>
     <string name="editText_activityOK">OK</string>
     <string name="editText_activityAdd">+ Add a new Activity</string>
+    <string name="activityDefaultName">activity</string>
 
 
 </resources>

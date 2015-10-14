@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.Calendar;
@@ -12,9 +15,10 @@ import java.util.List;
 
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 
-public class MyDayActivity extends Activity {
+public class MyDayActivity extends Activity implements View.OnClickListener {
 
     private ListView listViewAtividades;
+    private List<Atividade> atividades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +27,13 @@ public class MyDayActivity extends Activity {
 
         listViewAtividades = (ListView) findViewById(R.id.listView_activities);
         setListaAtividades();
+
+        Button buttonAddAtividade = (Button) findViewById(R.id.button_activityAdd);
+        buttonAddAtividade.setOnClickListener(this);
     }
 
     private void setListaAtividades() {
-        List<Atividade> atividades = new LinkedList<>();
+        atividades = new LinkedList<>();
         /* Traz as atividades do banco de dados local
         DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(this);
         atividades = databaseOpenHelper.getAtividades();
@@ -61,11 +68,19 @@ public class MyDayActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.button_activityAdd) {
+            String activityName = getString(R.string.activityDefaultName);
+            Atividade atividade = new Atividade(activityName, 0, 0, 0, 0, 0);
+            atividades.add(atividade);
+
+            ListAdapter adapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades);
+            listViewAtividades.setAdapter(adapter);
+        }
     }
 }

@@ -11,12 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-
         android:text="@string/textView_title"
         android:textColor="@color/textView_title"/>
 
     <Button
-        android:id="@+id/editText_activityAdd"
+        android:id="@+id/button_activityAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -30,6 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView_title"
-        android:layout_above="@id/editText_activityAdd"/>
+        android:layout_above="@id/button_activityAdd"/>
 
 </RelativeLayout>
