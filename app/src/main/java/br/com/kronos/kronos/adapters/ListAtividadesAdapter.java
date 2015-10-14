@@ -64,8 +64,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             holder.setEditTextMinuto((EditText) viewRecycled.findViewById(R.id.imageButton_activityTimeMinute));
             holder.setButtonDelete((ImageButton) viewRecycled.findViewById(R.id.imageButton_activityCancel));
 
-            holder.rowNumber = position;
-
             viewRecycled.setTag(holder);
         }else { //Caso há opção de reciclar a View
             holder = (ViewAtividadeHolder) viewRecycled.getTag();
@@ -77,6 +75,11 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         holder.getEditTextHora().setText(""+atividade.getHora());
         holder.getEditTextMinuto().setText("" + atividade.getMinuto());
 
+        /*
+        Define que ao clicar no botao "Deletar" ao lado da atividade,
+        a atividade é retirada da lista e ativa a função do Listener que define o que deve ser
+        feito quando ese adapter for atualizada
+         */
         ImageButton buttonDelete = holder.getImageButtonDelete();
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
