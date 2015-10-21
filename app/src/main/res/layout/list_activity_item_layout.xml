@@ -2,21 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/imageButton_activityRating"
+    <Button
+        android:id="@+id/button_activityRating"
         android:layout_width="@dimen/imageButton_activityRating_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView_title"
         android:layout_toEndOf="@+id/imageButton_activityTimeMinute"
-        android:contentDescription="@string/imageButton_activityRating"
+        android:gravity="center"
         style="?android:attr/borderlessButtonStyle"
-        android:src="@drawable/ic_action_important"/>
+        android:drawableEnd="@drawable/ic_action_important"
+        android:text="@string/button_activityRating"/>
 
     <EditText
         android:id="@+id/editText_activityName"
         android:layout_width="@dimen/editText_activityName_widht"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_alignBottom="@id/button_activityRating"
         android:inputType="textAutoComplete|textCapWords"
         android:hint="@string/editText_activityName"/>
 
@@ -24,7 +25,7 @@
         android:id="@+id/editText_activityTimeHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_alignBottom="@id/button_activityRating"
         android:layout_toEndOf="@+id/editText_activityName"
         android:inputType="time"
         android:hint="@string/editText_activityTimeHour"/>
@@ -33,7 +34,7 @@
         android:id="@+id/imageButton_activityTimeMinute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_alignBottom="@id/button_activityRating"
         android:layout_toEndOf="@+id/editText_activityTimeHour"
         android:inputType="time"
         android:hint="@string/editText_activityTimeMinute"/>
@@ -42,20 +43,17 @@
         android:id="@+id/imageButton_activityCancel"
         android:layout_width="@dimen/imageButton_activityCancel_width"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/imageButton_activityRating"
-        android:layout_alignBottom="@id/imageButton_activityRating"
+        android:layout_toEndOf="@+id/button_activityRating"
+        android:layout_alignBottom="@id/button_activityRating"
         style="?android:attr/borderlessButtonStyle"
         android:contentDescription="@string/editText_activityCancel"
         android:src="@drawable/ic_action_remove"/>
 
-    <ImageButton
-        android:id="@+id/imageButton_activityOK"
+    <CheckBox
+        android:id="@+id/checkBox_activityOK"
         android:layout_width="@dimen/imageButton_activityOK_width"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageButton_activityRating"
-        android:layout_toEndOf="@+id/imageButton_activityCancel"
-        style="?android:attr/borderlessButtonStyle"
-        android:contentDescription="@string/editText_activityOK"
-        android:src="@drawable/ic_action_accept"/>
+        android:layout_alignTop="@id/editText_activityName"
+        android:layout_toEndOf="@+id/imageButton_activityCancel" />
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ public class Atividade {
     private double duracao; //em horas
 
     private double qualidade; //qualidade do tempo gasto para realizar a tarefa
+    private static final double QUALIDADE_MAXIMA = 5; //qualidade máxima que uma atividade pode ter
     private String data; //ddmmyyyy
 
     public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
@@ -53,5 +54,26 @@ public class Atividade {
 
     public int getMinuto() {
         return (int) (duracao*60)%60;
+    }
+
+    /*
+    Adiciona 1 ao indice de qualidade da atividade. Caso a qualidade ultrapasse o numero maximo de
+    qualidade, ele volta a 1 (qualidade minima).
+     */
+    public boolean switchQualidade() {
+        this.qualidade = this.qualidade+1;
+        if (this.qualidade > QUALIDADE_MAXIMA) {
+            this.qualidade=1;
+        }
+        return true;
+    }
+
+    public double getQualidade() {
+        return qualidade;
+    }
+
+
+    public double getDuracao() {
+        return duracao;
     }
 }

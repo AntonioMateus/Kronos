@@ -4,8 +4,12 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- ListActivityItem -->
-    <dimen name="editText_activityName_widht">100sp</dimen>
-    <dimen name="imageButton_activityCancel_width">50sp</dimen>
-    <dimen name="imageButton_activityOK_width">50sp</dimen>
-    <dimen name="imageButton_activityRating_width">50sp</dimen>
+    <dimen name="editText_activityName_widht">100dp</dimen>
+    <dimen name="imageButton_activityCancel_width">45dp</dimen>
+    <dimen name="imageButton_activityOK_width">50dp</dimen>
+    <dimen name="imageButton_activityRating_width">75dp</dimen>
+
+    <!-- PieChart Activities-->
+    <dimen name="pieChart_activities_height">250dp</dimen>
+    <dimen name="pieChart_title">30sp</dimen>
 </resources>

@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -63,13 +66,15 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             holder.setEditTextHora((EditText) viewRecycled.findViewById(R.id.editText_activityTimeHour));
             holder.setEditTextMinuto((EditText) viewRecycled.findViewById(R.id.imageButton_activityTimeMinute));
             holder.setButtonDelete((ImageButton) viewRecycled.findViewById(R.id.imageButton_activityCancel));
+            holder.setButtonRating((Button) viewRecycled.findViewById(R.id.button_activityRating));
+            holder.setCheckBox((CheckBox) viewRecycled.findViewById(R.id.checkBox_activityOK));
 
             viewRecycled.setTag(holder);
         }else { //Caso há opção de reciclar a View
             holder = (ViewAtividadeHolder) viewRecycled.getTag();
         }
 
-        Atividade atividade = getItem(position);
+        final Atividade atividade = getItem(position);
 
         holder.getEditTextNome().setText(atividade.getNome());
         holder.getEditTextHora().setText(""+atividade.getHora());
@@ -86,6 +91,40 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             public void onClick(View v) {
                 atividades.remove(position);
                 listener.onAdapterUpdate();
+            }
+        });
+
+        /*
+        Define que ao clicar no botao de "Rating" (Estrelinha) ao lado da Atividade,
+        a Qualidade da Atividade assume valor (n%5), sendo n o numero de vezes que o botao rating
+        foi acionado.
+         */
+        final Button buttonRating = holder.getButtonRating();
+        int qualidade = ((int)atividade.getQualidade());
+        buttonRating.setText(qualidade+"x");
+
+        buttonRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                atividade.switchQualidade();
+                int qualidade = ((int)atividade.getQualidade());
+                buttonRating.setText(qualidade+"x");
+            }
+        });
+
+        /*
+        Define que quando o check da Atividade está "checado" as horas da Atividade em questão
+        é adicionado ao gráfico
+         */
+        CheckBox checkBox = (CheckBox) holder.getCheckBox();
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    listener.onCheckedAtividade(atividade);
+                }else {
+                    listener.onUncheckedAtividade(atividade);
+                }
             }
         });
 

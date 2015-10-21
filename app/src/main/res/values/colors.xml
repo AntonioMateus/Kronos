@@ -2,5 +2,7 @@
 <resources>
     <!-- MyDayActivity -->
     <color name="textView_title">#000000</color>
+    <!-- PieChart -->
+    <color name="pieChart_title">#000000</color>
 
 </resources>

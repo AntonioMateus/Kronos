@@ -3,11 +3,15 @@
 
     <!-- MainActivity -->
     <string name="button_myDay">My Day</string>
-    <string name="imageButton_activityRating">ratings activity</string>
 
     <!-- MyDayActivity -->
     <string name="title_activity_my_day">MyDayActivity</string>
     <string name="textView_title">How was your day?</string>
+    <!-- PieChart -->
+    <string name="pieChart_description">PieChart of Activities</string>
+    <string name="pieChart_title"></string>
+
+    <!-- Activity Item -->
     <string name="editText_activityName">Name</string>
     <string name="editText_activityTimeHour">hour</string>
     <string name="editText_activityTimeMinute">min</string>
@@ -15,5 +19,7 @@
     <string name="editText_activityOK">OK</string>
     <string name="editText_activityAdd">+ Add a new Activity</string>
     <string name="activityDefaultName">activity</string>
+    <!-- Rating -->
+    <string name="button_activityRating">0x</string>
 
 </resources>
