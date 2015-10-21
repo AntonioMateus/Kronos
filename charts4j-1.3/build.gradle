@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('charts4j-1.3.jar'))
