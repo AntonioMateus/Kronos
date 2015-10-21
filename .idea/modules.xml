@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Kronos.iml" filepath="$PROJECT_DIR$/Kronos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Kronos.iml" filepath="$PROJECT_DIR$/Kronos.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/charts4j-1.3/charts4j-1.3.iml" filepath="$PROJECT_DIR$/charts4j-1.3/charts4j-1.3.iml" />
       <module fileurl="file://$PROJECT_DIR$/mpandroidchartlibrary-2-1-0/mpandroidchartlibrary-2-1-0.iml" filepath="$PROJECT_DIR$/mpandroidchartlibrary-2-1-0/mpandroidchartlibrary-2-1-0.iml" />
