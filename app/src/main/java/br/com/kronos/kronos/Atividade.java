@@ -58,13 +58,10 @@ public class Atividade {
 
     /*
     Adiciona 1 ao indice de qualidade da atividade. Caso a qualidade ultrapasse o numero maximo de
-    qualidade, ele volta a 1 (qualidade minima).
+    qualidade, ele volta a 0 (qualidade minima).
      */
     public boolean switchQualidade() {
-        this.qualidade = this.qualidade+1;
-        if (this.qualidade > QUALIDADE_MAXIMA) {
-            this.qualidade=1;
-        }
+        this.qualidade = (this.qualidade + 1) % (QUALIDADE_MAXIMA + 1);
         return true;
     }
 
