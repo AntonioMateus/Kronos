@@ -8,8 +8,8 @@
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart_activities"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/pieChart_activities_height"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
 
     <TextView
         android:id="@+id/textView_title"
@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:hint="@string/editText_activityAdd"
         style="?android:attr/borderlessButtonStyle"/>
 

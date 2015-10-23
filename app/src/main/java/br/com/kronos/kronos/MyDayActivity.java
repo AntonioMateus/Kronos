@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -23,16 +24,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 
 public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener {
 
-    private static final int NUMERO_ATIVIDADES_DIA_MAXIMO = 96; // 24h / 15min
+    private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY; // 24h / 15min
+
     private ListView listViewAtividades;
-    private List<Atividade> atividades;
+
+    private List<Atividade> atividades; //lista de todas as atividades dentro do listView
+    private List<Atividade> atividadesChecadas; //lista das atividades com checkbox acionado
+
     private ListAtividadesAdapter listAtividadesAdapter;
     private PieChart pieChart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         pieChart = (PieChart) findViewById(R.id.pieChart_activities);
     }
 
-    private void setListaAtividades() {
+    private void setListaAtividades(){
         atividades = new LinkedList<>();
         /* Traz as atividades do banco de dados local
         DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(this);
@@ -69,6 +76,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         //Apos carregadas as atividades em formato de lista:
         listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, this); //criar um Adapter para alimentar uma ListView
         listViewAtividades.setAdapter(listAtividadesAdapter);//Alimentar a lista de atividades com o Adapter
+
+        atividadesChecadas = new LinkedList<>();
     }
 
     @Override
@@ -112,43 +121,68 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         listViewAtividades.setAdapter(listAtividadesAdapter);
     }
 
+    /*
+    Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
+     */
     @Override
     public void onCheckedAtividade(Atividade atividade) {
-        plotar();
+        atividadesChecadas.add(atividade);
+        try {
+            plotar(atividadesChecadas);
+        } catch (HorasDiaExcedidoException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void plotar() {
-        pieChart.setDescription(getString(R.string.pieChart_description));
-        pieChart.setDrawSliceText(true);
-        pieChart.setRotationEnabled(true);
+    /*
+    Define tamanho e os dados do grafico de atividades em formato de pizza.
+     */
+    private void plotar(List<Atividade> atividades) throws HorasDiaExcedidoException {
+        int pieChartWidth = 0; //largura da View do grafico
+        int pieChartHeight = 0; //altura da View do grafico
+        if (atividades.size() > 0) {
+            pieChartWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
+            pieChartHeight = getResources().getDimensionPixelOffset(R.dimen.pieChart_activities_height);
 
-        pieChart.setCenterText(getString(R.string.pieChart_title));
-        pieChart.setCenterTextColor(getResources().getColor(R.color.pieChart_title));
-        pieChart.setCenterTextSize(getResources().getDimensionPixelSize(R.dimen.pieChart_title));
+            pieChart.setDescription(getString(R.string.pieChart_description));
+            pieChart.setDrawSliceText(true);
+            pieChart.setRotationEnabled(true);
 
-        //PieChart Legend
-        Legend legend = pieChart.getLegend();
-        legend.setEnabled(true);
-        legend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        //Add data
-        PieData data = getData(atividades);
-        //Define o formato dos valores exibidos no grafico
-        data.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                int hora = (int)value;
-                int minuto = (int) (value*60)%60;
-                return hora + "h" + minuto + "min";
-            }
-        });
-        pieChart.setData(data);
-        pieChart.highlightValues(null);
-        pieChart.invalidate();
+            //Texto que fica ao centro do grafico no espaco vazio
+            pieChart.setCenterText(getString(R.string.pieChart_title));
+            pieChart.setCenterTextColor(getResources().getColor(R.color.pieChart_title));
+            pieChart.setCenterTextSize(getResources().getDimensionPixelSize(R.dimen.pieChart_title));
+
+            //Legenda do grafico
+            Legend legend = pieChart.getLegend();
+            legend.setEnabled(true);
+            legend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+
+            pieChart.highlightValues(null);
+            pieChart.invalidate();
+
+            PieData data = getData(atividades); //Dados para colocar no grafico
+            //Define o formato dos valores exibidos no grafico
+            data.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    int hora = (int) value;
+                    int minuto = (int) (value * 60) % 60;
+                    return hora + "h" + minuto + "min";
+                }
+            });
+            pieChart.setData(data); //insere os dados no grafico
+        }
+
+        //Define as dimensoes do grafico
+        RelativeLayout.LayoutParams pieChartLayoutParams =
+                new RelativeLayout.LayoutParams(pieChartWidth, pieChartHeight);
+        pieChart.setLayoutParams(pieChartLayoutParams);
     }
 
-    private PieData getData(List<Atividade> atividades) {
-        ArrayList<Entry> atividadesDuracao = new ArrayList<>();
-        ArrayList<String> atividadesNomes = new ArrayList<>();
+    private PieData getData(List<Atividade> atividades) throws HorasDiaExcedidoException {
+        ArrayList<Entry> atividadesDuracao = new ArrayList<>(); //lista com as duracoes de cada Atividade
+        ArrayList<String> atividadesNomes = new ArrayList<>(); //lista com os nomes de cada Atividade
 
         Iterator<Atividade> atividadesIterator = atividades.iterator();
         for (int atividadeIndice = 0; atividadesIterator.hasNext(); atividadeIndice++) {
@@ -157,24 +191,51 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             atividadesDuracao.add(new Entry((float) atividade.getDuracao(), atividadeIndice));
         }
 
+        //Confere se a lista de atividades completa as 24h
+        double somaDuracoes = 0; //soma das duracoes das atividades na lista carregadas
+        for (Atividade atividadeIterada : atividades) {
+            somaDuracoes += atividadeIterada.getDuracao();
+        }
+        /*
+        Adiciona uma atividade "Neutra" que completa o dia na ultima posicao da lista de atividades
+        caso a soma das duracoes nao complete o dia. A ideia eh que uma atividade neutra
+        não represente uma Atividade específica e, ao mesmo tempo, todas as atividades que o usuário não inseriu do seu dia
+         */
+        if (somaDuracoes < 24.0) {
+            double duracaoAtividadeNeutra = 24 - somaDuracoes;
+            atividadesNomes.add("");
+            atividadesDuracao.add(new Entry((float) duracaoAtividadeNeutra, atividadesDuracao.size()));
+        }else if(somaDuracoes > 24.0) {
+            throw new HorasDiaExcedidoException();
+        }
+
         PieDataSet dataSet = new PieDataSet(atividadesDuracao, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
 
-        //Adiciona as cores possivei no grafico. Aleatoriamente
+        //Adiciona as cores possiveis no grafico. Aleatoriamente
         ArrayList<Integer> colors = new ArrayList<>();
-        for (int indiceCor = 0; indiceCor < NUMERO_ATIVIDADES_DIA_MAXIMO; indiceCor++) {
+        int numeroCores = atividadesNomes.size();
+        if (somaDuracoes < 24.0) {
+            numeroCores--;
+        }
+        for (int indiceCor = 0; indiceCor < numeroCores; indiceCor++) {
             Random random = new Random();
             int redRandom = random.nextInt(256);
             int greenRandom = random.nextInt(256);
             int blueRandom = random.nextInt(256);
             int randomColor = Color.rgb(redRandom, greenRandom, blueRandom);
-            if (!(randomColor == Color.BLACK)) {
+            if (! (randomColor == Color.BLACK) && !(randomColor == ATIVIDADE_NEUTRA_COR)) {
                 colors.add(randomColor);
             }else{
                 indiceCor--;
             }
         }
+        //Se houve adição da Atividade Neutra, adicionar a cor para ela
+        if(somaDuracoes < 24.0) {
+            colors.add( ATIVIDADE_NEUTRA_COR );
+        }
+
         dataSet.setColors(colors);
 
         PieData data = new PieData(atividadesNomes, dataSet);
@@ -184,8 +245,16 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         return data;
     }
 
+    /*
+    Define o que deve ser feito quando há unchecked da Atividade
+     */
     @Override
     public void onUncheckedAtividade(Atividade atividade) {
-
+        atividadesChecadas.remove(atividade);
+        try {
+            plotar(atividadesChecadas);
+        } catch (HorasDiaExcedidoException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -65,6 +65,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             holder.setEditTextNome((EditText) viewRecycled.findViewById(R.id.editText_activityName));
             holder.setEditTextHora((EditText) viewRecycled.findViewById(R.id.editText_activityTimeHour));
             holder.setEditTextMinuto((EditText) viewRecycled.findViewById(R.id.imageButton_activityTimeMinute));
+
             holder.setButtonDelete((ImageButton) viewRecycled.findViewById(R.id.imageButton_activityCancel));
             holder.setButtonRating((Button) viewRecycled.findViewById(R.id.button_activityRating));
             holder.setCheckBox((CheckBox) viewRecycled.findViewById(R.id.checkBox_activityOK));
@@ -76,7 +77,8 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
 
         final Atividade atividade = getItem(position);
 
-        holder.getEditTextNome().setText(atividade.getNome());
+        EditText editTextNome = holder.getEditTextNome();
+        editTextNome.setText(atividade.getNome());
         holder.getEditTextHora().setText(""+atividade.getHora());
         holder.getEditTextMinuto().setText("" + atividade.getMinuto());
 
@@ -91,6 +93,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             public void onClick(View v) {
                 atividades.remove(position);
                 listener.onAdapterUpdate();
+                listener.onUncheckedAtividade(atividade);
             }
         });
 
@@ -102,7 +105,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         final Button buttonRating = holder.getButtonRating();
         int qualidade = ((int)atividade.getQualidade());
         buttonRating.setText(qualidade+"x");
-
         buttonRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +118,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         Define que quando o check da Atividade está "checado" as horas da Atividade em questão
         é adicionado ao gráfico
          */
-        CheckBox checkBox = (CheckBox) holder.getCheckBox();
+        CheckBox checkBox = holder.getCheckBox();
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

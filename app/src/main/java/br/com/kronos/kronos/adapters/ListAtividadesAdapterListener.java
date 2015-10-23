@@ -7,7 +7,17 @@ A classe que implementar essa classe deve implementar o metodo que define
 o que deve ser feito quando o ListAtividadesAdapter for atualizado.
  */
 public interface ListAtividadesAdapterListener {
+
+    /*
+    Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
+     */
     void onAdapterUpdate();
+    /*
+    Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
+     */
     void onCheckedAtividade(Atividade atividade);
+    /*
+    Define o que deve ser feito quando há unchecked da Atividade
+     */
     void onUncheckedAtividade(Atividade atividade);
 }
