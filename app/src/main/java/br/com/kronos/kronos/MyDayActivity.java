@@ -118,8 +118,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeAdicionada() {
-
         listViewAtividades.setAdapter(listAtividadesAdapter);
+
     }
 
     /*

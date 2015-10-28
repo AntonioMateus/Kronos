@@ -80,14 +80,13 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
 
         final Atividade atividade = getItem(position);
 
-
         final EditText editTextNome = holder.getEditTextNome();
         editTextNome.setText(atividade.getNome());
 
         EditText editTextHora = holder.getEditTextHora();
         editTextHora.setText("" + atividade.getHora());
 
-        EditText editTextMinuto = holder.getEditTextMinuto();
+        final EditText editTextMinuto = holder.getEditTextMinuto();
         editTextMinuto.setText("" + atividade.getMinuto());
 
         /*
@@ -170,7 +169,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         editTextNome.addTextChangedListener(textWatcherNome);
 
         /*
-        Define TextWatcher para o campo de Nome da Atividade
+        Define TextWatcher para o campo de Hora da Atividade
         */
         TextWatcher textWatcherHora = new TextWatcher() {
             @Override
@@ -190,15 +189,50 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             @Override
             public void afterTextChanged(Editable editable) {
                 String horaNova = editable.toString();
-                if (!horaNova.equals("")) {
+                if ( horaNova.length() > 0 && horaNova.length() <= 2 ) {
                     atividade.setHora(Double.parseDouble(horaNova));
                 } else{
                     atividade.setHora(0);
+                    if (atividade.getMinuto() == 0) {
+                        editTextMinuto.setText( (int)Atividade.MINUTO_MINIMO+"");
+                    }
                 }
                 listener.onAtividadeUpdated();
             }
         };
         editTextHora.addTextChangedListener(textWatcherHora);
+
+        /*
+        Define TextWatcher para o campo de Minuto da Atividade
+        */
+        TextWatcher textWatcherMinuto = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Faz nada
+            }
+
+            @Override
+            public void onTextChanged(CharSequence nomeNovo, int i, int i1, int i2) {
+                //Faz nada
+            }
+
+            /*
+            Apos o texto do Minuto ser editado, o minuto da instancia da Atividade eh alterado.
+            Caso o minuto da Atividade seja vazio, ele altera para o valor minimo de hora para
+            uma Atividade.
+             */
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String minutoNovo = editable.toString();
+                if (minutoNovo.length() > 0 && minutoNovo.length() <= 2) {
+                    atividade.setMinuto(Double.parseDouble(minutoNovo));
+                } else{
+                    atividade.setMinuto(Atividade.MINUTO_MINIMO);
+                }
+                listener.onAtividadeUpdated();
+            }
+        };
+        editTextMinuto.addTextChangedListener(textWatcherMinuto);
 
         return viewRecycled;
     }

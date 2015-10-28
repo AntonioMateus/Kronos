@@ -1,11 +1,14 @@
 package br.com.kronos.kronos;
 
+import android.util.Log;
+
 import br.com.kronos.exceptions.NomeAtividadeInvalidoExcpetion;
 
 /**
  * Created on 23/09/15.
  */
 public class Atividade {
+    public static final double MINUTO_MINIMO = 15;
     private String nome;
     private double duracao; //em horas
 
@@ -81,6 +84,11 @@ public class Atividade {
     }
 
     public void setHora(double hora) {
-        this.duracao = hora;
+        this.duracao = hora + getMinuto();
+    }
+
+    public void setMinuto(double minuto) {
+        Log.d("Atividade", "hora = " + getHora());
+        this.duracao = getHora() + (minuto/60);
     }
 }
