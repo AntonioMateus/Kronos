@@ -117,7 +117,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
      */
     @Override
-    public void onAdapterUpdate() {
+    public void onAtividadeAdicionada() {
+
         listViewAtividades.setAdapter(listAtividadesAdapter);
     }
 
@@ -187,7 +188,12 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         Iterator<Atividade> atividadesIterator = atividades.iterator();
         for (int atividadeIndice = 0; atividadesIterator.hasNext(); atividadeIndice++) {
             Atividade atividade = atividadesIterator.next();
-            atividadesNomes.add(atividade.getNome());
+
+            //Adicionar nome a lista de nome que sera exibido
+            String atividadeNome = atividade.getNome();
+            atividadesNomes.add(atividadeNome);
+
+            //Adicionar duracao da atividade da lista de duracoes que sera exibido
             atividadesDuracao.add(new Entry((float) atividade.getDuracao(), atividadeIndice));
         }
 
@@ -251,6 +257,18 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     @Override
     public void onUncheckedAtividade(Atividade atividade) {
         atividadesChecadas.remove(atividade);
+        try {
+            plotar(atividadesChecadas);
+        } catch (HorasDiaExcedidoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    Define que quando a Atividade é alterada, o gráfico é utilizado
+     */
+    @Override
+    public void onAtividadeUpdated() {
         try {
             plotar(atividadesChecadas);
         } catch (HorasDiaExcedidoException e) {

@@ -1,5 +1,7 @@
 package br.com.kronos.kronos;
 
+import br.com.kronos.exceptions.NomeAtividadeInvalidoExcpetion;
+
 /**
  * Created on 23/09/15.
  */
@@ -72,5 +74,13 @@ public class Atividade {
 
     public double getDuracao() {
         return duracao;
+    }
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+
+    public void setHora(double hora) {
+        this.duracao = hora;
     }
 }

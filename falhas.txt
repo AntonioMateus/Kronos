@@ -1,0 +1,5 @@
+Falhas identificadas:
+    - uncheck a cada vez que adiciona uma nova atividade
+    - Atividade com duração 0h0
+    - Legenda sobrepõe o gŕafico (-> colocar legenda em baixo)
+    - Uncheck quando deletar uma atividade

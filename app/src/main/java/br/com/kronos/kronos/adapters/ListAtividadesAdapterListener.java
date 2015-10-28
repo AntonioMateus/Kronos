@@ -11,7 +11,7 @@ public interface ListAtividadesAdapterListener {
     /*
     Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
      */
-    void onAdapterUpdate();
+    void onAtividadeAdicionada();
     /*
     Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
      */
@@ -20,4 +20,9 @@ public interface ListAtividadesAdapterListener {
     Define o que deve ser feito quando há unchecked da Atividade
      */
     void onUncheckedAtividade(Atividade atividade);
+
+    /*
+    Define o que deve ser feito quando algum atributo da Atividade é alterado
+     */
+    void onAtividadeUpdated();
 }

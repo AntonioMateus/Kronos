@@ -1,6 +1,8 @@
 package br.com.kronos.kronos.adapters;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.ImageButton;
 
 import java.util.List;
 
+import br.com.kronos.exceptions.NomeAtividadeInvalidoExcpetion;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 
@@ -77,10 +80,15 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
 
         final Atividade atividade = getItem(position);
 
-        EditText editTextNome = holder.getEditTextNome();
+
+        final EditText editTextNome = holder.getEditTextNome();
         editTextNome.setText(atividade.getNome());
-        holder.getEditTextHora().setText(""+atividade.getHora());
-        holder.getEditTextMinuto().setText("" + atividade.getMinuto());
+
+        EditText editTextHora = holder.getEditTextHora();
+        editTextHora.setText("" + atividade.getHora());
+
+        EditText editTextMinuto = holder.getEditTextMinuto();
+        editTextMinuto.setText("" + atividade.getMinuto());
 
         /*
         Define que ao clicar no botao "Deletar" ao lado da atividade,
@@ -92,7 +100,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             @Override
             public void onClick(View v) {
                 atividades.remove(position);
-                listener.onAdapterUpdate();
+                listener.onAtividadeAdicionada();
                 listener.onUncheckedAtividade(atividade);
             }
         });
@@ -110,7 +118,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             public void onClick(View v) {
                 atividade.switchQualidade();
                 int qualidade = ((int)atividade.getQualidade());
-                buttonRating.setText(qualidade+"x");
+                buttonRating.setText(qualidade + "x");
             }
         });
 
@@ -124,11 +132,73 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     listener.onCheckedAtividade(atividade);
-                }else {
+                } else {
                     listener.onUncheckedAtividade(atividade);
                 }
             }
         });
+
+        /*
+        Define TextWatcher para o campo de Nome da Atividade
+        */
+        TextWatcher textWatcherNome = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Faz nada
+            }
+
+            @Override
+            public void onTextChanged(CharSequence nomeNovo, int i, int i1, int i2) {
+                //Faz nada
+            }
+
+            /*
+            Apos o texto ser editado, o nome da instancia da Atividade eh alterado. Caso o nome da
+             Atividade seja vazio, ele altera para o nome default de Atividade.
+             */
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String nomeNovo = editable.toString();
+                if (!nomeNovo.equals("")) {
+                    atividade.setNome(nomeNovo);
+                } else{
+                    atividade.setNome(getContext().getString(R.string.activityDefaultName));
+                }
+                listener.onAtividadeUpdated();
+            }
+        };
+        editTextNome.addTextChangedListener(textWatcherNome);
+
+        /*
+        Define TextWatcher para o campo de Nome da Atividade
+        */
+        TextWatcher textWatcherHora = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Faz nada
+            }
+
+            @Override
+            public void onTextChanged(CharSequence nomeNovo, int i, int i1, int i2) {
+                //Faz nada
+            }
+
+            /*
+            Apos o texto da hora ser editado, a hora da instancia da Atividade eh alterado. Caso a hora da
+             Atividade seja vazio, ele altera para o valor minimo de hora para uma Atividade.
+             */
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String horaNova = editable.toString();
+                if (!horaNova.equals("")) {
+                    atividade.setHora(Double.parseDouble(horaNova));
+                } else{
+                    atividade.setHora(0);
+                }
+                listener.onAtividadeUpdated();
+            }
+        };
+        editTextHora.addTextChangedListener(textWatcherHora);
 
         return viewRecycled;
     }
