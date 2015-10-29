@@ -57,6 +57,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
     private void setListaAtividades(){
         atividades = new LinkedList<>();
+        atividadesChecadas = new LinkedList<>();
         /* Traz as atividades do banco de dados local
         DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(this);
         atividades = databaseOpenHelper.getAtividades();
@@ -74,10 +75,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         atividades.add(atividade2);
 
         //Apos carregadas as atividades em formato de lista:
-        listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, this); //criar um Adapter para alimentar uma ListView
+        listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, atividadesChecadas, this); //criar um Adapter para alimentar uma ListView
         listViewAtividades.setAdapter(listAtividadesAdapter);//Alimentar a lista de atividades com o Adapter
-
-        atividadesChecadas = new LinkedList<>();
     }
 
     @Override
@@ -107,9 +106,12 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             atividades.add(atividade);
 
             //Adiciona a nova atividade ao Adapter
-            listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, this);
+            listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, atividadesChecadas, this);
             //Atualiza a lista de Atividades com o adapter que está com uma nova atividade para ser editada
             listViewAtividades.setAdapter(listAtividadesAdapter);
+
+            //Posiciona a Lista de forma que o ultimo item (o adicionado) seja adicionado.
+            listViewAtividades.setSelection(atividades.size()-1);
         }
     }
 
@@ -157,21 +159,12 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             //Legenda do grafico
             Legend legend = pieChart.getLegend();
             legend.setEnabled(true);
-            legend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+            legend.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
 
             pieChart.highlightValues(null);
             pieChart.invalidate();
 
             PieData data = getData(atividades); //Dados para colocar no grafico
-            //Define o formato dos valores exibidos no grafico
-            data.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    int hora = (int) value;
-                    int minuto = (int) (value * 60) % 60;
-                    return hora + "h" + minuto + "min";
-                }
-            });
             pieChart.setData(data); //insere os dados no grafico
         }
 
@@ -248,6 +241,16 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.BLACK);
 
+        //Define o formato dos valores exibidos no grafico
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int hora = (int) value;
+                int minuto = (int) (value * 60) % 60;
+                return hora + "h" + minuto + "min";
+            }
+        });
+
         return data;
     }
 
@@ -256,11 +259,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onUncheckedAtividade(Atividade atividade) {
-        atividadesChecadas.remove(atividade);
-        try {
-            plotar(atividadesChecadas);
-        } catch (HorasDiaExcedidoException e) {
-            e.printStackTrace();
+        boolean removed = atividadesChecadas.remove(atividade);
+        if(removed) {
+            try {
+                plotar(atividadesChecadas);
+            } catch (HorasDiaExcedidoException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -268,11 +273,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Define que quando a Atividade é alterada, o gráfico é utilizado
      */
     @Override
-    public void onAtividadeUpdated() {
-        try {
-            plotar(atividadesChecadas);
-        } catch (HorasDiaExcedidoException e) {
-            e.printStackTrace();
+    public void onAtividadeUpdated(Atividade atividadeAlterada) {
+        if(atividadesChecadas.contains(atividadeAlterada)) {
+            try {
+                plotar(atividadesChecadas);
+            } catch (HorasDiaExcedidoException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

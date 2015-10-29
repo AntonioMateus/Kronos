@@ -2,13 +2,10 @@ package br.com.kronos.kronos;
 
 import android.util.Log;
 
-import br.com.kronos.exceptions.NomeAtividadeInvalidoExcpetion;
-
-/**
- * Created on 23/09/15.
- */
 public class Atividade {
     public static final double MINUTO_MINIMO = 15;
+    private static final double DURACAO_MINIMA = 0.25;
+
     private String nome;
     private double duracao; //em horas
 
@@ -18,9 +15,17 @@ public class Atividade {
 
     public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
         this.nome = nome;
-        this.duracao = duracao;
+        setDuracao(duracao);
         this.qualidade = qualidade;
         this.data = setData(dia, mes, ano);
+    }
+
+    private void setDuracao(double duracao) {
+        if (duracao > 0.0) {
+            this.duracao = duracao;
+        }else{
+            this.duracao = DURACAO_MINIMA;
+        }
     }
 
     /*
@@ -84,11 +89,31 @@ public class Atividade {
     }
 
     public void setHora(double hora) {
-        this.duracao = hora + getMinuto();
+        double minuto = getMinuto()/60.0;
+        this.duracao = hora + minuto;
     }
 
+    /*
+    Recebe o valor
+     */
     public void setMinuto(double minuto) {
-        Log.d("Atividade", "hora = " + getHora());
-        this.duracao = getHora() + (minuto/60);
+        minuto = (minuto/60.0);
+        this.duracao = getHora() + minuto;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Atividade atividade = (Atividade) o;
+
+        return getNome().equals(atividade.getNome());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getNome().hashCode();
     }
 }
