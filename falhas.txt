@@ -1,5 +1,3 @@
 Falhas identificadas:
     - Legenda não cabe, quando fica muito grande, mesmo colocando embaixo do gráfico
-    - Quando se realiza o Scroll da ListView as coisas ficam estranhas: algumas atividades são
-        zeradas, ganham o nome padrão e duração mínima! :S Problema causado provavelmente
-        pelo Adapter e a função de "reciclar" as View na lista
+    - Permite-se adicionar Atividades com mesmo nome
