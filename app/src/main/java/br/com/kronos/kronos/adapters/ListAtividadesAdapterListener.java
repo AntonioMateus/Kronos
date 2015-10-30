@@ -11,7 +11,7 @@ public interface ListAtividadesAdapterListener {
     /*
     Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
      */
-    void onAtividadeAdicionada();
+    void onAtividadeAdicionada(Atividade atividade);
     /*
     Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
      */

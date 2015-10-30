@@ -111,7 +111,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             listViewAtividades.setAdapter(listAtividadesAdapter);
 
             //Posiciona a Lista de forma que o ultimo item (o adicionado) seja adicionado.
-            listViewAtividades.setSelection(atividades.size()-1);
+            listViewAtividades.setSelection(atividades.size() - 1);
         }
     }
 
@@ -119,9 +119,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
      */
     @Override
-    public void onAtividadeAdicionada() {
+    public void onAtividadeAdicionada(Atividade atividade) {
         listViewAtividades.setAdapter(listAtividadesAdapter);
-
+        listViewAtividades.setSelection( listAtividadesAdapter.getPosition(atividade) );
     }
 
     /*
@@ -195,6 +195,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         for (Atividade atividadeIterada : atividades) {
             somaDuracoes += atividadeIterada.getDuracao();
         }
+
         /*
         Adiciona uma atividade "Neutra" que completa o dia na ultima posicao da lista de atividades
         caso a soma das duracoes nao complete o dia. A ideia eh que uma atividade neutra

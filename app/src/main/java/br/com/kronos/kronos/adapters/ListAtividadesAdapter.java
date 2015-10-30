@@ -60,6 +60,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
      */
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
+        /*
         View viewRecycled=view;
         //usa como base as view utilizadas na classe ViewAtividadeHolder
         ViewAtividadeHolder holder;
@@ -80,6 +81,18 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         }else { //Caso há opção de reciclar a View
             holder = (ViewAtividadeHolder) viewRecycled.getTag();
         }
+        */
+        //Sem reciclar Views :S não recomendado
+        view = mLayoutInflater.inflate(resource, parent, false);
+        ViewAtividadeHolder holder = new ViewAtividadeHolder();
+
+        holder.setEditTextNome((EditText) view.findViewById(R.id.editText_activityName));
+        holder.setEditTextHora((EditText) view.findViewById(R.id.editText_activityTimeHour));
+        holder.setEditTextMinuto((EditText) view.findViewById(R.id.imageButton_activityTimeMinute));
+
+        holder.setButtonDelete((ImageButton) view.findViewById(R.id.imageButton_activityCancel));
+        holder.setButtonRating((Button) view.findViewById(R.id.button_activityRating));
+        holder.setCheckBox((CheckBox) view.findViewById(R.id.checkBox_activityOK));
 
         final Atividade atividade = getItem(position);
 
@@ -111,7 +124,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             @Override
             public void onClick(View v) {
                 atividades.remove(position);
-                listener.onAtividadeAdicionada();
+                listener.onAtividadeAdicionada(atividade);
                 listener.onUncheckedAtividade(atividade);
             }
         });
@@ -255,6 +268,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         };
         editTextMinuto.addTextChangedListener(textWatcherMinuto);
 
-        return viewRecycled;
+        //return viewRecycled;
+        return view;
     }
 }
