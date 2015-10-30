@@ -6,7 +6,6 @@
         android:id="@+id/button_activityRating"
         android:layout_width="@dimen/imageButton_activityRating_width"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_title"
         android:layout_toEndOf="@+id/imageButton_activityTimeMinute"
         android:gravity="center"
         style="?android:attr/borderlessButtonStyle"
@@ -19,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/button_activityRating"
         android:inputType="textAutoComplete|textCapWords"
-        android:hint="@string/editText_activityName"/>
+        android:hint="@string/editText_activityName"
+        android:imeOptions="actionDone"/>
 
     <EditText
         android:id="@+id/editText_activityTimeHour"
@@ -28,7 +28,8 @@
         android:layout_alignBottom="@id/button_activityRating"
         android:layout_toEndOf="@+id/editText_activityName"
         android:inputType="time"
-        android:hint="@string/editText_activityTimeHour"/>
+        android:hint="@string/editText_activityTimeHour"
+        android:imeOptions="actionDone"/>
 
     <EditText
         android:id="@+id/imageButton_activityTimeMinute"
@@ -37,7 +38,8 @@
         android:layout_alignBottom="@id/button_activityRating"
         android:layout_toEndOf="@+id/editText_activityTimeHour"
         android:inputType="time"
-        android:hint="@string/editText_activityTimeMinute"/>
+        android:hint="@string/editText_activityTimeMinute"
+        android:imeOptions="actionDone"/>
 
     <ImageButton
         android:id="@+id/imageButton_activityCancel"
@@ -54,6 +56,7 @@
         android:layout_width="@dimen/imageButton_activityOK_width"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/editText_activityName"
-        android:layout_toEndOf="@+id/imageButton_activityCancel" />
+        android:layout_toEndOf="@+id/imageButton_activityCancel"
+        android:imeOptions="actionDone"/>
 
 </RelativeLayout>

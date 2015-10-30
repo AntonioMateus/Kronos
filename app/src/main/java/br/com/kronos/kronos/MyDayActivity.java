@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -49,6 +50,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_day);
 
+        atividades = new LinkedList<>();
+        atividadesChecadas = new LinkedList<>();
+
         listViewAtividades = (ListView) findViewById(R.id.listView_activities);
         setListaAtividades(); //lista de atividades é carregada com as atividades do dia anterior
 
@@ -56,12 +60,10 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         buttonAddAtividade.setOnClickListener(this);
 
         pieChart = (PieChart) findViewById(R.id.pieChart_activities);
-        pieChart.setOnTouchListener(this);
+        //pieChart.setOnTouchListener(this);
     }
 
     private void setListaAtividades(){
-        atividades = new LinkedList<>();
-        atividadesChecadas = new LinkedList<>();
         /* Traz as atividades do banco de dados local
         DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(this);
         atividades = databaseOpenHelper.getAtividades();
@@ -80,7 +82,14 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         //Apos carregadas as atividades em formato de lista:
         listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, atividadesChecadas, this); //criar um Adapter para alimentar uma ListView
-        listViewAtividades.setAdapter(listAtividadesAdapter);//Alimentar a lista de atividades com o Adapter
+
+        if (listAtividadesAdapter.getCount() > 0) {
+            listViewAtividades.setAdapter(listAtividadesAdapter);//Alimentar a lista de atividades com o Adapter
+        } else{
+            String[] listaVazia = {getString(R.string.listaAtividadesVazia)};
+            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter<>(this, R.layout.list_activity_empty_item_layout, listaVazia);
+            listViewAtividades.setAdapter(listAdapterVazio);
+        }
     }
 
     @Override
@@ -125,20 +134,16 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     @Override
     public void onAtividadeAdicionada(Atividade atividade) {
         listViewAtividades.setAdapter(listAtividadesAdapter);
-        listViewAtividades.setSelection( listAtividadesAdapter.getPosition(atividade) );
+        listViewAtividades.setSelection(listAtividadesAdapter.getPosition(atividade));
     }
 
     /*
     Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
      */
     @Override
-    public void onCheckedAtividade(Atividade atividade) {
+    public void onCheckedAtividade(Atividade atividade) throws HorasDiaExcedidoException {
         atividadesChecadas.add(atividade);
-        try {
-            plotar(atividadesChecadas);
-        } catch (HorasDiaExcedidoException e) {
-            e.printStackTrace();
-        }
+        plotar(atividadesChecadas);
         esconderTeclado();
     }
 
@@ -270,6 +275,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             try {
                 plotar(atividadesChecadas);
             } catch (HorasDiaExcedidoException e) {
+                //Caso inválido
                 e.printStackTrace();
             }
         }
@@ -279,12 +285,22 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Define que quando a Atividade é alterada, o gráfico é utilizado
      */
     @Override
-    public void onAtividadeUpdated(Atividade atividadeAlterada) {
-        try {
-            plotar(atividadesChecadas);
-        } catch (HorasDiaExcedidoException e) {
-            e.printStackTrace();
+    public void onAtividadeUpdated(Atividade atividadeAlterada) throws HorasDiaExcedidoException {
+        plotar(atividadesChecadas);
+    }
+
+    @Override
+    public void onAtividadeRemovida(Atividade atividade) {
+        atividades.remove(atividade);
+        if (listAtividadesAdapter.getCount() > 0) {
+            listViewAtividades.setAdapter(listAtividadesAdapter);
+        } else{
+            String[] listaVazia = {getString(R.string.listaAtividadesVazia)};
+            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter<>(this, R.layout.list_activity_empty_item_layout, listaVazia);
+            listViewAtividades.setAdapter(listAdapterVazio);
         }
+        onUncheckedAtividade(atividade);
+        esconderTeclado();
     }
 
     @Override

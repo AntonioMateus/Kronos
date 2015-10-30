@@ -1,5 +1,6 @@
 package br.com.kronos.kronos.adapters;
 
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
 
 /*
@@ -15,7 +16,7 @@ public interface ListAtividadesAdapterListener {
     /*
     Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
      */
-    void onCheckedAtividade(Atividade atividade);
+    void onCheckedAtividade(Atividade atividade) throws HorasDiaExcedidoException;
     /*
     Define o que deve ser feito quando há unchecked da Atividade
      */
@@ -24,5 +25,9 @@ public interface ListAtividadesAdapterListener {
     /*
     Define o que deve ser feito quando algum atributo da Atividade é alterado
      */
-    void onAtividadeUpdated(Atividade atividadeAlterada);
+    void onAtividadeUpdated(Atividade atividadeAlterada) throws HorasDiaExcedidoException;
+    /*
+    Define o que deve ser feito quando uma Atividade é removida
+     */
+    void onAtividadeRemovida(Atividade atividade);
 }

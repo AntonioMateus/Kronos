@@ -5,15 +5,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeHora;
@@ -126,8 +129,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             @Override
             public void onClick(View v) {
                 atividades.remove(position);
-                listener.onAtividadeAdicionada(atividade);
-                listener.onUncheckedAtividade(atividade);
+                listener.onAtividadeRemovida(atividade);
             }
         });
 
@@ -150,23 +152,25 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
 
         /*
         Define que quando o check da Atividade está "checado" as horas da Atividade em questão
-        é adicionado ao gráfico
+        é adicionado ao gráfico. Se já houver uma Atividade checada e com o nome da Atividade que
+        está sendo checada, o check desta Atividade mais recente não é dado. Se essa Atividade for
+        checada e o número de horas do dia for excedido, o check é desfeito.
          */
         final CheckBox checkBox = holder.getCheckBox();
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            /*
-            Se essa Atividade for checada:
-                -e não houver mais nenhuma Atividade com mesmo nome, o listener da classe é alertado
-                - caso houver mais uma Atividade com mesmo nome, o check dela é retirado
-            Se essa Atividade estiver tendo o seu check retirado, o listener da classe é alertado
-            */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     int atividadesChecadasComMesmoNome = Atividade.atividadesChecadasComMesmoNome(atividade, atividadesChecadas);
                     if(atividadesChecadasComMesmoNome == 0) {
-                        listener.onCheckedAtividade(atividade);
+                        try {
+                            listener.onCheckedAtividade(atividade);
+                        } catch (HorasDiaExcedidoException e) {
+                            Toast.makeText(getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
+                            checkBox.setChecked(false);
+                        }
                     } else {
+                        Toast.makeText(getContext(), R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
                         checkBox.setChecked(false);
                     }
                 } else {

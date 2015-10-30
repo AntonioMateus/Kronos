@@ -12,13 +12,14 @@
         android:layout_height="0dp"/>
 
     <TextView
-        android:id="@+id/textView_title"
+        android:id="@+id/textView_myDay_title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/pieChart_activities"
-        android:text="@string/textView_title"
-        android:textColor="@color/textView_title"/>
+        android:text="@string/textView_myDay_title"
+        android:textSize="@dimen/textView_myDay_title"
+        android:textColor="@color/textView_myDay_title"/>
 
     <Button
         android:id="@+id/button_activityAdd"
@@ -26,14 +27,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:hint="@string/editText_activityAdd"
+        android:text="@string/button_activityAdd"
+        android:textColor="@color/button_activityAdd"
         style="?android:attr/borderlessButtonStyle"/>
 
     <ListView
         android:id="@+id/listView_activities"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_title"
+        android:layout_below="@id/textView_myDay_title"
         android:layout_above="@id/button_activityAdd"
         android:descendantFocusability="beforeDescendants" />
 </RelativeLayout>

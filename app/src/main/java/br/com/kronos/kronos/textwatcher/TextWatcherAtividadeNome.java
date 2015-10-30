@@ -4,9 +4,11 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
@@ -53,6 +55,7 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         if(checkBox.isChecked()) {
             int checadasComMesmoNome = Atividade.atividadesChecadasComMesmoNome(atividade, atividadesChecadas);
             if (checadasComMesmoNome > 0) {
+                Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
                 checkBox.setChecked(false);
             }
         }
@@ -68,7 +71,12 @@ public class TextWatcherAtividadeNome implements TextWatcher {
             metodo que define o que deve ser feito na Activity quando o nome da Atividade mudar
         */
         if (checkBox.isChecked()) {
-            listener.onAtividadeUpdated(atividade);
+            try {
+                listener.onAtividadeUpdated(atividade);
+            } catch (HorasDiaExcedidoException e) {
+                //Caso impossível
+                Toast.makeText(context, R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

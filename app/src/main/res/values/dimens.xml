@@ -3,7 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- MyDay Activity -->
+    <dimen name="textView_myDay_title">20dp</dimen>
+
     <!-- ListActivityItem -->
+    <dimen name="list_activity_empty_item_layout">13dp</dimen>
     <dimen name="editText_activityName_widht">100dp</dimen>
     <dimen name="imageButton_activityCancel_width">45dp</dimen>
     <dimen name="imageButton_activityOK_width">50dp</dimen>

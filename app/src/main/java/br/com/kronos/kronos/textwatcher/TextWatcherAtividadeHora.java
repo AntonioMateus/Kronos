@@ -5,8 +5,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
+import br.com.kronos.kronos.R;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 
 public class TextWatcherAtividadeHora implements TextWatcher {
@@ -59,7 +62,12 @@ public class TextWatcherAtividadeHora implements TextWatcher {
                 metodo que define o que deve ser feito na Activity quando o Hora da Atividade mudar
                  */
         if (checkBox.isChecked()) {
-            listener.onAtividadeUpdated(atividade);
+            try {
+                listener.onAtividadeUpdated(atividade);
+            } catch (HorasDiaExcedidoException e) {
+                Toast.makeText(checkBox.getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
+                checkBox.setChecked(false);
+            }
         }
     }
 }
