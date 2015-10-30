@@ -24,5 +24,5 @@ public interface ListAtividadesAdapterListener {
     /*
     Define o que deve ser feito quando algum atributo da Atividade é alterado
      */
-    void onAtividadeUpdated();
+    void onAtividadeUpdated(Atividade atividadeAlterada);
 }

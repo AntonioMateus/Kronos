@@ -1,5 +1,5 @@
 Falhas identificadas:
-    - uncheck a cada vez que adiciona uma nova atividade
-    - Atividade com duração 0h0
-    - Legenda sobrepõe o gŕafico (-> colocar legenda em baixo)
-    - Uncheck quando deletar uma atividade
+    - Legenda não cabe, quando fica muito grande, mesmo colocando embaixo do gráfico
+    - Quando se realiza o Scroll da ListView as coisas ficam estranhas: algumas atividades são
+        zeradas, ganham o nome padrão e duração mínima! :S Problema causado provavelmente
+        pelo Adapter e a função de "reciclar" as View na lista
