@@ -2,6 +2,8 @@ package br.com.kronos.kronos;
 
 import android.util.Log;
 
+import java.util.List;
+
 public class Atividade {
     public static final double MINUTO_MINIMO = 15;
     private static final double DURACAO_MINIMA = 0.25;
@@ -101,19 +103,15 @@ public class Atividade {
         this.duracao = getHora() + minuto;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Atividade atividade = (Atividade) o;
-
-        return getNome().equals(atividade.getNome());
-
-    }
-
-    @Override
-    public int hashCode() {
-        return getNome().hashCode();
+    public static int atividadesChecadasComMesmoNome(Atividade atividade, List<Atividade> atividades) {
+        int atividadesComMemsmoNome = 0;
+        String atividadeNome = atividade.getNome();
+        for (Atividade atividadeIterada : atividades) {
+            String atividadeIteradaNome = atividadeIterada.getNome();
+            if (atividadeNome.equals(atividadeIteradaNome)) {
+                atividadesComMemsmoNome++;
+            }
+        }
+        return atividadesComMemsmoNome;
     }
 }

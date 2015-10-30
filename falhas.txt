@@ -1,3 +1,2 @@
 Falhas identificadas:
     - Legenda não cabe, quando fica muito grande, mesmo colocando embaixo do gráfico
-    - Permite-se adicionar Atividades com mesmo nome

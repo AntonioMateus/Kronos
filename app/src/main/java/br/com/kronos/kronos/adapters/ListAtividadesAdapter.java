@@ -1,7 +1,6 @@
 package br.com.kronos.kronos.adapters;
 
 import android.content.Context;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,9 @@ import java.util.List;
 
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
+import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeHora;
+import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeMinuto;
+import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeNome;
 
 public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
     private final List<Atividade> atividades;
@@ -82,7 +84,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             holder = (ViewAtividadeHolder) viewRecycled.getTag();
         }
         */
-        //Sem reciclar Views :S não recomendado
+        //Sem reciclar Views :S não recomendado, mas eh o jeito que esta funcionando por hora
         view = mLayoutInflater.inflate(resource, parent, false);
         ViewAtividadeHolder holder = new ViewAtividadeHolder();
 
@@ -105,13 +107,13 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             checkBox.setChecked(true);
         }
 
-        final EditText editTextNome = holder.getEditTextNome();
+        EditText editTextNome = holder.getEditTextNome();
         editTextNome.setText(atividade.getNome());
 
         EditText editTextHora = holder.getEditTextHora();
         editTextHora.setText("" + atividade.getHora());
 
-        final EditText editTextMinuto = holder.getEditTextMinuto();
+        EditText editTextMinuto = holder.getEditTextMinuto();
         editTextMinuto.setText("" + atividade.getMinuto());
 
         /*
@@ -150,122 +152,39 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         Define que quando o check da Atividade está "checado" as horas da Atividade em questão
         é adicionado ao gráfico
          */
-        CheckBox checkBox = holder.getCheckBox();
+        final CheckBox checkBox = holder.getCheckBox();
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /*
+            Se essa Atividade for checada:
+                -e não houver mais nenhuma Atividade com mesmo nome, o listener da classe é alertado
+                - caso houver mais uma Atividade com mesmo nome, o check dela é retirado
+            Se essa Atividade estiver tendo o seu check retirado, o listener da classe é alertado
+            */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    listener.onCheckedAtividade(atividade);
+                    int atividadesChecadasComMesmoNome = Atividade.atividadesChecadasComMesmoNome(atividade, atividadesChecadas);
+                    if(atividadesChecadasComMesmoNome == 0) {
+                        listener.onCheckedAtividade(atividade);
+                    } else {
+                        checkBox.setChecked(false);
+                    }
                 } else {
                     listener.onUncheckedAtividade(atividade);
                 }
             }
         });
 
-        /*
-        TextWatcher que define o que deve acontecer quando o campo Nome da Atividade mudar
-        */
-        TextWatcher textWatcherNome = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //Faz nada antes do texto ser modificado
-            }
-
-            @Override
-            public void onTextChanged(CharSequence nomeNovo, int i, int i1, int i2) {
-                //Faz nada com o trecho que mudou em particular
-            }
-
-            /*
-            Apos o texto ser editado, o nome da instancia da Atividade eh alterado. Caso o nome da
-             Atividade seja vazio, ele altera para o nome default de Atividade.
-             */
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String nomeNovo = editable.toString();
-                if (!nomeNovo.equals("")) {
-                    atividade.setNome(nomeNovo);
-                } else{
-                    atividade.setNome(getContext().getString(R.string.activityDefaultName));
-                }
-                //metodo que define o que deve ser feito na Activity quando o nome da Atividade mudar
-                listener.onAtividadeUpdated(atividade);
-            }
-        };
+        // TextWatcher que define o que deve acontecer quando o campo Nome da Atividade mudar
+        TextWatcher textWatcherNome = new TextWatcherAtividadeNome(atividade, atividadesChecadas, listener, checkBox);
         editTextNome.addTextChangedListener(textWatcherNome);
 
-        /*
-        TextWatcher que define o que deve acontecer quando o campo Hora da Atividade mudar
-        */
-        TextWatcher textWatcherHora = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //Faz nada
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                //Faz nada com o trecho que mudou em particular
-            }
-
-            /*
-            Apos o texto da hora ser editado, a hora da instancia da Atividade eh alterado.
-            Caso a hora da Atividade seja vazio:
-                minuto > 0 ele altera para o valor minimo de hora para uma Atividade.
-                minuto = 0, é definido a duração mínima que uma Atividade pode ter
-             */
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String horaNova = editable.toString();
-                if ( horaNova.length() > 0 && horaNova.length() <= 2 ) {
-                    atividade.setHora(Double.parseDouble(horaNova));
-                } else{
-                    atividade.setHora(0);
-                    if ( atividade.getMinuto() == 0 ) {
-                        editTextMinuto.setText( (int)Atividade.MINUTO_MINIMO+"");
-                    }
-                }
-                //metodo que define o que deve ser feito na Activity quando o nome da Atividade mudar
-                listener.onAtividadeUpdated(atividade);
-            }
-        };
+        //TextWatcher que define o que deve acontecer quando o campo Hora da Atividade mudar
+        TextWatcher textWatcherHora = new TextWatcherAtividadeHora(atividade, listener, checkBox, editTextMinuto);
         editTextHora.addTextChangedListener(textWatcherHora);
 
-        /*
-        TextWatcher que define o que deve acontecer quando o campo Minuto da Atividade mudar
-        */
-        TextWatcher textWatcherMinuto = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //Faz nada
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                //Faz nada com o trecho que mudou em particular
-            }
-
-            /*
-            Apos o texto do Minuto ser editado, o minuto da instancia da Atividade eh alterado.
-            Caso o minuto da Atividade seja vazio:
-                e a Hora da Atividade = 0, ele altera para o valor minimo de duração para uma Atividade.
-                e a Hora da Atividade > 0, ele altera para o valor 0
-             */
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String minutoNovo = editable.toString();
-                if (minutoNovo.length() > 0 && minutoNovo.length() <= 2) {
-                    atividade.setMinuto(Double.parseDouble(minutoNovo));
-                } else{
-                    if(atividade.getHora() == 0) {
-                        atividade.setMinuto(Atividade.MINUTO_MINIMO);
-                    }else{
-                        atividade.setMinuto(0);
-                    }
-                }
-                listener.onAtividadeUpdated(atividade);
-            }
-        };
+        //TextWatcher que define o que deve acontecer quando o campo Minuto da Atividade mudar
+        TextWatcher textWatcherMinuto = new TextWatcherAtividadeMinuto(atividade, listener, checkBox);
         editTextMinuto.addTextChangedListener(textWatcherMinuto);
 
         //return viewRecycled;

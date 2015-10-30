@@ -1,11 +1,14 @@
 package br.com.kronos.kronos;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -28,7 +31,7 @@ import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 
-public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener {
+public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener, View.OnTouchListener {
 
     private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY; // 24h / 15min
 
@@ -53,6 +56,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         buttonAddAtividade.setOnClickListener(this);
 
         pieChart = (PieChart) findViewById(R.id.pieChart_activities);
+        pieChart.setOnTouchListener(this);
     }
 
     private void setListaAtividades(){
@@ -135,6 +139,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         } catch (HorasDiaExcedidoException e) {
             e.printStackTrace();
         }
+        esconderTeclado();
     }
 
     /*
@@ -275,12 +280,24 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeUpdated(Atividade atividadeAlterada) {
-        if(atividadesChecadas.contains(atividadeAlterada)) {
-            try {
-                plotar(atividadesChecadas);
-            } catch (HorasDiaExcedidoException e) {
-                e.printStackTrace();
-            }
+        try {
+            plotar(atividadesChecadas);
+        } catch (HorasDiaExcedidoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        esconderTeclado();
+        return true;
+    }
+
+    private void esconderTeclado() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view != null){
+            inputMethodManager.hideSoftInputFromWindow( view.getWindowToken(), 0);
         }
     }
 }
