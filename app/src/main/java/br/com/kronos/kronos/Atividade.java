@@ -22,6 +22,13 @@ public class Atividade {
         this.data = setData(dia, mes, ano);
     }
 
+    public Atividade(String nome, double duracao, int qualidade, String data) {
+        this.nome = nome;
+        setDuracao(duracao);
+        this.qualidade = qualidade;
+        this.data = data;
+    }
+
     private void setDuracao(double duracao) {
         if (duracao > 0.0) {
             this.duracao = duracao;
@@ -81,6 +88,7 @@ public class Atividade {
         return qualidade;
     }
 
+    public String getData() { return data;}
 
     public double getDuracao() {
         return duracao;

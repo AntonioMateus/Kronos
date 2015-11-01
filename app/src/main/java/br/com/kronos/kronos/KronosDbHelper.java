@@ -19,20 +19,12 @@ public class KronosDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase bd) {
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES1);
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES2);
-        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES3);
-        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES4);
     }
 
     @Override
     public void onUpgrade (SQLiteDatabase bd, int oldVersion, int newVersion) {
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES1);
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES2);
-        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES3);
-        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES4);
         onCreate(bd);
-    }
-
-    public void Downgrade (SQLiteDatabase bd, int oldVersion, int newVersion) {
-        onUpgrade(bd, oldVersion, newVersion);
     }
 }
