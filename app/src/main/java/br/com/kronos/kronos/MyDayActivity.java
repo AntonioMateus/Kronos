@@ -162,9 +162,12 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             pieChart.setRotationEnabled(true);
 
             //Texto que fica ao centro do grafico no espaco vazio
+            pieChart.setDrawCenterText(false);
+            /*
             pieChart.setCenterText(getString(R.string.pieChart_title));
             pieChart.setCenterTextColor(getResources().getColor(R.color.pieChart_title));
             pieChart.setCenterTextSize(getResources().getDimensionPixelSize(R.dimen.pieChart_title));
+            */
 
             //Legenda do grafico
             Legend legend = pieChart.getLegend();
@@ -296,7 +299,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             listViewAtividades.setAdapter(listAtividadesAdapter);
         } else{
             String[] listaVazia = {getString(R.string.listaAtividadesVazia)};
-            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter<>(this, R.layout.list_activity_empty_item_layout, listaVazia);
+            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter< >(this, R.layout.list_activity_empty_item_layout, listaVazia);
             listViewAtividades.setAdapter(listAdapterVazio);
         }
         onUncheckedAtividade(atividade);

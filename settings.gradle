@@ -1,1 +1,1 @@
-include ':app', ':charts4j-1.3', ':mpandroidchartlibrary-2-1-0'
+include ':app'
