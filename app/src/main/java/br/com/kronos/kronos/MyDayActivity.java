@@ -36,10 +36,10 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
     private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY; // 24h / 15min
 
-    private ListView listViewAtividades;
-
+    private KronosDatabase kronosDatabase;
     private List<Atividade> atividades; //lista de todas as atividades dentro do listView
     private List<Atividade> atividadesChecadas; //lista das atividades com checkbox acionado
+    private ListView listViewAtividades;
 
     private ListAtividadesAdapter listAtividadesAdapter;
     private PieChart pieChart;
@@ -50,6 +50,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_day);
 
+        kronosDatabase = new KronosDatabase(this);
         atividades = new LinkedList<>();
         atividadesChecadas = new LinkedList<>();
 
@@ -64,10 +65,11 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     }
 
     private void setListaAtividades(){
-        /* Traz as atividades do banco de dados local
-        DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(this);
-        atividades = databaseOpenHelper.getAtividades();
-        */
+        //Traz as atividades do banco de dados local
+
+        atividades = kronosDatabase.getAtividadesLista();
+
+        /*
         //Caso de teste sem banco de dados
         Calendar calendar = Calendar.getInstance();
         int dia = calendar.get(Calendar.DAY_OF_MONTH);
@@ -79,6 +81,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         Atividade atividade2 = new Atividade("Estudar", 2.5, 0, dia, mes, ano);
         atividades.add(atividade2);
+        */
 
         //Apos carregadas as atividades em formato de lista:
         listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, atividadesChecadas, this); //criar um Adapter para alimentar uma ListView
