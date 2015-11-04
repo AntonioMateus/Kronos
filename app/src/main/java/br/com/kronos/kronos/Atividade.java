@@ -116,4 +116,25 @@ public class Atividade {
     public void setAno(int ano) {
         this.ano = ano;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Atividade atividade = (Atividade) o;
+
+        return !(getNome() != null ? !getNome().equals(atividade.getNome()) : atividade.getNome() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getNome() != null ? getNome().hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return getNome() + "<" + getDuracao() + "-" + getDia() + "." + getMes() + "." + getAno() + ">";
+    }
 }

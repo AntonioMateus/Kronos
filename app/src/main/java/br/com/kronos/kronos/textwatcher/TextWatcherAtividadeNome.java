@@ -19,21 +19,21 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     private CheckBox checkBox;
 
     private Atividade atividade;
-    private List<Atividade> atividadesChecadas;
+    //private String atividadeNomeAntigo;
 
-    public TextWatcherAtividadeNome(Atividade atividade, List<Atividade> atividadesChecadas,
+    public TextWatcherAtividadeNome(Atividade atividade,
                                     ListAtividadesAdapterListener listener, CheckBox checkBox) {
         this.context = checkBox.getContext();
         this.listener = listener;
         this.checkBox = checkBox;
 
         this.atividade = atividade;
-        this.atividadesChecadas = atividadesChecadas;
     }
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        //Faz nada antes do texto ser modificado
+        //Armazenar nome antigo da Atividade para realizar update do Banco de Dados
+        //this.atividadeNomeAntigo = charSequence.toString();
     }
 
     @Override
@@ -48,27 +48,34 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         String nomeNovo = editable.toString();
+        List<Atividade> atividadesChecadas = listener.getAtividadesChecadas();
+        List<Atividade> atividades = listener.getAtividades();
+
         /*
         Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
-        essa ativiade deixa de estar checada.
+        essa atividade deixa de estar checada.
          */
         if(checkBox.isChecked()) {
-            int checadasComMesmoNome = Atividade.atividadesChecadasComMesmoNome(atividade, atividadesChecadas);
-            if (checadasComMesmoNome > 0) {
+            if (atividadesChecadas.contains(atividade)) {
                 Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
                 checkBox.setChecked(false);
             }
         }
 
-        //Muda o nome na instancia da Atividade
+        //Muda o nome na instancia da Atividade. Se o nome for vazio, escolhe-se o nome padrao para uma Atividade
         if (!nomeNovo.equals("")) {
             atividade.setNome(nomeNovo);
         } else {
-            atividade.setNome(context.getString(R.string.activityDefaultName));
+            String atividadeAleatoriaNome = context.getString(R.string.activityDefaultName);
+            atividade.setNome(atividadeAleatoriaNome);
+            for (int atividadeAleatoria = 0; atividades.contains(atividade); atividadeAleatoria++) {
+                atividade.setNome(atividadeAleatoriaNome + atividadeAleatoria);
+            }
         }
 
-        /*Se a atividade estiver checada:
-            metodo que define o que deve ser feito na Activity quando o nome da Atividade mudar
+        /*
+        Se a atividade estiver checada depois que o nome for alterado: chama-se o metodo que
+        define o que deve ser feito na Activity listener quando o nome da Atividade mudar
         */
         if (checkBox.isChecked()) {
             try {

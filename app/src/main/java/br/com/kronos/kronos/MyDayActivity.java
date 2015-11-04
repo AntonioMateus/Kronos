@@ -44,7 +44,6 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     private ListAtividadesAdapter listAtividadesAdapter;
     private PieChart pieChart;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,40 +53,36 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         atividades = new LinkedList<>();
         atividadesChecadas = new LinkedList<>();
 
+        //Linkando as Views
         listViewAtividades = (ListView) findViewById(R.id.listView_activities);
-        setListaAtividades(); //lista de atividades é carregada com as atividades do dia anterior
-
         Button buttonAddAtividade = (Button) findViewById(R.id.button_activityAdd);
         buttonAddAtividade.setOnClickListener(this);
-
         pieChart = (PieChart) findViewById(R.id.pieChart_activities);
-        //pieChart.setOnTouchListener(this);
-    }
 
-    private void setListaAtividades(){
-        //Traz as atividades do banco de dados local
-
-        atividades = kronosDatabase.getAtividadesLista();
-
-        /*
-        //Caso de teste sem banco de dados
+        //lista de atividades é carregada com as atividades que jah constavam na lista
         Calendar calendar = Calendar.getInstance();
         int dia = calendar.get(Calendar.DAY_OF_MONTH);
-        int mes = calendar.get(Calendar.MONTH);
+        int mes = calendar.get(Calendar.MONTH) + 1;
         int ano = calendar.get(Calendar.YEAR);
+        atividades = kronosDatabase.getAtividadesLista();
+        atividadesChecadas = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
 
-        Atividade atividade = new Atividade("Dormir", 8, 0, dia, mes, ano);
-        atividades.add(atividade);
+        setListViewAtividades();
 
-        Atividade atividade2 = new Atividade("Estudar", 2.5, 0, dia, mes, ano);
-        atividades.add(atividade2);
-        */
+        try {
+            plotar(atividadesChecadas);
+        } catch (HorasDiaExcedidoException e) {
+            e.printStackTrace();
+        }
+    }
 
-        //Apos carregadas as atividades em formato de lista:
-        listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, atividadesChecadas, this); //criar um Adapter para alimentar uma ListView
+    private void setListViewAtividades() {
+        //Apos carregadas as atividades em formato de lista, criar um Adapter para alimentar uma ListView
+        listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, this);
 
         if (listAtividadesAdapter.getCount() > 0) {
             listViewAtividades.setAdapter(listAtividadesAdapter);//Alimentar a lista de atividades com o Adapter
+            listViewAtividades.setSelection(atividades.size() - 1);
         } else{
             String[] listaVazia = {getString(R.string.listaAtividadesVazia)};
             ArrayAdapter<String> listAdapterVazio = new ArrayAdapter<>(this, R.layout.list_activity_empty_item_layout, listaVazia);
@@ -117,49 +112,22 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     public void onClick(View view) {
         if (view.getId() == R.id.button_activityAdd) {
             //Cria uma atividade Default para ser adicionada a lista
-            String activityName = getString(R.string.activityDefaultName);
-            Atividade atividade = new Atividade(activityName, 0, 0, 0, 0, 0);
+            String actividadeNome = getString(R.string.activityDefaultName);
+            Atividade atividade = new Atividade(actividadeNome, 0, 0, 0, 0, 0);
+
+            //Se ja houver uma atividade com esse nome, eh acrescentado um numero para diferencia-las
+            for (int atividadeAleatoria = 0; atividades.contains(atividade); atividadeAleatoria++) {
+                atividade.setNome( actividadeNome + ""+ atividadeAleatoria );
+            }
+
+            //Adiciona a Atividade na Lista de Atividades
             atividades.add(atividade);
 
             //Adiciona a nova atividade ao Adapter
-            listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, atividades, atividadesChecadas, this);
-            //Atualiza a lista de Atividades com o adapter que está com uma nova atividade para ser editada
-            listViewAtividades.setAdapter(listAtividadesAdapter);
+            listAtividadesAdapter = new ListAtividadesAdapter(this, R.layout.list_activity_item_layout, this);
 
-            //Posiciona a Lista de forma que o ultimo item (o adicionado) seja adicionado.
-            listViewAtividades.setSelection(atividades.size() - 1);
+            onAtividadeAdicionada(atividade);
         }
-    }
-
-    /*
-    Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
-     */
-    @Override
-    public void onAtividadeAdicionada(Atividade atividade) {
-        kronosDatabase.addAtividadeLista(atividade);
-        listViewAtividades.setAdapter(listAtividadesAdapter);
-        listViewAtividades.setSelection(listAtividadesAdapter.getPosition(atividade));
-    }
-
-    /*
-    Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
-     */
-    @Override
-    public void onCheckedAtividade(Atividade atividade) throws HorasDiaExcedidoException {
-
-        Calendar calendar = Calendar.getInstance();
-        int dia = calendar.get(Calendar.DAY_OF_MONTH);
-        int mes = calendar.get(Calendar.MONTH);
-        int ano = calendar.get(Calendar.YEAR);
-
-        atividade.setDia(dia);
-        atividade.setMes(mes);
-        atividade.setAno(ano);
-
-        kronosDatabase.addAtividadeHistorico(atividade);
-        atividadesChecadas.add(atividade);
-        plotar(atividadesChecadas);
-        esconderTeclado();
     }
 
     /*
@@ -284,19 +252,55 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     }
 
     /*
+    Metodo que define o que deve ser feito quando o ListAtividadeAdapter for atualizado
+     */
+    @Override
+    public void onAtividadeAdicionada(Atividade atividade) {
+        kronosDatabase.addAtividadeLista(atividade);
+
+        setListViewAtividades();
+    }
+
+    /*
+    Define o que deve ser feito quando o checkBox de uma atividade for 'checado'
+     */
+    @Override
+    public void onCheckedAtividade(Atividade atividade) throws HorasDiaExcedidoException {
+        //Setar data da Atividade para adiciona-la
+        Calendar calendar = Calendar.getInstance();
+        int dia = calendar.get(Calendar.DAY_OF_MONTH);
+        int mes = calendar.get(Calendar.MONTH) + 1;
+        int ano = calendar.get(Calendar.YEAR);
+        atividade.setDia(dia);
+        atividade.setMes(mes);
+        atividade.setAno(ano);
+
+        //Adiciona Atividade no banco de Dados
+        kronosDatabase.addAtividadeHistorico(atividade);
+
+        //Adiciona-se essa atividade na Lista de atividades Checadas
+        atividadesChecadas.add(atividade);
+
+        plotar(atividadesChecadas);
+        esconderTeclado();
+    }
+
+    /*
     Define o que deve ser feito quando há unchecked da Atividade
      */
     @Override
     public void onUncheckedAtividade(Atividade atividade) {
+        //Remover Atividade do Banco de Dados
         kronosDatabase.removeAtividadeHistorico(atividade);
-        boolean removed = atividadesChecadas.remove(atividade);
-        if(removed) {
-            try {
-                plotar(atividadesChecadas);
-            } catch (HorasDiaExcedidoException e) {
-                //Caso inválido
-                e.printStackTrace();
-            }
+
+        //Remover Atividade da Lista de Atividdade Checadas
+        atividadesChecadas.remove(atividade);
+
+        try {
+            plotar(atividadesChecadas);
+        } catch (HorasDiaExcedidoException e) {
+            //Caso inválido
+            e.printStackTrace();
         }
     }
 
@@ -305,22 +309,37 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeUpdated(Atividade atividadeAlterada) throws HorasDiaExcedidoException {
+        //TODO - Atualizar Atividade no Banco de Dados
         plotar(atividadesChecadas);
     }
 
     @Override
     public void onAtividadeRemovida(Atividade atividade) {
-        kronosDatabase.removeAtividadeLista(atividade);
-        atividades.remove(atividade);
-        if (listAtividadesAdapter.getCount() > 0) {
-            listViewAtividades.setAdapter(listAtividadesAdapter);
-        } else {
-            String[] listaVazia = {getString(R.string.listaAtividadesVazia)};
-            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter<>(this, R.layout.list_activity_empty_item_layout, listaVazia);
-            listViewAtividades.setAdapter(listAdapterVazio);
+        //Se a Atividade estava checada, entao eh efetuada o uncheck desta atividade
+        if (atividadesChecadas.contains(atividade)) {
+            onUncheckedAtividade(atividade);
         }
-        onUncheckedAtividade(atividade);
+
+        //Remove Atividade do Banco de Dados da Lista
+        kronosDatabase.removeAtividadeLista(atividade);
+
+        //Remove da Lista de Atividades
+        atividades.remove(atividade);
+
+        //Atualiza ListView das Atividades
+        setListViewAtividades();
+
         esconderTeclado();
+    }
+
+    @Override
+    public List<Atividade> getAtividades() {
+        return atividades;
+    }
+
+    @Override
+    public List<Atividade> getAtividadesChecadas() {
+        return atividadesChecadas;
     }
 
     @Override

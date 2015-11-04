@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +18,7 @@ public class KronosDatabase {
     }
 
     public void addAtividadeHistorico(Atividade atividade) {
+
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
 
         ContentValues tuplaASerAdicionada = new ContentValues();
@@ -51,20 +53,21 @@ public class KronosDatabase {
 
         bd.insert(KronosContract.FeedEntry.TABLE2_NAME, null, tuplaASerAdicionada);
         bd.close();
+
     }
 
     public void removeAtividadeHistorico(Atividade atividade) {
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        bd.delete(KronosContract.FeedEntry.TABLE1_NAME, KronosContract.FeedEntry.COLUMN1_NAME_NOME + "=? AND "
-                + KronosContract.FeedEntry.COLUMN1_NAME_DURACAO + "=?", new String[]{atividade.getNome(), Double.toString(atividade.getDuracao())});
+        bd.delete(KronosContract.FeedEntry.TABLE1_NAME, KronosContract.FeedEntry.COLUMN1_NAME_NOME + "=?",
+                new String[]{atividade.getNome()});
 
         bd.close();
     }
 
     public void removeAtividadeLista(Atividade atividade) {
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        bd.delete(KronosContract.FeedEntry.TABLE2_NAME, KronosContract.FeedEntry.COLUMN2_NAME_NOME + "=? AND "
-                + KronosContract.FeedEntry.COLUMN2_NAME_DURACAO + "=?", new String[]{atividade.getNome(), Double.toString(atividade.getDuracao())});
+        bd.delete(KronosContract.FeedEntry.TABLE2_NAME, KronosContract.FeedEntry.COLUMN2_NAME_NOME + "=?",
+                new String[]{atividade.getNome()});
 
         bd.close();
     }
