@@ -26,9 +26,22 @@ public class KronosDatabase {
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_NOME,a.getNome());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_DURACAO,a.getDuracao());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_QUALIDADE,a.getQualidade());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_DATA,a.getData());
 
-        bd.insert(KronosContract.FeedEntry.TABLE1_NAME,null,tuplaASerAdicionada);
+        String dataAAdicionar, diaBD, mesBD;
+        if (a.getDia() < 10)
+            diaBD = "0" +Integer.toString(a.getDia());
+        else
+            diaBD = Integer.toString(a.getDia());
+
+        if (a.getMes() < 10)
+            mesBD = "0" +Integer.toString(a.getMes());
+        else
+            mesBD = Integer.toString(a.getMes());
+
+        dataAAdicionar = diaBD +"_" +mesBD +"_" +a.getAno();
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_DATA,dataAAdicionar);
+
+        bd.insert(KronosContract.FeedEntry.TABLE1_NAME, null, tuplaASerAdicionada);
     }
 
     public void addAtividadeLista(Atividade a) {
@@ -69,14 +82,25 @@ public class KronosDatabase {
     }
 
     public List<Atividade> getAtividadesHistorico(int dia, int mes, int ano) {
-        String data = dia + "" + mes + "" + ano;
+        String diaBD;
+        if (dia < 10)
+            diaBD = "0" +Integer.toString(dia);
+        else
+            diaBD = Integer.toString(dia);
+        String mesBD;
+        if (mes < 10)
+            mesBD = "0" +Integer.toString(mes);
+        else
+            mesBD = Integer.toString(mes);
+        String data = diaBD +"_" +mesBD +"_" +ano;
+
         SQLiteDatabase bd = dbHelper.getReadableDatabase();
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE1_NAME, null, KronosContract.FeedEntry.COLUMN1_NAME_DATA+"=?",new String[]{data},null,null,null,null);
         ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
         if (iteradorTuplas.getCount() > 0) {
             iteradorTuplas.moveToFirst();
             while (!iteradorTuplas.isAfterLast()) {
-                Atividade atividadeReferenciada = new Atividade(iteradorTuplas.getString(0),iteradorTuplas.getDouble(1),iteradorTuplas.getInt(2),iteradorTuplas.getString(3));
+                Atividade atividadeReferenciada = new Atividade(iteradorTuplas.getString(0),iteradorTuplas.getDouble(1),iteradorTuplas.getInt(2),dia,mes,ano);
                 atividadesARetornar.add(atividadeReferenciada);
                 iteradorTuplas.moveToNext();
             }
