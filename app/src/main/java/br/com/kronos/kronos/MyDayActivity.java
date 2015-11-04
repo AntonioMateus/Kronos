@@ -136,6 +136,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeAdicionada(Atividade atividade) {
+        kronosDatabase.addAtividadeLista(atividade);
         listViewAtividades.setAdapter(listAtividadesAdapter);
         listViewAtividades.setSelection(listAtividadesAdapter.getPosition(atividade));
     }
@@ -145,6 +146,17 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onCheckedAtividade(Atividade atividade) throws HorasDiaExcedidoException {
+
+        Calendar calendar = Calendar.getInstance();
+        int dia = calendar.get(Calendar.DAY_OF_MONTH);
+        int mes = calendar.get(Calendar.MONTH);
+        int ano = calendar.get(Calendar.YEAR);
+
+        atividade.setDia(dia);
+        atividade.setMes(mes);
+        atividade.setAno(ano);
+
+        kronosDatabase.addAtividadeHistorico(atividade);
         atividadesChecadas.add(atividade);
         plotar(atividadesChecadas);
         esconderTeclado();
@@ -276,6 +288,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onUncheckedAtividade(Atividade atividade) {
+        kronosDatabase.removeAtividadeHistorico(atividade);
         boolean removed = atividadesChecadas.remove(atividade);
         if(removed) {
             try {
@@ -297,12 +310,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
     @Override
     public void onAtividadeRemovida(Atividade atividade) {
+        kronosDatabase.removeAtividadeLista(atividade);
         atividades.remove(atividade);
         if (listAtividadesAdapter.getCount() > 0) {
             listViewAtividades.setAdapter(listAtividadesAdapter);
-        } else{
+        } else {
             String[] listaVazia = {getString(R.string.listaAtividadesVazia)};
-            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter< >(this, R.layout.list_activity_empty_item_layout, listaVazia);
+            ArrayAdapter<String> listAdapterVazio = new ArrayAdapter<>(this, R.layout.list_activity_empty_item_layout, listaVazia);
             listViewAtividades.setAdapter(listAdapterVazio);
         }
         onUncheckedAtividade(atividade);

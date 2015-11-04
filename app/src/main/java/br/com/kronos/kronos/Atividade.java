@@ -13,20 +13,18 @@ public class Atividade {
 
     private double qualidade; //qualidade do tempo gasto para realizar a tarefa
     private static final double QUALIDADE_MAXIMA = 5; //qualidade máxima que uma atividade pode ter
-    private String data; //ddmmyyyy
+
+    private int dia;
+    private int mes;
+    private int ano;
 
     public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
         this.nome = nome;
         setDuracao(duracao);
         this.qualidade = qualidade;
-        this.data = setData(dia, mes, ano);
-    }
-
-    public Atividade(String nome, double duracao, int qualidade, String data) {
-        this.nome = nome;
-        setDuracao(duracao);
-        this.qualidade = qualidade;
-        this.data = data;
+        this.dia = dia;
+        this.mes = mes;
+        this.ano = ano;
     }
 
     private void setDuracao(double duracao) {
@@ -37,31 +35,6 @@ public class Atividade {
         }
     }
 
-    /*
-    Esse método formata a data da maneira certa para salvar no banco de dados: ddmmaaaa
-     */
-    private String setData(int dia, int mes, int ano) {
-        String data = "";
-
-        //Caso a dia seja de apenas um digito (menor que 10), acrescentar dígito '0'
-        if (dia < 10) {
-            data += 0 + ""+dia;
-        }else{
-            data += ""+dia;
-        }
-
-        //Caso a mes seja de apenas um digito (menor que 10), acrescentar dígito '0'
-        if (mes < 10) {
-            data += 0 + ""+mes;
-        }else{
-            data += ""+mes;
-        }
-
-        data += ""+ano;
-
-        return data;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -69,7 +42,6 @@ public class Atividade {
     public int getHora() {
         return (int) duracao;
     }
-
 
     public int getMinuto() {
         return (int) (duracao*60)%60;
@@ -87,8 +59,6 @@ public class Atividade {
     public double getQualidade() {
         return qualidade;
     }
-
-    public String getData() { return data;}
 
     public double getDuracao() {
         return duracao;
@@ -121,5 +91,29 @@ public class Atividade {
             }
         }
         return atividadesComMemsmoNome;
+    }
+
+    public int getDia() {
+        return dia;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public void setDia(int dia) {
+        this.dia = dia;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
     }
 }
