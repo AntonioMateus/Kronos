@@ -135,6 +135,6 @@ public class Atividade {
 
     @Override
     public String toString() {
-        return getNome() + "<" + getDuracao() + "-" + getDia() + "." + getMes() + "." + getAno() + ">";
+        return getNome() + "<duracao =" + getDuracao() + ";data=" + getDia() + "/" + getMes() + "/" + getAno() + ">";
     }
 }

@@ -17,7 +17,6 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     private Context context;
     private ListAtividadesAdapterListener listener;
     private CheckBox checkBox;
-
     private Atividade atividade;
     //private String atividadeNomeAntigo;
 
@@ -26,7 +25,6 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         this.context = checkBox.getContext();
         this.listener = listener;
         this.checkBox = checkBox;
-
         this.atividade = atividade;
     }
 
@@ -51,17 +49,6 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         List<Atividade> atividadesChecadas = listener.getAtividadesChecadas();
         List<Atividade> atividades = listener.getAtividades();
 
-        /*
-        Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
-        essa atividade deixa de estar checada.
-         */
-        if(checkBox.isChecked()) {
-            if (atividadesChecadas.contains(atividade)) {
-                Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
-                checkBox.setChecked(false);
-            }
-        }
-
         //Muda o nome na instancia da Atividade. Se o nome for vazio, escolhe-se o nome padrao para uma Atividade
         if (!nomeNovo.equals("")) {
             atividade.setNome(nomeNovo);
@@ -78,11 +65,26 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         define o que deve ser feito na Activity listener quando o nome da Atividade mudar
         */
         if (checkBox.isChecked()) {
-            try {
-                listener.onAtividadeUpdated(atividade);
-            } catch (HorasDiaExcedidoException e) {
-                //Caso impossível
-                Toast.makeText(context, R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
+            /*
+            Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
+            essa atividade deixa de estar checada.
+             */
+            int atividadesComEsseNome = 0;
+            for (Atividade atividadeIterada : atividadesChecadas) {
+                if (atividadeIterada.equals(atividade)) {
+                    atividadesComEsseNome++;
+                }
+            }
+            if (atividadesComEsseNome > 1) {
+                Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
+                checkBox.setChecked(false);
+            }else {
+                try {
+                    listener.onAtividadeUpdated(atividade);
+                } catch (HorasDiaExcedidoException e) {
+                    //Caso impossível
+                    Toast.makeText(context, R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

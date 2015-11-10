@@ -7,35 +7,35 @@
     tools:context="br.com.kronos.kronos.MyDayActivity">
 
     <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieChart_activities"
+        android:id="@+id/pieChart_atividades"
         android:layout_width="0dp"
         android:layout_height="0dp"/>
 
     <TextView
-        android:id="@+id/textView_myDay_title"
+        android:id="@+id/textView_titulo"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/pieChart_activities"
-        android:text="@string/textView_myDay_title"
+        android:layout_below="@id/pieChart_atividades"
+        android:text="@string/textView_myDay_titulo"
         android:textSize="@dimen/textView_myDay_title"
-        android:textColor="@color/textView_myDay_title"/>
+        android:textColor="@color/textView_myDay_titulo"/>
 
     <Button
-        android:id="@+id/button_activityAdd"
+        android:id="@+id/button_adicionar_atividdade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:text="@string/button_activityAdd"
-        android:textColor="@color/button_activityAdd"
+        android:text="@string/button_adicionar_atividade"
+        android:textColor="@color/button_adicionar_atividade"
         style="?android:attr/borderlessButtonStyle"/>
 
     <ListView
-        android:id="@+id/listView_activities"
+        android:id="@+id/listView_atividades"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_myDay_title"
-        android:layout_above="@id/button_activityAdd"
+        android:layout_below="@id/textView_titulo"
+        android:layout_above="@id/button_adicionar_atividdade"
         android:descendantFocusability="beforeDescendants" />
 </RelativeLayout>
