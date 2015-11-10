@@ -24,18 +24,14 @@ import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeMinuto;
 import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeNome;
 
 public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
-    private final List<Atividade> atividades;
     private final int resource;
     private LayoutInflater mLayoutInflater;
     private ListAtividadesAdapterListener listener;
-    private List<Atividade> atividadesChecadas;
 
     public ListAtividadesAdapter(Context context, int resource,
-                                 List<Atividade> atividades, List<Atividade> atividadesChecadas,
                                  ListAtividadesAdapterListener listener) {
-        super(context, resource, atividades);
-        this.atividades = atividades;
-        this.atividadesChecadas = atividadesChecadas;
+
+        super(context, resource, listener.getAtividades());
         mLayoutInflater = LayoutInflater.from(context);
         this.resource = resource;
         this.listener = listener;
@@ -46,7 +42,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
      */
     @Override
     public int getCount() {
-        return atividades.size();
+        return listener.getAtividades().size();
     }
 
     /*
@@ -54,14 +50,13 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
      */
     @Override
     public Atividade getItem(int position) {
-        return atividades.get(position);
+        return listener.getAtividades().get(position);
     }
 
     /*
     Usado para construir uma listView de Atividades.
     Retorna as Views com o layout formatado para Atividade
     Recicla view inutiladas para poupar memoria quando preciso.
-
      */
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
@@ -100,24 +95,27 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         holder.setCheckBox((CheckBox) view.findViewById(R.id.checkBox_activityOK));
 
         final Atividade atividade = getItem(position);
+        final List<Atividade> atividadesChecadas = listener.getAtividadesChecadas();
+
+        //View do item da Atividade
+        EditText editTextNome = holder.getEditTextNome();
+        EditText editTextHora = holder.getEditTextHora();
+        EditText editTextMinuto = holder.getEditTextMinuto();
+        final CheckBox checkBox = holder.getCheckBox();
 
         /*
-        Se a atividade estava checada (de acordo com a lista de Atividades Checadas),
-         esta continua checada.
+        Preenchendo EditTexts com os dados da Atividade
          */
-        if (atividadesChecadas.contains(atividade)) {
-            CheckBox checkBox = holder.getCheckBox();
+        editTextNome.setText(atividade.getNome());
+        editTextHora.setText("" + atividade.getHora());
+        editTextMinuto.setText("" + atividade.getMinuto());
+
+        /*
+        Se a atividade estava checada (de acordo com a lista de Atividades Checadas), esta continua checada.
+         */
+        if ( atividadesChecadas.contains(atividade) ) {
             checkBox.setChecked(true);
         }
-
-        EditText editTextNome = holder.getEditTextNome();
-        editTextNome.setText(atividade.getNome());
-
-        EditText editTextHora = holder.getEditTextHora();
-        editTextHora.setText("" + atividade.getHora());
-
-        EditText editTextMinuto = holder.getEditTextMinuto();
-        editTextMinuto.setText("" + atividade.getMinuto());
 
         /*
         Define que ao clicar no botao "Deletar" ao lado da atividade,
@@ -128,7 +126,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                atividades.remove(position);
                 listener.onAtividadeRemovida(atividade);
             }
         });
@@ -156,13 +153,11 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         está sendo checada, o check desta Atividade mais recente não é dado. Se essa Atividade for
         checada e o número de horas do dia for excedido, o check é desfeito.
          */
-        final CheckBox checkBox = holder.getCheckBox();
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    int atividadesChecadasComMesmoNome = Atividade.atividadesChecadasComMesmoNome(atividade, atividadesChecadas);
-                    if(atividadesChecadasComMesmoNome == 0) {
+                    if(!atividadesChecadas.contains(atividade)) {
                         try {
                             listener.onCheckedAtividade(atividade);
                         } catch (HorasDiaExcedidoException e) {
@@ -180,7 +175,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         });
 
         // TextWatcher que define o que deve acontecer quando o campo Nome da Atividade mudar
-        TextWatcher textWatcherNome = new TextWatcherAtividadeNome(atividade, atividadesChecadas, listener, checkBox);
+        TextWatcher textWatcherNome = new TextWatcherAtividadeNome(atividade, listener, checkBox);
         editTextNome.addTextChangedListener(textWatcherNome);
 
         //TextWatcher que define o que deve acontecer quando o campo Hora da Atividade mudar

@@ -50,6 +50,7 @@ public class TextWatcherAtividadeHora implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         String horaNova = editable.toString();
+
         if ( horaNova.length() > 0 && horaNova.length() <= 2 ) {
             atividade.setHora(Double.parseDouble(horaNova));
         } else{
@@ -58,9 +59,10 @@ public class TextWatcherAtividadeHora implements TextWatcher {
                 editTextMinuto.setText( (int) Atividade.MINUTO_MINIMO+"");
             }
         }
-                /* Se a Atividade estiver checada:
-                metodo que define o que deve ser feito na Activity quando o Hora da Atividade mudar
-                 */
+
+        /* Se a Atividade estiver checada:
+        metodo que define o que deve ser feito na Activity quando o Hora da Atividade mudar
+         */
         if (checkBox.isChecked()) {
             try {
                 listener.onAtividadeUpdated(atividade);

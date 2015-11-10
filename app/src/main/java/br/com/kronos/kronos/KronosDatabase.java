@@ -1,18 +1,15 @@
 package br.com.kronos.kronos;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by antonio on 31/10/15.
- */
 public class KronosDatabase {
     final KronosDbHelper dbHelper;
 
@@ -20,55 +17,64 @@ public class KronosDatabase {
         dbHelper = new KronosDbHelper(context);
     }
 
-    public void addAtividadeHistorico(Atividade a) {
+    public void addAtividadeHistorico(Atividade atividade) {
+
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
+
         ContentValues tuplaASerAdicionada = new ContentValues();
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME,a.getNome());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO,a.getDuracao());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE,a.getQualidade());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_NOME,atividade.getNome());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_DURACAO,atividade.getDuracao());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_QUALIDADE,atividade.getQualidade());
 
         String dataAAdicionar, diaBD, mesBD;
-        if (a.getDia() < 10)
-            diaBD = "0" +Integer.toString(a.getDia());
+        if (atividade.getDia() < 10)
+            diaBD = "0" +Integer.toString(atividade.getDia());
         else
-            diaBD = Integer.toString(a.getDia());
+            diaBD = Integer.toString(atividade.getDia());
 
-        if (a.getMes() < 10)
-            mesBD = "0" +Integer.toString(a.getMes());
+        if (atividade.getMes() < 10)
+            mesBD = "0" +Integer.toString(atividade.getMes());
         else
-            mesBD = Integer.toString(a.getMes());
+            mesBD = Integer.toString(atividade.getMes());
 
-        dataAAdicionar = diaBD +"_" +mesBD +"_" +a.getAno();
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA,dataAAdicionar);
+        dataAAdicionar = diaBD +"_" +mesBD +"_" +atividade.getAno();
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN1_NAME_DATA,dataAAdicionar);
 
-        bd.insert(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, null, tuplaASerAdicionada);
+        bd.insert(KronosContract.FeedEntry.TABLE1_NAME, null, tuplaASerAdicionada);
+        bd.close();
     }
 
-    public void addAtividadeLista(Atividade a) {
+    public void addAtividadeLista(Atividade atividade) {
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
         ContentValues tuplaASerAdicionada = new ContentValues();
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_NOME, a.getNome());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_DURACAO,a.getDuracao());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_QUALIDADE,a.getQualidade());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN2_NAME_NOME, atividade.getNome());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN2_NAME_DURACAO, atividade.getDuracao());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN2_NAME_QUALIDADE, atividade.getQualidade());
 
-        bd.insert(KronosContract.FeedEntry.TABLE_LISTA_NAME, null, tuplaASerAdicionada);
+        bd.insert(KronosContract.FeedEntry.TABLE2_NAME, null, tuplaASerAdicionada);
+        bd.close();
+
     }
 
-    public void removeAtividadeHistorico(Atividade a) {
+    public void removeAtividadeHistorico(Atividade atividade) {
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        bd.delete(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME + "=? AND "
-                + KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO + "=?", new String[]{a.getNome(), Double.toString(a.getDuracao())});
+        bd.delete(KronosContract.FeedEntry.TABLE1_NAME, KronosContract.FeedEntry.COLUMN1_NAME_NOME + "=?",
+                new String[]{atividade.getNome()});
+
+        bd.close();
     }
 
-    public void removeAtividadeLista(Atividade a) {
+    public void removeAtividadeLista(Atividade atividade) {
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        bd.delete(KronosContract.FeedEntry.TABLE_LISTA_NAME, KronosContract.FeedEntry.COLUMN_LISTA_NAME_NOME + "=? AND "
-                + KronosContract.FeedEntry.COLUMN_LISTA_NAME_DURACAO + "=?", new String[]{a.getNome(), Double.toString(a.getDuracao())});
+        bd.delete(KronosContract.FeedEntry.TABLE2_NAME, KronosContract.FeedEntry.COLUMN2_NAME_NOME + "=?",
+                new String[]{atividade.getNome()});
+
+        bd.close();
     }
 
     public List<Atividade> getAtividadesLista() {
         SQLiteDatabase bd = dbHelper.getReadableDatabase();
-        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_LISTA_NAME, null, null, null, null, null, null, null);
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE2_NAME, null, null, null, null, null, null, null);
         ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
         if (iteradorTuplas.getCount() > 0) {
             iteradorTuplas.moveToFirst();
@@ -78,6 +84,9 @@ public class KronosDatabase {
                 iteradorTuplas.moveToNext();
             }
         }
+
+        iteradorTuplas.close();
+        bd.close();
         return atividadesARetornar;
     }
 
@@ -95,7 +104,7 @@ public class KronosDatabase {
         String data = diaBD +"_" +mesBD +"_" +ano;
 
         SQLiteDatabase bd = dbHelper.getReadableDatabase();
-        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, null, KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA+"=?",new String[]{data},null,null,null,null);
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE1_NAME, null, KronosContract.FeedEntry.COLUMN1_NAME_DATA+"=?",new String[]{data},null,null,null,null);
         ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
         if (iteradorTuplas.getCount() > 0) {
             iteradorTuplas.moveToFirst();
@@ -105,23 +114,9 @@ public class KronosDatabase {
                 iteradorTuplas.moveToNext();
             }
         }
-        return atividadesARetornar;
-    }
 
-    /*
-    public List<Atividade> getAtividadesLista (String data) {
-        SQLiteDatabase bd = dbHelper.getReadableDatabase();
-        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE2_NAME, null, null, null, null, null,null,null);
-        ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
-        if (iteradorTuplas.getCount() > 0) {
-            iteradorTuplas.moveToFirst();
-            while (!iteradorTuplas.isAfterLast()) {
-                Atividade atividadeReferenciada = new Atividade(iteradorTuplas.getString(0),iteradorTuplas.getDouble(1),iteradorTuplas.getInt(2),data);
-                atividadesARetornar.add(atividadeReferenciada);
-                iteradorTuplas.moveToNext();
-            }
-        }
+        iteradorTuplas.close();
+        bd.close();
         return atividadesARetornar;
     }
-    */
 }

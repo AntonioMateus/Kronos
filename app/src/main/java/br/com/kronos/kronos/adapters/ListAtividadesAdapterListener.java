@@ -1,5 +1,7 @@
 package br.com.kronos.kronos.adapters;
 
+import java.util.List;
+
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
 
@@ -30,4 +32,14 @@ public interface ListAtividadesAdapterListener {
     Define o que deve ser feito quando uma Atividade é removida
      */
     void onAtividadeRemovida(Atividade atividade);
+
+    /*
+    Get das Atividades que estao na lista
+     */
+    List<Atividade> getAtividades();
+
+    /*
+    Get das Atividades que estao checadas na lista
+     */
+    List<Atividade> getAtividadesChecadas();
 }
