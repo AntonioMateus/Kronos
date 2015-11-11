@@ -3,60 +3,68 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_activityRating"
+        android:id="@+id/button_atividade_qualidade"
         android:layout_width="@dimen/imageButton_activityRating_width"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/imageButton_activityTimeMinute"
+        android:layout_toEndOf="@+id/spinner_minuto"
         android:gravity="center"
         style="?android:attr/borderlessButtonStyle"
         android:drawableEnd="@drawable/ic_action_important"
-        android:text="@string/button_activityRating"/>
+        android:text="@string/button_atividade_qualidade"/>
 
     <EditText
-        android:id="@+id/editText_activityName"
+        android:id="@+id/editText_atividade_nome"
         android:layout_width="@dimen/editText_activityName_widht"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/button_activityRating"
+        android:layout_alignBottom="@id/button_atividade_qualidade"
         android:inputType="textAutoComplete|textCapWords"
-        android:hint="@string/editText_activityName"
+        android:hint="@string/editText_atividade_nome"
         android:imeOptions="actionDone"/>
 
     <EditText
-        android:id="@+id/editText_activityTimeHour"
+        android:id="@+id/editText_atividade_horas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/button_activityRating"
-        android:layout_toEndOf="@+id/editText_activityName"
+        android:layout_alignBottom="@id/button_atividade_qualidade"
+        android:layout_toEndOf="@+id/editText_atividade_nome"
+        android:gravity="center"
         android:inputType="time"
-        android:hint="@string/editText_activityTimeHour"
+        android:hint="@string/editText_atividade_horas"
         android:imeOptions="actionDone"/>
 
-    <EditText
-        android:id="@+id/imageButton_activityTimeMinute"
+    <TextView
+        android:id="@+id/textView_doisPontos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/button_activityRating"
-        android:layout_toEndOf="@+id/editText_activityTimeHour"
-        android:inputType="time"
-        android:hint="@string/editText_activityTimeMinute"
-        android:imeOptions="actionDone"/>
+        android:layout_toEndOf="@id/editText_atividade_horas"
+        android:layout_alignBaseline="@id/editText_atividade_horas"
+        android:text="@string/textView_doisPontos"
+        android:textSize="@dimen/textView_doisPontos"
+        android:textColor="@color/textView_doisPontos"/>
+
+    <Spinner
+        android:id="@id/spinner_minuto"
+        android:layout_width="@dimen/spinner_minute"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/textView_doisPontos"
+        android:layout_alignBaseline="@id/editText_atividade_horas"/>
 
     <ImageButton
-        android:id="@+id/imageButton_activityCancel"
+        android:id="@+id/imageButton_cancelar"
         android:layout_width="@dimen/imageButton_activityCancel_width"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/button_activityRating"
-        android:layout_alignBottom="@id/button_activityRating"
+        android:layout_toEndOf="@+id/button_atividade_qualidade"
+        android:layout_alignBottom="@id/button_atividade_qualidade"
         style="?android:attr/borderlessButtonStyle"
-        android:contentDescription="@string/editText_activityCancel"
+        android:contentDescription="@string/editText_cancelar"
         android:src="@drawable/ic_action_remove"/>
 
     <CheckBox
-        android:id="@+id/checkBox_activityOK"
-        android:layout_width="@dimen/imageButton_activityOK_width"
+        android:id="@+id/checkBox_inserir_grafico"
+        android:layout_width="@dimen/checkBox_inserir_grafico_width"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/editText_activityName"
-        android:layout_toEndOf="@+id/imageButton_activityCancel"
+        android:layout_alignTop="@id/editText_atividade_nome"
+        android:layout_toEndOf="@+id/imageButton_cancelar"
         android:imeOptions="actionDone"/>
 
 </RelativeLayout>

@@ -31,10 +31,11 @@ import java.util.Random;
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
+import br.com.kronos.database.KronosDatabase;
 
 public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener, View.OnTouchListener {
 
-    private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY; // 24h / 15min
+    private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY;
 
     private KronosDatabase kronosDatabase;
     private List<Atividade> atividades; //lista de todas as atividades dentro do listView
@@ -54,10 +55,10 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         atividadesChecadas = new LinkedList<>();
 
         //Linkando as Views
-        listViewAtividades = (ListView) findViewById(R.id.listView_activities);
-        Button buttonAddAtividade = (Button) findViewById(R.id.button_activityAdd);
+        listViewAtividades = (ListView) findViewById(R.id.listView_atividades);
+        Button buttonAddAtividade = (Button) findViewById(R.id.button_adicionar_atividdade);
         buttonAddAtividade.setOnClickListener(this);
-        pieChart = (PieChart) findViewById(R.id.pieChart_activities);
+        pieChart = (PieChart) findViewById(R.id.pieChart_atividades);
 
         //lista de atividades é carregada com as atividades que jah constavam na lista
         Calendar calendar = Calendar.getInstance();
@@ -65,7 +66,17 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         int mes = calendar.get(Calendar.MONTH) + 1;
         int ano = calendar.get(Calendar.YEAR);
         atividades = kronosDatabase.getAtividadesLista();
-        atividadesChecadas = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
+        /*
+        As atividades devem conter os mesmos OBJETOS(instâncias dos objetos realmente) contidos nas AtividadesChecadas
+        Isso diminui que precisamos mudar dois objetos em listas diferentes quando eles são alterado.
+         */
+        List<Atividade> atividadesChecadasAnteriormente = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
+        for (Atividade atividadeIterada : atividades) {
+            if (atividadesChecadasAnteriormente.contains(atividadeIterada)) {
+                atividadesChecadas.add(atividadeIterada);
+            }
+        }
+
 
         setListViewAtividades();
 
@@ -110,7 +121,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_activityAdd) {
+        if (view.getId() == R.id.button_adicionar_atividdade) {
             //Cria uma atividade Default para ser adicionada a lista
             String actividadeNome = getString(R.string.activityDefaultName);
             Atividade atividade = new Atividade(actividadeNome, 0, 0, 0, 0, 0);
@@ -197,7 +208,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         caso a soma das duracoes nao complete o dia. A ideia eh que uma atividade neutra
         não represente uma Atividade específica e, ao mesmo tempo, todas as atividades que o usuário não inseriu do seu dia
          */
-        if (somaDuracoes < 24.0) {
+        if (somaDuracoes <= 24.0) {
             double duracaoAtividadeNeutra = 24 - somaDuracoes;
             atividadesNomes.add("");
             atividadesDuracao.add(new Entry((float) duracaoAtividadeNeutra, atividadesDuracao.size()));

@@ -1,0 +1,15 @@
+- Spinner p minutos
+- tela de historico
+    - filtros de tempo e categoria (meta ou atividade)
+    - tempo custom
+    - graficos basicos para as atividades
+    - graficos basicos para as metas
+- Animacao para o rating
+- Animaçao para o grafico (preenchimento do slice)
+- label dos valores dentro do grafico
+- notificaçoes simples (obvido dos dados)
+- notifcaçoes personalizadas
+- serviços em nuvem
+    - objetivos compartinlhados
+    - atividades compartilhadas
+    - atividades que podem ser compartilhadas e supimpadas pelos outros usuarios

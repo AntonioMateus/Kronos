@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- MyDayActivity -->
-    <color name="textView_myDay_title">#000000</color>
-    <color name="button_activityAdd">#000000</color>
-
+    <color name="textView_myDay_titulo">#000000</color>
+    <color name="button_adicionar_atividade">#000000</color>
     <!-- PieChart -->
     <color name="pieChart_title">#000000</color>
 
     <!-- Lista de Atividades -->
     <color name="list_activity_empty_item_layout">#000000</color>
 
-    <!-- History -->
-    <color name="textView_history_title">#000000</color>
+    <!-- Item da Lista de Atividades -->
+    <color name="textView_doisPontos">#000000</color>
 </resources>

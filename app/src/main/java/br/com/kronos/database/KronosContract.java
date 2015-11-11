@@ -1,4 +1,4 @@
-package br.com.kronos.kronos;
+package br.com.kronos.database;
 
 import android.provider.BaseColumns;
 
