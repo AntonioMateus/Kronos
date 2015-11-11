@@ -9,6 +9,7 @@ import android.util.Log;
 import android.content.Context;
 import br.com.kronos.kronos.Atividade;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -54,7 +55,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
             mesBD = Integer.toString(atividade.getMes());
 
         dataAAdicionar = diaBD +"_" +mesBD +"_" +atividade.getAno();
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA,dataAAdicionar);
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA, dataAAdicionar);
 
         bd.insert(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, null, tuplaASerAdicionada);
         bd.close();
@@ -135,8 +136,38 @@ public class KronosDatabase extends SQLiteOpenHelper {
         return atividadesARetornar;
     }
 
-    /*public void updateLista (Atividade a, String nomeAntigo) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void updateLista (Atividade a, String nomeAntigo) {
+        SQLiteDatabase bd = this.getReadableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_NOME, a.getNome());
+        valores.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_DURACAO, a.getDuracao());
+        valores.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_QUALIDADE, a.getQualidade());
 
-    }*/
+        String selecao = KronosContract.FeedEntry.COLUMN_LISTA_NAME_NOME + " LIKE ?";
+        String[] valoresSelecao = {nomeAntigo};
+        int count = bd.update(
+            KronosContract.FeedEntry.TABLE_LISTA_NAME,
+            valores,
+            selecao,
+            valoresSelecao
+        );
+    }
+
+    public void updateHistorico (Atividade a, String nomeAntigo) {
+        SQLiteDatabase bd = this.getReadableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME, a.getNome());
+        valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO, a.getDuracao());
+        valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA, a.getQualidade());
+        valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE, a.getQualidade());
+
+        String selecao = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME +" LIKE ?";
+        String[] valoresSelecao = {nomeAntigo};
+        int count = bd.update (
+            KronosContract.FeedEntry.TABLE_HISTORICO_NAME,
+            valores,
+            selecao,
+            valoresSelecao
+        );
+    }
 }
