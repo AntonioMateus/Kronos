@@ -11,4 +11,8 @@
 
     <!-- Item da Lista de Atividades -->
     <color name="textView_doisPontos">#000000</color>
+
+    <!-- History -->
+    <color name="textView_history_title">#000000</color>
+    <color name="spinner_selectPeriod">#000000</color>
 </resources>
