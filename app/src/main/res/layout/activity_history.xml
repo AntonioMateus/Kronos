@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/textView_history_title"
         android:text="@string/spinner_selectPeriod"
-        android:textColor="@color/button_activityAdd"
+        android:textColor="@color/spinner_selectPeriod"
         />
 
     <com.github.mikephil.charting.charts.PieChart

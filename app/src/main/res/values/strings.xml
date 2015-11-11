@@ -7,9 +7,11 @@
     <!-- MyDayActivity -->
     <string name="title_activity_my_day">MyDay</string>
     <string name="textView_myDay_titulo">How was your day?</string>
+
     <!-- PieChart -->
     <string name="pieChart_description">PieChart of Activities</string>
     <string name="pieChart_title">activities</string>
+
     <!-- Avisos -->
     <string name="atividadeChecadaComMesmoNome">You already created an Activity with this same name</string>
     <string name="horasDoDiaExcedidas">You exceeded the 24 hours of your day</string>
@@ -24,7 +26,13 @@
     <string name="button_adicionar_atividade">+ Add a new Activity</string>
     <string name="activityDefaultName">activity</string>
     <string name="textView_doisPontos">:</string>
+
     <!-- Rating -->
     <string name="button_atividade_qualidade">0x</string>
+
+    <!-- History -->
+    <string name="spinner_selectPeriod">teste</string>
+    <string name="textView_history_title">What I\'ve done</string>
+    <string name="title_activity_history">History</string>
 
 </resources>
