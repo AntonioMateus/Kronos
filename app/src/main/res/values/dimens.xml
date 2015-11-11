@@ -16,4 +16,7 @@
     <!-- PieChart Activities-->
     <dimen name="pieChart_activities_height">250dp</dimen>
     <dimen name="pieChart_title">30sp</dimen>
+
+    <!-- History -->
+    <dimen name="textView_history_title">34dp</dimen>
 </resources>

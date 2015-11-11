@@ -42,7 +42,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -51,6 +50,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (v.getId() == R.id.button_myDay) {
             Intent intentMyDay = new Intent(this, MyDayActivity.class);
             startActivity(intentMyDay);
+        }
+        if(v.getId() == R.id.button_history){
+            Intent intentHistory = new Intent(this, HistoryActivity.class);
+            startActivity(intentHistory);
         }
     }
 }

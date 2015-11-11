@@ -11,4 +11,11 @@
         android:layout_height="wrap_content"
         android:text="@string/button_myDay"/>
 
+    <Button
+        android:id="@+id/button_history"
+        android:layout_below="@id/button_myDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_history"/>
+
 </RelativeLayout>
