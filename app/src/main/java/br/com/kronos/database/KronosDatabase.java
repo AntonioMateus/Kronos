@@ -153,8 +153,6 @@ public class KronosDatabase extends SQLiteOpenHelper {
         );
     }
 
-
-
     public void updateHistorico (Atividade a, String nomeAntigo) {
         SQLiteDatabase bd = this.getReadableDatabase();
         ContentValues valores = new ContentValues();
