@@ -65,7 +65,17 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         int mes = calendar.get(Calendar.MONTH) + 1;
         int ano = calendar.get(Calendar.YEAR);
         atividades = kronosDatabase.getAtividadesLista();
-        atividadesChecadas = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
+        /*
+        As atividades devem conter os mesmos OBJETOS(instâncias dos objetos realmente) contidos nas AtividadesChecadas
+        Isso diminui que precisamos mudar dois objetos em listas diferentes quando eles são alterado.
+         */
+        List<Atividade> atividadesChecadasAnteriormente = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
+        for (Atividade atividadeIterada : atividades) {
+            if (atividadesChecadasAnteriormente.contains(atividadeIterada)) {
+                atividadesChecadas.add(atividadeIterada);
+            }
+        }
+
 
         setListViewAtividades();
 
