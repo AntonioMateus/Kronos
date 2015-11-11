@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class KronosDatabaseMerged extends SQLiteOpenHelper {
+public class KronosDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Kronos";
 
-    public KronosDatabaseMerged (Context context) {
+    public KronosDatabase (Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -134,4 +134,9 @@ public class KronosDatabaseMerged extends SQLiteOpenHelper {
         bd.close();
         return atividadesARetornar;
     }
+
+    /*public void updateLista (Atividade a, String nomeAntigo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+    }*/
 }
