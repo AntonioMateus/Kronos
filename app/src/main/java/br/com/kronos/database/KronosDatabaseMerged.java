@@ -1,25 +1,41 @@
-package br.com.kronos.kronos;
+package br.com.kronos.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.content.Context;
+import br.com.kronos.kronos.Atividade;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class KronosDatabase {
-    final KronosDbHelper dbHelper;
+public class KronosDatabaseMerged extends SQLiteOpenHelper {
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "Kronos";
 
-    public KronosDatabase(Context context) {
-        dbHelper = new KronosDbHelper(context);
+    public KronosDatabaseMerged (Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase bd) {
+        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES1);
+        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES2);
+    }
+
+    @Override
+    public void onUpgrade (SQLiteDatabase bd, int oldVersion, int newVersion) {
+        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES1);
+        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES2);
+        onCreate(bd);
     }
 
     public void addAtividadeHistorico(Atividade atividade) {
-
-        SQLiteDatabase bd = dbHelper.getWritableDatabase();
+        SQLiteDatabase bd = this.getWritableDatabase();
 
         ContentValues tuplaASerAdicionada = new ContentValues();
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME,atividade.getNome());
@@ -45,7 +61,7 @@ public class KronosDatabase {
     }
 
     public void addAtividadeLista(Atividade atividade) {
-        SQLiteDatabase bd = dbHelper.getWritableDatabase();
+        SQLiteDatabase bd = this.getWritableDatabase();
         ContentValues tuplaASerAdicionada = new ContentValues();
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_NOME, atividade.getNome());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_DURACAO, atividade.getDuracao());
@@ -53,11 +69,10 @@ public class KronosDatabase {
 
         bd.insert(KronosContract.FeedEntry.TABLE_LISTA_NAME, null, tuplaASerAdicionada);
         bd.close();
-
     }
 
     public void removeAtividadeHistorico(Atividade atividade) {
-        SQLiteDatabase bd = dbHelper.getWritableDatabase();
+        SQLiteDatabase bd = this.getWritableDatabase();
         bd.delete(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME + "=?",
                 new String[]{atividade.getNome()});
 
@@ -65,7 +80,7 @@ public class KronosDatabase {
     }
 
     public void removeAtividadeLista(Atividade atividade) {
-        SQLiteDatabase bd = dbHelper.getWritableDatabase();
+        SQLiteDatabase bd = this.getWritableDatabase();
         bd.delete(KronosContract.FeedEntry.TABLE_LISTA_NAME, KronosContract.FeedEntry.COLUMN_LISTA_NAME_NOME + "=?",
                 new String[]{atividade.getNome()});
 
@@ -73,7 +88,7 @@ public class KronosDatabase {
     }
 
     public List<Atividade> getAtividadesLista() {
-        SQLiteDatabase bd = dbHelper.getReadableDatabase();
+        SQLiteDatabase bd = this.getReadableDatabase();
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_LISTA_NAME, null, null, null, null, null, null, null);
         ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
         if (iteradorTuplas.getCount() > 0) {
@@ -103,7 +118,7 @@ public class KronosDatabase {
             mesBD = Integer.toString(mes);
         String data = diaBD +"_" +mesBD +"_" +ano;
 
-        SQLiteDatabase bd = dbHelper.getReadableDatabase();
+        SQLiteDatabase bd = this.getReadableDatabase();
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, null, KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA+"=?",new String[]{data},null,null,null,null);
         ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
         if (iteradorTuplas.getCount() > 0) {
