@@ -3,6 +3,7 @@
 
     <!-- MainActivity -->
     <string name="button_myDay">My Day</string>
+    <string name="button_history">History</string>
 
     <!-- MyDayActivity -->
     <string name="title_activity_my_day">MyDay</string>
@@ -34,5 +35,6 @@
     <string name="spinner_selectPeriod">teste</string>
     <string name="textView_history_title">What I\'ve done</string>
     <string name="title_activity_history">History</string>
+
 
 </resources>
