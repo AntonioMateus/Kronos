@@ -1,10 +1,9 @@
 package br.com.kronos.kronos.textwatcher;
 
-import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
@@ -16,17 +15,17 @@ public class TextWatcherAtividadeHora implements TextWatcher {
     private ListAtividadesAdapterListener listener;
 
     private CheckBox checkBox;
-    private EditText editTextMinuto;
+    private Spinner spinnerMinuto;
 
     private Atividade atividade;
 
     public TextWatcherAtividadeHora(Atividade atividade,
                                     ListAtividadesAdapterListener listener,
-                                    CheckBox checkBox, EditText editTextMinuto) {
+                                    CheckBox checkBox, Spinner spinnerMinuto) {
         this.listener = listener;
 
         this.checkBox = checkBox;
-        this.editTextMinuto = editTextMinuto;
+        this.spinnerMinuto = spinnerMinuto;
 
         this.atividade = atividade;
     }
@@ -56,7 +55,7 @@ public class TextWatcherAtividadeHora implements TextWatcher {
         } else{
             atividade.setHora(0);
             if ( atividade.getMinuto() == 0 ) {
-                editTextMinuto.setText( (int) Atividade.MINUTO_MINIMO+"");
+                spinnerMinuto.setSelection(0);
             }
         }
 
@@ -64,12 +63,16 @@ public class TextWatcherAtividadeHora implements TextWatcher {
         metodo que define o que deve ser feito na Activity quando o Hora da Atividade mudar
          */
         if (checkBox.isChecked()) {
+            checkBox.setChecked(false);
+            checkBox.setChecked(true);
+            /*
             try {
                 listener.onAtividadeUpdated(atividade);
             } catch (HorasDiaExcedidoException e) {
                 Toast.makeText(checkBox.getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
                 checkBox.setChecked(false);
             }
+            */
         }
     }
 }
