@@ -1,6 +1,10 @@
 package br.com.kronos.kronos.adapters;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
+import br.com.kronos.fragmentos.QualidadeDialogFragment;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 import br.com.kronos.kronos.textwatcher.SpinnerItemSelectedListener;
@@ -142,13 +147,22 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
          */
         final Button buttonRating = holder.getButtonRating();
         int qualidade = ((int)atividade.getQualidade());
-        buttonRating.setText(qualidade+"x");
+        buttonRating.setText(qualidade + "x");
         buttonRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 atividade.switchQualidade();
-                int qualidade = ((int)atividade.getQualidade());
+                int qualidade = ((int) atividade.getQualidade());
                 buttonRating.setText(qualidade + "x");
+            }
+        });
+        buttonRating.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                QualidadeDialogFragment qualidadeDialog =
+                        new QualidadeDialogFragment(buttonRating.getContext(), atividade);
+                qualidadeDialog.show(((Activity)buttonRating.getContext()).getFragmentManager() , "QualidadeDialog" );
+                return true;
             }
         });
 

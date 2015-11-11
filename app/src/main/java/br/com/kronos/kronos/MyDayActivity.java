@@ -32,8 +32,10 @@ import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 import br.com.kronos.database.KronosDatabase;
+import br.com.kronos.listener.RatingFragmentListener;
 
-public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener, View.OnTouchListener {
+public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener,
+        View.OnTouchListener, RatingFragmentListener {
 
     private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY;
 

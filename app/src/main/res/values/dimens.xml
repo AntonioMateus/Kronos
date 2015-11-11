@@ -21,4 +21,7 @@
 
     <!-- History -->
     <dimen name="textView_history_title">34dp</dimen>
+
+    <!-- QualidadeDialog -->
+    <dimen name="ratingBar_qualidade">240sp</dimen>
 </resources>
