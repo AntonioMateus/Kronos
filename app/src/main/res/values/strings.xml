@@ -29,7 +29,8 @@
     <string name="textView_doisPontos">:</string>
 
     <!-- Rating -->
-    <string name="button_atividade_qualidade">0x</string>
+    <string name="button_atividade_qualidade">0</string>
+    <string name="button_avaliar">AVALIAR</string>
 
     <!-- History -->
     <string name="spinner_selectPeriod">teste</string>
