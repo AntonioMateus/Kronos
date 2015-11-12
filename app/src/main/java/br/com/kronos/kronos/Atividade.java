@@ -56,6 +56,10 @@ public class Atividade {
         return true;
     }
 
+    public void setQualidade(double qualidade) {
+        this.qualidade = qualidade;
+    }
+
     public double getQualidade() {
         return qualidade;
     }
@@ -79,18 +83,6 @@ public class Atividade {
     public void setMinuto(double minuto) {
         minuto = (minuto/60.0);
         this.duracao = getHora() + minuto;
-    }
-
-    public static int atividadesChecadasComMesmoNome(Atividade atividade, List<Atividade> atividades) {
-        int atividadesComMemsmoNome = 0;
-        String atividadeNome = atividade.getNome();
-        for (Atividade atividadeIterada : atividades) {
-            String atividadeIteradaNome = atividadeIterada.getNome();
-            if (atividadeNome.equals(atividadeIteradaNome)) {
-                atividadesComMemsmoNome++;
-            }
-        }
-        return atividadesComMemsmoNome;
     }
 
     public int getDia() {

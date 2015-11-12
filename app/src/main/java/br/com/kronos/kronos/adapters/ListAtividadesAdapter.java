@@ -1,10 +1,7 @@
 package br.com.kronos.kronos.adapters;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,25 +144,23 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
          */
         final Button buttonRating = holder.getButtonRating();
         int qualidade = ((int)atividade.getQualidade());
-        buttonRating.setText(qualidade + "x");
+        buttonRating.setText(qualidade + "");
         buttonRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 atividade.switchQualidade();
                 int qualidade = ((int) atividade.getQualidade());
-                buttonRating.setText(qualidade + "x");
+                buttonRating.setText(qualidade + "");
             }
         });
         buttonRating.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                QualidadeDialogFragment qualidadeDialog =
-                        new QualidadeDialogFragment(buttonRating.getContext(), atividade);
+                QualidadeDialogFragment qualidadeDialog = new QualidadeDialogFragment(getContext(), atividade, buttonRating);
                 qualidadeDialog.show(((Activity)buttonRating.getContext()).getFragmentManager() , "QualidadeDialog" );
                 return true;
             }
         });
-
         /*
         Define que quando o check da Atividade está "checado" as horas da Atividade em questão
         é adicionado ao gráfico. Se já houver uma Atividade checada e com o nome da Atividade que
