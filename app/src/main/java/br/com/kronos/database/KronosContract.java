@@ -2,9 +2,6 @@ package br.com.kronos.database;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by antonio on 21/10/15.
- */
 public class KronosContract {
     public KronosContract() {}
 
@@ -22,14 +19,16 @@ public class KronosContract {
     }
 
     public static final String SQL_CREATE_ENTRIES1 =
-            "CREATE TABLE " +FeedEntry.TABLE_HISTORICO_NAME + " (" +
-            FeedEntry.COLUMN_HISTORICO_NAME_NOME +", " +FeedEntry.COLUMN_HISTORICO_NAME_DURACAO +", "
-            +FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE +", " +FeedEntry.COLUMN_HISTORICO_NAME_DATA + " )";
+            "CREATE TABLE IF NOT EXIST" + FeedEntry.TABLE_HISTORICO_NAME + " (" +
+                    FeedEntry.COLUMN_HISTORICO_NAME_NOME + ", " + FeedEntry.COLUMN_HISTORICO_NAME_DURACAO + ", " +
+                    FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE + ", " + FeedEntry.COLUMN_HISTORICO_NAME_DATA + " )";
+
     public static final String SQL_DELETE_ENTRIES1 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_HISTORICO_NAME;
 
     public static final String SQL_CREATE_ENTRIES2 =
-            "CREATE TABLE " +FeedEntry.TABLE_LISTA_NAME + " (" +
-            FeedEntry.COLUMN_LISTA_NAME_NOME +", " +FeedEntry.COLUMN_LISTA_NAME_DURACAO +", " +
-            FeedEntry.COLUMN_LISTA_NAME_QUALIDADE + " )";
+            "CREATE TABLE IF NOT EXIST" + FeedEntry.TABLE_LISTA_NAME + " (" +
+                    FeedEntry.COLUMN_LISTA_NAME_NOME + ", " + FeedEntry.COLUMN_LISTA_NAME_DURACAO + ", " +
+                    FeedEntry.COLUMN_LISTA_NAME_QUALIDADE + " )";
+
     public static final String SQL_DELETE_ENTRIES2 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_LISTA_NAME;
 }

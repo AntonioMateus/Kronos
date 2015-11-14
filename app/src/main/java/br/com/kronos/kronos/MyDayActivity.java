@@ -32,8 +32,10 @@ import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 import br.com.kronos.database.KronosDatabase;
+import br.com.kronos.listener.RatingFragmentListener;
 
-public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener, View.OnTouchListener {
+public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener,
+        View.OnTouchListener, RatingFragmentListener {
 
     private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY;
 
@@ -76,7 +78,6 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
                 atividadesChecadas.add(atividadeIterada);
             }
         }
-
 
         setListViewAtividades();
 
@@ -286,7 +287,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         atividade.setMes(mes);
         atividade.setAno(ano);
 
-        //Adiciona Atividade no banco de Dados
+        //Adiciona Atividade no Historico de Atividades
         kronosDatabase.addAtividadeHistorico(atividade);
 
         //Adiciona-se essa atividade na Lista de atividades Checadas
@@ -319,8 +320,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Define que quando a Atividade é alterada, o gráfico é utilizado
      */
     @Override
-    public void onAtividadeUpdated(Atividade atividadeAlterada) throws HorasDiaExcedidoException {
-        //TODO - Atualizar Atividade no Banco de Dados
+    public void onAtividadeUpdated(Atividade atividadeAlterada, String atividadeNomeAntigo) throws HorasDiaExcedidoException {
+        kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
+        kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
         plotar(atividadesChecadas);
     }
 

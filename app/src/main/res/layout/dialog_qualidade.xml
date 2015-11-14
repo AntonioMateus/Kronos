@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/dialog_qualidade_padding"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <RatingBar
+        android:id="@+id/ratingBar_qualidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:numStars="5"
+        android:stepSize="1.0"/>
+
+    <Button
+        android:id="@+id/button_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ratingBar_qualidade"
+        android:layout_alignParentEnd="true"
+        android:text="@string/button_ok"
+        style="?android:borderlessButtonStyle"/>
+
+</RelativeLayout>

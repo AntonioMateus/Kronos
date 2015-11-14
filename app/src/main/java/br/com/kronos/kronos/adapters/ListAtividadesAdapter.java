@@ -1,5 +1,6 @@
 package br.com.kronos.kronos.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
+import br.com.kronos.fragmentos.QualidadeDialogFragment;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 import br.com.kronos.kronos.textwatcher.SpinnerItemSelectedListener;
@@ -142,16 +144,23 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
          */
         final Button buttonRating = holder.getButtonRating();
         int qualidade = ((int)atividade.getQualidade());
-        buttonRating.setText(qualidade+"x");
+        buttonRating.setText(qualidade + "");
         buttonRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 atividade.switchQualidade();
-                int qualidade = ((int)atividade.getQualidade());
-                buttonRating.setText(qualidade + "x");
+                int qualidade = ((int) atividade.getQualidade());
+                buttonRating.setText(qualidade + "");
             }
         });
-
+        buttonRating.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                QualidadeDialogFragment qualidadeDialog = new QualidadeDialogFragment(getContext(), atividade, buttonRating);
+                qualidadeDialog.show(((Activity)buttonRating.getContext()).getFragmentManager() , "QualidadeDialog" );
+                return true;
+            }
+        });
         /*
         Define que quando o check da Atividade está "checado" as horas da Atividade em questão
         é adicionado ao gráfico. Se já houver uma Atividade checada e com o nome da Atividade que
