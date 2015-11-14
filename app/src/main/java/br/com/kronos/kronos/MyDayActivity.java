@@ -79,7 +79,6 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             }
         }
 
-
         setListViewAtividades();
 
         try {
@@ -288,7 +287,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         atividade.setMes(mes);
         atividade.setAno(ano);
 
-        //Adiciona Atividade no banco de Dados
+        //Adiciona Atividade no Historico de Atividades
         kronosDatabase.addAtividadeHistorico(atividade);
 
         //Adiciona-se essa atividade na Lista de atividades Checadas
@@ -321,8 +320,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Define que quando a Atividade é alterada, o gráfico é utilizado
      */
     @Override
-    public void onAtividadeUpdated(Atividade atividadeAlterada) throws HorasDiaExcedidoException {
-        //TODO - Atualizar Atividade no Banco de Dados
+    public void onAtividadeUpdated(Atividade atividadeAlterada, String atividadeNomeAntigo) throws HorasDiaExcedidoException {
+        kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
+        kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
         plotar(atividadesChecadas);
     }
 

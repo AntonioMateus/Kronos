@@ -18,7 +18,7 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     private ListAtividadesAdapterListener listener;
     private CheckBox checkBox;
     private Atividade atividade;
-    //private String atividadeNomeAntigo;
+    private String atividadeNomeAntigo;
 
     public TextWatcherAtividadeNome(Atividade atividade,
                                     ListAtividadesAdapterListener listener, CheckBox checkBox) {
@@ -31,7 +31,7 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         //Armazenar nome antigo da Atividade para realizar update do Banco de Dados
-        //this.atividadeNomeAntigo = charSequence.toString();
+        this.atividadeNomeAntigo = charSequence.toString();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class TextWatcherAtividadeNome implements TextWatcher {
                 checkBox.setChecked(false);
             }else {
                 try {
-                    listener.onAtividadeUpdated(atividade);
+                    listener.onAtividadeUpdated(atividade, atividadeNomeAntigo);
                 } catch (HorasDiaExcedidoException e) {
                     //Caso impossível
                     Toast.makeText(context, R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();

@@ -66,7 +66,7 @@ public class TextWatcherAtividadeHora implements TextWatcher {
             //checkBox.setChecked(false);
             //checkBox.setChecked(true);
             try {
-                listener.onAtividadeUpdated(atividade);
+                listener.onAtividadeUpdated(atividade, atividade.getNome());
             } catch (HorasDiaExcedidoException e) {
                 Toast.makeText(checkBox.getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
                 checkBox.setChecked(false);

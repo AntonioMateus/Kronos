@@ -27,7 +27,7 @@ public interface ListAtividadesAdapterListener {
     /*
     Define o que deve ser feito quando algum atributo da Atividade é alterado
      */
-    void onAtividadeUpdated(Atividade atividadeAlterada) throws HorasDiaExcedidoException;
+    void onAtividadeUpdated(Atividade atividadeAlterada, String atividadeNomeAntigo) throws HorasDiaExcedidoException;
     /*
     Define o que deve ser feito quando uma Atividade é removida
      */

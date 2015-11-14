@@ -37,7 +37,7 @@ public class SpinnerItemSelectedListener implements AdapterView.OnItemSelectedLi
          */
         if (checkBox.isChecked()) {
             try {
-                listener.onAtividadeUpdated(atividade);
+                listener.onAtividadeUpdated(atividade, atividade.getNome());
             } catch (HorasDiaExcedidoException e) {
                 Toast.makeText(checkBox.getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
                 checkBox.setChecked(false);
