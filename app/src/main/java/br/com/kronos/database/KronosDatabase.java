@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import br.com.kronos.kronos.Atividade;
+import br.com.kronos.kronos.Meta;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,12 +25,16 @@ public class KronosDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase bd) {
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES1);
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES2);
+        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES3);
+        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES4);
     }
 
     @Override
     public void onUpgrade (SQLiteDatabase bd, int oldVersion, int newVersion) {
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES1);
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES2);
+        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES3);
+        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES4);
         onCreate(bd);
     }
 
@@ -40,8 +45,8 @@ public class KronosDatabase extends SQLiteOpenHelper {
 
         ContentValues tuplaASerAdicionada = new ContentValues();
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME,atividade.getNome());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO,atividade.getDuracao());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE,atividade.getQualidade());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO, atividade.getDuracao());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE, atividade.getQualidade());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA, dataAAdicionar);
 
         bd.insert(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, null, tuplaASerAdicionada);
@@ -56,6 +61,61 @@ public class KronosDatabase extends SQLiteOpenHelper {
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_LISTA_NAME_QUALIDADE, atividade.getQualidade());
 
         bd.insert(KronosContract.FeedEntry.TABLE_LISTA_NAME, null, tuplaASerAdicionada);
+        bd.close();
+    }
+
+    public void addMeta (Meta m) {
+        SQLiteDatabase bd = this.getWritableDatabase();
+        ContentValues tuplaASerAdicionada = new ContentValues();
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO,m.getDescricao());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_PRAZO,m.getPrazo());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR,m.getRepetir());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,m.getCategoria());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO,getDataFormatada(m.getDiaInicio(), m.getMesInicio(), m.getAnoInicio()));
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO,m.getTempoAcumulado());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO,m.getTempoEstipulado());
+
+        bd.insert(KronosContract.FeedEntry.TABLE_META_NAME, null, tuplaASerAdicionada);
+        if (m.getMetaTerminada()) {
+            tuplaASerAdicionada = new ContentValues();
+            tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA,getDataFormatada(m.getDiaTermino(),m.getMesTermino(),m.getAnoTermino()));
+            tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META, m.getDescricao());
+            tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO, m.getTempoExcedido());
+            bd.insert(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME,null,tuplaASerAdicionada);
+        }
+        bd.close();
+    }
+
+    public void addMetaCumprida(Meta meta) {
+        SQLiteDatabase bd = this.getWritableDatabase();
+        ContentValues tupla = new ContentValues();
+        tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META, meta.getDescricao());
+        tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO, meta.getTempoExcedido());
+        tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA, getDataFormatada(meta.getDiaTermino(), meta.getMesTermino(), meta.getAnoTermino()));
+        bd.insert(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME, null, tupla);
+        bd.close();
+    }
+
+    public void updateTempoAcumuladoMeta (String descricaoMeta, double tempoAcumuladoAtualizado) {
+        SQLiteDatabase bd = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO,tempoAcumuladoAtualizado);
+
+        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO +" LIKE ?";
+        String[] valoresSelecao = {descricaoMeta};
+        bd.update(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, valores, selecao, valoresSelecao);
+        bd.close();
+    }
+
+    public void removeMeta (Meta meta) {
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO + "=?";
+        String[] selecaoArgs = new String[]{meta.getDescricao()};
+        bd.delete(KronosContract.FeedEntry.TABLE_META_NAME,selecao,selecaoArgs);
+        if (meta.getMetaTerminada()) {
+            bd.delete(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME,selecao,selecaoArgs);
+        }
         bd.close();
     }
 
@@ -166,6 +226,8 @@ public class KronosDatabase extends SQLiteOpenHelper {
             mesBD = Integer.toString(mes);
         return diaBD +"_" +mesBD +"_" +ano;
     }
+
+
 }
 
 

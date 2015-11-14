@@ -118,4 +118,20 @@ public class Meta {
     public int getAnoTermino() {
         return this.anoTermino;
     }
+
+    @Override
+    public boolean equals (Object o) {
+        if (this == o) { return true; }
+        if (o == null| o.getClass()!=this.getClass()) { return false; }
+
+        Meta meta = (Meta) o;
+        boolean descricaoIgual = !(getDescricao() != null ? !getDescricao().equals(meta.getDescricao()) : meta.getDescricao() != null);
+        boolean categoriaIgual = !(getCategoria() != null ? !getCategoria().equals(meta.getCategoria()) : meta.getCategoria() != null);
+        return descricaoIgual & categoriaIgual;
+    }
+
+    @Override
+    public String toString() {
+        return "Meta - descricao:"+getDescricao()+"; categoria:"+getCategoria()+"; data de inicio:"+getDiaInicio()+"/"+getMesInicio()+"/"+getAnoInicio()+" ("+(getMetaTerminada()?"ja":"nao")+" finalizada)";
+    }
 }
