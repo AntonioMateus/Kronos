@@ -38,5 +38,7 @@
     <string name="spinner_selectPeriod">teste</string>
     <string name="textView_history_title">What I\'ve done</string>
     <string name="title_activity_history">History</string>
+    <string name="history_activities_title">Activities</string>
+    <string name="history_goals_title">Goals</string>
 
 </resources>

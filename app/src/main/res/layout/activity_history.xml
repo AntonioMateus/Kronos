@@ -30,4 +30,40 @@
         android:layout_width="0dp"
         android:layout_height="0dp"/>
 
+    <TextView
+        android:id="@+id/textView_history_activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/history_activities_title"
+        android:layout_below="@id/pieChart_activities"
+        android:textSize="@dimen/textView_history_activity_title"
+        android:textColor="@color/textView_history_activity_title"
+        />
+
+    <Spinner
+        android:id="@+id/spinner_selectFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/textView_history_activity_title"
+        android:layout_toEndOf="@id/textView_history_activity_title"
+        />
+
+    <ListView
+        android:id="@+id/listView_history_activities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_history_activity_title"
+        android:descendantFocusability="beforeDescendants" />
+
+    <TextView
+        android:id="@+id/textView_history_goals_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listView_history_activities"
+        android:text="@string/history_goals_title"
+        android:textSize="@dimen/textView_history_goals_title"
+        android:textColor="@color/textView_goals_title"
+        />
+
+
 </RelativeLayout>

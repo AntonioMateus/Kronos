@@ -12,6 +12,7 @@ import android.widget.Button;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button buttonMyDay;
+    private Button buttonHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         buttonMyDay = (Button) findViewById(R.id.button_myDay);
+        buttonHistory = (Button) findViewById(R.id.button_history);
     }
 
     @Override
@@ -26,6 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onStart();
 
         buttonMyDay.setOnClickListener(this);
+        buttonHistory.setOnClickListener(this);
     }
 
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="opcoes_spinner">
+    <string-array name="spinner_period_options">
         <item>yesterday</item>
         <item>last week</item>
         <item>last month</item>
