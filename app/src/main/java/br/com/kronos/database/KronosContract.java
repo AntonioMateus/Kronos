@@ -33,21 +33,21 @@ public class KronosContract {
     }
 
     public static final String SQL_CREATE_ENTRIES1 =
-            "CREATE TABLE IF NOT EXIST" + FeedEntry.TABLE_HISTORICO_NAME + " (" +
+            "CREATE TABLE " + FeedEntry.TABLE_HISTORICO_NAME + " (" +
                     FeedEntry.COLUMN_HISTORICO_NAME_NOME + ", " + FeedEntry.COLUMN_HISTORICO_NAME_DURACAO + ", " +
                     FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE + ", " + FeedEntry.COLUMN_HISTORICO_NAME_DATA + " )";
 
     public static final String SQL_DELETE_ENTRIES1 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_HISTORICO_NAME;
 
     public static final String SQL_CREATE_ENTRIES2 =
-            "CREATE TABLE IF NOT EXIST" + FeedEntry.TABLE_LISTA_NAME + " (" +
+            "CREATE TABLE " + FeedEntry.TABLE_LISTA_NAME + " (" +
                     FeedEntry.COLUMN_LISTA_NAME_NOME + ", " + FeedEntry.COLUMN_LISTA_NAME_DURACAO + ", " +
                     FeedEntry.COLUMN_LISTA_NAME_QUALIDADE + " )";
 
     public static final String SQL_DELETE_ENTRIES2 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_LISTA_NAME;
 
     public static final String SQL_CREATE_ENTRIES3 =
-            "CREATE TABLE IF NOT EXIST " +FeedEntry.TABLE_META_NAME + " (" +
+            "CREATE TABLE " +FeedEntry.TABLE_META_NAME + " (" +
                     FeedEntry.COLUMN_META_NAME_DESCRICAO +", " +FeedEntry.COLUMN_META_NAME_PRAZO + ", " +
                     FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO +", " +FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO +", " +
                     FeedEntry.COLUMN_META_NAME_DATA_INICIO +", " +FeedEntry.COLUMN_META_NAME_REPETIR +", " +
@@ -57,11 +57,11 @@ public class KronosContract {
     public static final String SQL_DELETE_ENTRIES3 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_LISTA_NAME;
 
     public static final String SQL_CREATE_ENTRIES4 =
-            "CREATE TABLE IF NOT EXIST " +FeedEntry.TABLE_META_CUMPRIDA_NAME + " (" +
+            "CREATE TABLE " +FeedEntry.TABLE_META_CUMPRIDA_NAME + " (" +
                     FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA +", " +FeedEntry.COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO+
                     ", " +FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META +", PRIMARY KEY (" +FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA +
                     "), FOREIGN KEY ("+FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META+
-                    ") REFERENCES " +FeedEntry.TABLE_META_NAME +" (" +FeedEntry.COLUMN_META_NAME_DESCRICAO +")";
+                    ") REFERENCES " +FeedEntry.TABLE_META_NAME +" (" +FeedEntry.COLUMN_META_NAME_DESCRICAO +"))";
 
     public static final String SQL_DELETE_ENTRIES4 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_META_CUMPRIDA_NAME;
 }
