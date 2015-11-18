@@ -20,7 +20,7 @@
     <dimen name="pieChart_title">30sp</dimen>
 
     <!-- History -->
-    <dimen name="textView_history_title">34dp</dimen>
+    <dimen name="textView_history_title">30sp</dimen>
     <dimen name="textView_history_activity_title">34sp</dimen>
     <dimen name="textView_history_goals_title">34sp</dimen>
 

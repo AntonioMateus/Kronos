@@ -17,10 +17,11 @@
 
     <Spinner
         android:id="@+id/spinner_selectPeriod"
-        android:layout_height="wrap_content"
+        android:layout_height="30sp"
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/textView_history_title"
-        android:text="@string/spinner_selectPeriod"
+        android:layout_toEndOf="@id/textView_history_title"
+        android:layout_alignBaseline="@id/textView_history_title"
+        android:entries="@array/spinner_period_options"
         android:textColor="@color/spinner_selectPeriod"
         />
 
@@ -29,6 +30,7 @@
         android:layout_below="@id/textView_history_title"
         android:layout_width="0dp"
         android:layout_height="0dp"/>
+    <!-- 1 coisa de cada vez
 
     <TextView
         android:id="@+id/textView_history_activity_title"
@@ -39,6 +41,7 @@
         android:textSize="@dimen/textView_history_activity_title"
         android:textColor="@color/textView_history_activity_title"
         />
+
 
     <Spinner
         android:id="@+id/spinner_selectFormat"
@@ -64,6 +67,7 @@
         android:textSize="@dimen/textView_history_goals_title"
         android:textColor="@color/textView_goals_title"
         />
+    -->
 
 
 </RelativeLayout>
