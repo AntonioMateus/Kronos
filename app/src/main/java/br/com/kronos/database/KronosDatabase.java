@@ -164,7 +164,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
                             KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE};
         String selecao = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA + "=?";
         String data = getDataFormatada(dia, mes, ano);
-        String[] selecaoArgs = new String[]{data};
+        String[] selecaoArgs = {data};
 
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, projecao, selecao, selecaoArgs,null,null,null,null);
 

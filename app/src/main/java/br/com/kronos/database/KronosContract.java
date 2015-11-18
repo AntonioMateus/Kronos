@@ -33,14 +33,14 @@ public class KronosContract {
     }
 
     public static final String SQL_CREATE_ENTRIES1 =
-            "CREATE TABLE IF NOT EXIST" + FeedEntry.TABLE_HISTORICO_NAME + " (" +
+            "CREATE TABLE IF NOT EXIST " + FeedEntry.TABLE_HISTORICO_NAME + " (" +
                     FeedEntry.COLUMN_HISTORICO_NAME_NOME + ", " + FeedEntry.COLUMN_HISTORICO_NAME_DURACAO + ", " +
                     FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE + ", " + FeedEntry.COLUMN_HISTORICO_NAME_DATA + " )";
 
     public static final String SQL_DELETE_ENTRIES1 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_HISTORICO_NAME;
 
     public static final String SQL_CREATE_ENTRIES2 =
-            "CREATE TABLE IF NOT EXIST" + FeedEntry.TABLE_LISTA_NAME + " (" +
+            "CREATE TABLE IF NOT EXIST " + FeedEntry.TABLE_LISTA_NAME + " (" +
                     FeedEntry.COLUMN_LISTA_NAME_NOME + ", " + FeedEntry.COLUMN_LISTA_NAME_DURACAO + ", " +
                     FeedEntry.COLUMN_LISTA_NAME_QUALIDADE + " )";
 
