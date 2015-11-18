@@ -13,6 +13,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button buttonMyDay;
     private Button buttonHistory;
+    private Button buttonGoal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         buttonMyDay = (Button) findViewById(R.id.button_myDay);
         buttonHistory = (Button) findViewById(R.id.button_history);
+        buttonGoal = (Button) findViewById(R.id.button_goal);
     }
 
     @Override
@@ -29,6 +31,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         buttonMyDay.setOnClickListener(this);
         buttonHistory.setOnClickListener(this);
+        buttonGoal.setOnClickListener(this);
     }
 
     @Override
@@ -56,6 +59,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         if(v.getId() == R.id.button_history){
             Intent intentHistory = new Intent(this, HistoryActivity.class);
+            startActivity(intentHistory);
+        }
+        if(v.getId() == R.id.button_goal){
+            Intent intentHistory = new Intent(this, GoalActivity.class);
             startActivity(intentHistory);
         }
     }
