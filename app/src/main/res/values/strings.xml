@@ -40,5 +40,9 @@
     <string name="title_activity_history">History</string>
     <string name="history_activities_title">Activities</string>
     <string name="history_goals_title">Goals</string>
+    <string name="title_activity_goal">GoalActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
