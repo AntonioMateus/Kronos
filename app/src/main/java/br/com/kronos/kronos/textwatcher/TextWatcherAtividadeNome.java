@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import java.util.Iterator;
 import java.util.List;
 
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
@@ -54,10 +55,16 @@ public class TextWatcherAtividadeNome implements TextWatcher {
             atividade.setNome(nomeNovo);
         } else {
             String atividadeAleatoriaNome = context.getString(R.string.activityDefaultName);
-            atividade.setNome(atividadeAleatoriaNome);
-            for (int atividadeAleatoria = 0; atividades.contains(atividade); atividadeAleatoria++) {
-                atividade.setNome(atividadeAleatoriaNome + atividadeAleatoria);
+
+            Iterator<Atividade> iteradorAtividades = atividades.iterator();
+            for (int indiceAtividadeAleatoria = 0; iteradorAtividades.hasNext(); indiceAtividadeAleatoria++) {
+                Atividade atividadeIterada = iteradorAtividades.next();
+                if(atividadeIterada.getNome().equals(atividadeAleatoriaNome)){
+                    atividadeAleatoriaNome+=indiceAtividadeAleatoria;
+                    iteradorAtividades = atividades.iterator();
+                }
             }
+            atividade.setNome(atividadeAleatoriaNome);
         }
 
         /*
