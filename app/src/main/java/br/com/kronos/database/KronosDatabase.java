@@ -112,11 +112,29 @@ public class KronosDatabase extends SQLiteOpenHelper {
 
         String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO + "=?";
         String[] selecaoArgs = new String[]{meta.getDescricao()};
-        bd.delete(KronosContract.FeedEntry.TABLE_META_NAME,selecao,selecaoArgs);
+        bd.delete(KronosContract.FeedEntry.TABLE_META_NAME, selecao, selecaoArgs);
         if (meta.getMetaTerminada()) {
             bd.delete(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME,selecao,selecaoArgs);
         }
         bd.close();
+    }
+
+    public List<String> getCategorias() {
+        SQLiteDatabase bd = this.getReadableDatabase();
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA};
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_META_NAME, projecao, null, null, null, null, null, null);
+
+        ArrayList<String> categoriasEncontradas = new ArrayList<>();
+        if (iteradorTuplas.getCount() > 0) {
+            iteradorTuplas.moveToFirst();
+            while (!iteradorTuplas.isAfterLast()) {
+                String categoria = iteradorTuplas.getString(0);
+                categoriasEncontradas.add(categoria);
+                iteradorTuplas.moveToNext();
+            }
+        }
+
+        return categoriasEncontradas;
     }
 
     public void removeAtividadeHistorico(Atividade atividade) {

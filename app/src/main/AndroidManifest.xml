@@ -35,8 +35,12 @@
                 android:value="br.com.kronos.kronos.MainActivity" />
         </activity>
         <activity
-            android:name=".textwatcher.GoalActivity"
-            android:label="@string/title_activity_goal" >
+            android:name=".GoalActivity"
+            android:label="@string/title_activity_goal"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.kronos.kronos.MainActivity" />
         </activity>
     </application>
 
