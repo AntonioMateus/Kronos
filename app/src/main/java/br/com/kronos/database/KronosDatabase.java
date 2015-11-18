@@ -205,7 +205,8 @@ public class KronosDatabase extends SQLiteOpenHelper {
         ContentValues valores = new ContentValues();
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME, a.getNome());
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO, a.getDuracao());
-        valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA, a.getQualidade());
+        String data = getDataFormatada(a.getDia(), a.getMes(), a.getAno());
+        valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA, data);
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE, a.getQualidade());
 
         String selecao = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME +" LIKE ?";

@@ -63,8 +63,6 @@ public class TextWatcherAtividadeHora implements TextWatcher {
         metodo que define o que deve ser feito na Activity quando o Hora da Atividade mudar
          */
         if (checkBox.isChecked()) {
-            //checkBox.setChecked(false);
-            //checkBox.setChecked(true);
             try {
                 listener.onAtividadeUpdated(atividade, atividade.getNome());
             } catch (HorasDiaExcedidoException e) {

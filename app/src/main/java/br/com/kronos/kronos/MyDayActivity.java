@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -289,6 +290,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         //Adiciona Atividade no Historico de Atividades
         kronosDatabase.addAtividadeHistorico(atividade);
+        Log.d("opa", kronosDatabase.getAtividadesHistorico(dia, mes, ano).toString());
 
         //Adiciona-se essa atividade na Lista de atividades Checadas
         atividadesChecadas.add(atividade);
