@@ -1,11 +1,16 @@
 package br.com.kronos.listener;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +41,15 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
         /*TODO
             1)subtrct the dates acording to the need: yesterday, last month, last year
         */
+        try {
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            Date date1 = new java.util.Date();
+            Date date2 = df.parse("01.01.2013");
+            long diff = date2.getTime() - date1.getTime();
+            Log.e("TEST" , date1.getTime() + " - " + date2.getTime() + " - " + diff);
+        } catch (ParseException e) {
+            Log.e("TEST", "Exception", e);
+        }
     }
 
     @Override
