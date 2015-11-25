@@ -17,12 +17,13 @@
 
     <Spinner
         android:id="@+id/spinner_selectPeriod"
-        android:layout_height="30sp"
-        android:layout_width="wrap_content"
+        android:layout_height="history_spinner_height"
+        android:layout_width="match_parent"
         android:layout_toEndOf="@id/textView_history_title"
         android:layout_alignBaseline="@id/textView_history_title"
         android:entries="@array/spinner_period_options"
         android:textColor="@color/spinner_selectPeriod"
+        android:layout_marginLeft="@dimen/history_spinner_margin"
         />
 
     <com.github.mikephil.charting.charts.PieChart

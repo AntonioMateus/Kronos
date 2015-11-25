@@ -23,7 +23,6 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-        //creates the linked list and the database
         Toast.makeText(parent.getContext(),
                 "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
                 Toast.LENGTH_SHORT).show();
@@ -34,6 +33,9 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
         int year = today.get(Calendar.YEAR);
 
         activityList = kronosDatabase.getAtividadesHistorico(day, month, year);
+        /*TODO
+            1)subtrct the dates acording to the need: yesterday, last month, last year
+        */
     }
 
     @Override
