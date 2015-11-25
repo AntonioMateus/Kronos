@@ -160,10 +160,16 @@ public class KronosDatabase extends SQLiteOpenHelper {
         SQLiteDatabase bd = this.getReadableDatabase();
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_LISTA_NAME, null, null, null, null, null, null, null);
         ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
+
+        Calendar calendario = Calendar.getInstance();
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+        int mes = calendario.get(Calendar.MONTH) + 1;
+        int ano = calendario.get(Calendar.YEAR);
+
         if (iteradorTuplas.getCount() > 0) {
             iteradorTuplas.moveToFirst();
             while (!iteradorTuplas.isAfterLast()) {
-                Atividade atividadeReferenciada = new Atividade(iteradorTuplas.getString(0),iteradorTuplas.getDouble(1),iteradorTuplas.getInt(2), Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR);
+                Atividade atividadeReferenciada = new Atividade(iteradorTuplas.getString(0),iteradorTuplas.getDouble(1),iteradorTuplas.getInt(2), dia, mes, ano);
                 atividadesARetornar.add(atividadeReferenciada);
                 iteradorTuplas.moveToNext();
             }
