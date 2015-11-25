@@ -54,6 +54,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         setContentView(R.layout.activity_my_day);
 
         kronosDatabase = new KronosDatabase(this);
+
+        //TODO -- criar booleano de estar checado ou nao dentro da Atividade!
+        //TODO -- cores dentro da Atividade
         atividades = new LinkedList<>();
         atividadesChecadas = new LinkedList<>();
 
@@ -74,8 +77,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         Isso diminui que precisamos mudar dois objetos em listas diferentes quando eles são alterado.
          */
         List<Atividade> atividadesChecadasAnteriormente = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
-        for (Atividade atividadeIterada : atividades) {
-            if (atividadesChecadasAnteriormente.contains(atividadeIterada)) {
+        for (Atividade atividadeIterada : atividadesChecadasAnteriormente) {
+            if (atividades.contains(atividadeIterada)) {
                 atividadesChecadas.add(atividadeIterada);
             }
         }
@@ -147,12 +150,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Define tamanho e os dados do grafico de atividades em formato de pizza.
      */
     private void plotar(List<Atividade> atividades) throws HorasDiaExcedidoException {
-        int pieChartWidth = 0; //largura da View do grafico
-        int pieChartHeight = 0; //altura da View do grafico
         if (atividades.size() > 0) {
-            pieChartWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
-            pieChartHeight = getResources().getDimensionPixelOffset(R.dimen.pieChart_activities_height);
-
+            pieChart.setVisibility(View.VISIBLE);
             pieChart.setDescription(getString(R.string.pieChart_description));
             pieChart.setDrawSliceText(true);
             pieChart.setRotationEnabled(true);
@@ -175,12 +174,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
             PieData data = getData(atividades); //Dados para colocar no grafico
             pieChart.setData(data); //insere os dados no grafico
+        }else{
+            pieChart.setVisibility(View.GONE);
         }
-
-        //Define as dimensoes do grafico
-        RelativeLayout.LayoutParams pieChartLayoutParams =
-                new RelativeLayout.LayoutParams(pieChartWidth, pieChartHeight);
-        pieChart.setLayoutParams(pieChartLayoutParams);
     }
 
     private PieData getData(List<Atividade> atividades) throws HorasDiaExcedidoException {
@@ -290,7 +286,6 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         //Adiciona Atividade no Historico de Atividades
         kronosDatabase.addAtividadeHistorico(atividade);
-        Log.d("opa", kronosDatabase.getAtividadesHistorico(dia, mes, ano).toString());
 
         //Adiciona-se essa atividade na Lista de atividades Checadas
         atividadesChecadas.add(atividade);
