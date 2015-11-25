@@ -7,9 +7,11 @@
         android:layout_width="@dimen/imageButton_activityRating_width"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/spinner_minuto"
+        android:layout_toRightOf="@+id/spinner_minuto"
         android:gravity="center"
         style="?android:attr/borderlessButtonStyle"
         android:drawableEnd="@drawable/ic_action_important"
+        android:drawableRight="@drawable/ic_action_important"
         android:text="@string/button_atividade_qualidade"/>
 
     <EditText
@@ -27,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/button_atividade_qualidade"
         android:layout_toEndOf="@+id/editText_atividade_nome"
+        android:layout_toRightOf="@+id/editText_atividade_nome"
         android:gravity="center"
         android:inputType="time"
         android:hint="@string/editText_atividade_horas"
@@ -37,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/editText_atividade_horas"
+        android:layout_toRightOf="@id/editText_atividade_horas"
         android:layout_alignBaseline="@id/editText_atividade_horas"
         android:text="@string/textView_doisPontos"
         android:textSize="@dimen/textView_doisPontos"
@@ -47,6 +51,7 @@
         android:layout_width="@dimen/spinner_minute"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/textView_doisPontos"
+        android:layout_toRightOf="@id/textView_doisPontos"
         android:layout_alignBaseline="@id/editText_atividade_horas"/>
 
     <ImageButton
@@ -54,6 +59,7 @@
         android:layout_width="@dimen/imageButton_activityCancel_width"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/button_atividade_qualidade"
+        android:layout_toRightOf="@+id/button_atividade_qualidade"
         android:layout_alignBottom="@id/button_atividade_qualidade"
         style="?android:attr/borderlessButtonStyle"
         android:contentDescription="@string/editText_cancelar"
@@ -65,6 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/editText_atividade_nome"
         android:layout_toEndOf="@+id/imageButton_cancelar"
-        android:imeOptions="actionDone"/>
+        android:layout_toRightOf="@+id/imageButton_cancelar"/>
 
 </RelativeLayout>
