@@ -57,6 +57,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         //TODO -- criar booleano de estar checado ou nao dentro da Atividade!
         //TODO -- cores dentro da Atividade
+        //TODO -- spinner para horas
         atividades = new LinkedList<>();
         atividadesChecadas = new LinkedList<>();
 
