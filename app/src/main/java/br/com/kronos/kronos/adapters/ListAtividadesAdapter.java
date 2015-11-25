@@ -27,13 +27,13 @@ import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeNome;
 
 public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
     private final int resource;
+    private final List<Atividade> atividades;
     private LayoutInflater mLayoutInflater;
     private ListAtividadesAdapterListener listener;
 
-    public ListAtividadesAdapter(Context context, int resource,
-                                 ListAtividadesAdapterListener listener) {
-
+    public ListAtividadesAdapter(Context context, int resource, ListAtividadesAdapterListener listener) {
         super(context, resource, listener.getAtividades());
+        this.atividades = listener.getAtividades();
         mLayoutInflater = LayoutInflater.from(context);
         this.resource = resource;
         this.listener = listener;
@@ -44,7 +44,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
      */
     @Override
     public int getCount() {
-        return listener.getAtividades().size();
+        return atividades.size();
     }
 
     /*
@@ -52,7 +52,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
      */
     @Override
     public Atividade getItem(int position) {
-        return listener.getAtividades().get(position);
+        return atividades.get(position);
     }
 
     /*
@@ -84,6 +84,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             holder = (ViewAtividadeHolder) viewRecycled.getTag();
         }
         */
+
         //Sem reciclar Views :S não recomendado, mas eh o jeito que esta funcionando por hora
         view = mLayoutInflater.inflate(resource, parent, false);
         ViewAtividadeHolder holder = new ViewAtividadeHolder();
@@ -97,7 +98,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         holder.setCheckBox((CheckBox) view.findViewById(R.id.checkBox_inserir_grafico));
 
         final Atividade atividade = getItem(position);
-        final List<Atividade> atividadesChecadas = listener.getAtividadesChecadas();
 
         //View do item da Atividade
         EditText editTextNome = holder.getEditTextNome();
@@ -118,9 +118,9 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         spinnerMinuto.setSelection(atividade.getMinuto()/15);
 
         /*
-        Se a atividade estava checada (de acordo com a lista de Atividades Checadas), esta continua checada.
+        Se a atividade estava checada, esta continua checada.
          */
-        if ( atividadesChecadas.contains(atividade) ) {
+        if (atividade.isChecked()) {
             checkBox.setChecked(true);
         }
 
@@ -133,6 +133,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                atividades.remove(atividade);
                 listener.onAtividadeRemovida(atividade);
             }
         });
@@ -161,6 +162,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
                 return true;
             }
         });
+
         /*
         Define que quando o check da Atividade está "checado" as horas da Atividade em questão
         é adicionado ao gráfico. Se já houver uma Atividade checada e com o nome da Atividade que
@@ -171,8 +173,9 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if(!atividadesChecadas.contains(atividade)) {
+                    if(!atividade.isChecked()) {
                         try {
+                            atividade.setChecked(true);
                             listener.onCheckedAtividade(atividade);
                         } catch (HorasDiaExcedidoException e) {
                             Toast.makeText(getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
@@ -183,6 +186,7 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
                         checkBox.setChecked(false);
                     }
                 } else {
+                    atividade.setChecked(false);
                     listener.onUncheckedAtividade(atividade);
                 }
             }

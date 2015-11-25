@@ -18,13 +18,22 @@ public class Atividade {
     private int mes;
     private int ano;
 
+    /*
+    Indica se a atividade foi inclusa no Historico do dia em questao (check = true), ou
+    se ela so esta na lista de atividades mas nao foi cehcada para entrar no Historico (check = false)
+     */
+    private boolean check;
+
     public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
         this.nome = nome;
         setDuracao(duracao);
         this.qualidade = qualidade;
+
         this.dia = dia;
         this.mes = mes;
         this.ano = ano;
+
+        this.check = false;
     }
 
     private void setDuracao(double duracao) {
@@ -128,5 +137,13 @@ public class Atividade {
     @Override
     public String toString() {
         return getNome() + "<duracao =" + getDuracao() + ";data=" + getDia() + "/" + getMes() + "/" + getAno() + ">";
+    }
+
+    public void setChecked(boolean check) {
+        this.check = check;
+    }
+
+    public boolean isChecked() {
+        return check;
     }
 }

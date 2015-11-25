@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -42,7 +40,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
     private KronosDatabase kronosDatabase;
     private List<Atividade> atividades; //lista de todas as atividades dentro do listView
-    private List<Atividade> atividadesChecadas; //lista das atividades com checkbox acionado
+    //private List<Atividade> atividadesChecadas; //lista das atividades com checkbox acionado
     private ListView listViewAtividades;
 
     private ListAtividadesAdapter listAtividadesAdapter;
@@ -59,7 +57,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         //TODO -- cores dentro da Atividade
         //TODO -- spinner para horas
         atividades = new LinkedList<>();
-        atividadesChecadas = new LinkedList<>();
+        //atividadesChecadas = new LinkedList<>();
 
         //Linkando as Views
         listViewAtividades = (ListView) findViewById(R.id.listView_atividades);
@@ -68,26 +66,27 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         pieChart = (PieChart) findViewById(R.id.pieChart_atividades);
 
         //lista de atividades é carregada com as atividades que jah constavam na lista
+        atividades = kronosDatabase.getAtividadesLista();
+
+        //Definir dia, mes e ano atual
         Calendar calendar = Calendar.getInstance();
         int dia = calendar.get(Calendar.DAY_OF_MONTH);
         int mes = calendar.get(Calendar.MONTH) + 1;
         int ano = calendar.get(Calendar.YEAR);
-        atividades = kronosDatabase.getAtividadesLista();
-        /*
-        As atividades devem conter os mesmos OBJETOS(instâncias dos objetos realmente) contidos nas AtividadesChecadas
-        Isso diminui que precisamos mudar dois objetos em listas diferentes quando eles são alterado.
-         */
+        //Checar as atividades que ja foram checadas no dia de hoje
         List<Atividade> atividadesChecadasAnteriormente = kronosDatabase.getAtividadesHistorico(dia, mes, ano);
-        for (Atividade atividadeIterada : atividadesChecadasAnteriormente) {
-            if (atividades.contains(atividadeIterada)) {
-                atividadesChecadas.add(atividadeIterada);
+        for (Atividade atividadeIterada : atividades) {
+            if (atividadesChecadasAnteriormente.contains(atividadeIterada)) {
+                atividadeIterada.setChecked(true);
             }
         }
 
+        //Listar atividades carregadas na ListView
         setListViewAtividades();
 
+        //Plotar grafico com as atividades carregadas e que estao checadas
         try {
-            plotar(atividadesChecadas);
+            plotar();
         } catch (HorasDiaExcedidoException e) {
             e.printStackTrace();
         }
@@ -150,8 +149,17 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     /*
     Define tamanho e os dados do grafico de atividades em formato de pizza.
      */
-    private void plotar(List<Atividade> atividades) throws HorasDiaExcedidoException {
-        if (atividades.size() > 0) {
+    private void plotar() throws HorasDiaExcedidoException {
+
+        boolean haAtividadesChecadas = false; //indica se ha atividades checadas
+        for (Atividade atividade : atividades) {
+            if (atividade.isChecked()) {
+                haAtividadesChecadas = true;
+                break;
+            }
+        }
+
+        if (haAtividadesChecadas) {
             pieChart.setVisibility(View.VISIBLE);
             pieChart.setDescription(getString(R.string.pieChart_description));
             pieChart.setDrawSliceText(true);
@@ -175,7 +183,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
             PieData data = getData(atividades); //Dados para colocar no grafico
             pieChart.setData(data); //insere os dados no grafico
-        }else{
+        } else {
             pieChart.setVisibility(View.GONE);
         }
     }
@@ -184,22 +192,23 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         ArrayList<Entry> atividadesDuracao = new ArrayList<>(); //lista com as duracoes de cada Atividade
         ArrayList<String> atividadesNomes = new ArrayList<>(); //lista com os nomes de cada Atividade
 
+        //Confere se a lista de atividades completa as 24h
+        double somaDuracoes = 0; //soma das duracoes das atividades na lista carregadas
+
         Iterator<Atividade> atividadesIterator = atividades.iterator();
         for (int atividadeIndice = 0; atividadesIterator.hasNext(); atividadeIndice++) {
             Atividade atividade = atividadesIterator.next();
+            //Se atividade estiver checada, ela eh incluida no grafico
+            if(atividade.isChecked()) {
+                //Adicionar nome a lista de nome que sera exibido
+                String atividadeNome = atividade.getNome();
+                atividadesNomes.add(atividadeNome);
 
-            //Adicionar nome a lista de nome que sera exibido
-            String atividadeNome = atividade.getNome();
-            atividadesNomes.add(atividadeNome);
+                //Adicionar duracao da atividade da lista de duracoes que sera exibido
+                atividadesDuracao.add(new Entry((float) atividade.getDuracao(), atividadeIndice));
 
-            //Adicionar duracao da atividade da lista de duracoes que sera exibido
-            atividadesDuracao.add(new Entry((float) atividade.getDuracao(), atividadeIndice));
-        }
-
-        //Confere se a lista de atividades completa as 24h
-        double somaDuracoes = 0; //soma das duracoes das atividades na lista carregadas
-        for (Atividade atividadeIterada : atividades) {
-            somaDuracoes += atividadeIterada.getDuracao();
+                somaDuracoes += atividade.getDuracao();
+            }
         }
 
         /*
@@ -288,10 +297,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         //Adiciona Atividade no Historico de Atividades
         kronosDatabase.addAtividadeHistorico(atividade);
 
-        //Adiciona-se essa atividade na Lista de atividades Checadas
-        atividadesChecadas.add(atividade);
-
-        plotar(atividadesChecadas);
+        plotar();
         esconderTeclado();
     }
 
@@ -303,11 +309,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         //Remover Atividade do Banco de Dados
         kronosDatabase.removeAtividadeHistorico(atividade);
 
-        //Remover Atividade da Lista de Atividdade Checadas
-        atividadesChecadas.remove(atividade);
-
         try {
-            plotar(atividadesChecadas);
+            plotar();
         } catch (HorasDiaExcedidoException e) {
             //Caso inválido
             e.printStackTrace();
@@ -319,23 +322,22 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeUpdated(Atividade atividadeAlterada, String atividadeNomeAntigo) throws HorasDiaExcedidoException {
-        kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
         kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
-        plotar(atividadesChecadas);
+        if (atividadeAlterada.isChecked()) {
+            kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
+        }
+        plotar();
     }
 
     @Override
     public void onAtividadeRemovida(Atividade atividade) {
         //Se a Atividade estava checada, entao eh efetuada o uncheck desta atividade
-        if (atividadesChecadas.contains(atividade)) {
+        if (atividade.isChecked()) {
             onUncheckedAtividade(atividade);
         }
 
         //Remove Atividade do Banco de Dados da Lista
         kronosDatabase.removeAtividadeLista(atividade);
-
-        //Remove da Lista de Atividades
-        atividades.remove(atividade);
 
         //Atualiza ListView das Atividades
         setListViewAtividades();
@@ -346,11 +348,6 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     @Override
     public List<Atividade> getAtividades() {
         return atividades;
-    }
-
-    @Override
-    public List<Atividade> getAtividadesChecadas() {
-        return atividadesChecadas;
     }
 
     @Override

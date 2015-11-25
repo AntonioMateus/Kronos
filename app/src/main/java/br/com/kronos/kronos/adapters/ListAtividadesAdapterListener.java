@@ -38,8 +38,4 @@ public interface ListAtividadesAdapterListener {
      */
     List<Atividade> getAtividades();
 
-    /*
-    Get das Atividades que estao checadas na lista
-     */
-    List<Atividade> getAtividadesChecadas();
 }

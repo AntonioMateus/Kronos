@@ -25,6 +25,7 @@
         android:textSize="@dimen/textView_goals_category"
         android:layout_below="@+id/textView_goals_title"
         android:layout_alignStart="@+id/textView_goals_title"
+        android:layout_alignLeft="@+id/textView_goals_title"
         android:layout_marginTop="32dp"/>
 
     <ImageButton
@@ -33,6 +34,7 @@
         android:id="@+id/imageButton_spinner"
         android:layout_alignTop="@+id/textView_goal_category"
         android:layout_toEndOf="@+id/textView_goal_category"
+        android:layout_toRightOf="@+id/textView_goal_category"
         android:src="@drawable/spinner_button_goal"
         />
 

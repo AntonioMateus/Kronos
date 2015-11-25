@@ -21,8 +21,7 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     private Atividade atividade;
     private String atividadeNomeAntigo;
 
-    public TextWatcherAtividadeNome(Atividade atividade,
-                                    ListAtividadesAdapterListener listener, CheckBox checkBox) {
+    public TextWatcherAtividadeNome(Atividade atividade, ListAtividadesAdapterListener listener, CheckBox checkBox) {
         this.context = checkBox.getContext();
         this.listener = listener;
         this.checkBox = checkBox;
@@ -47,7 +46,6 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         String nomeNovo = editable.toString();
-        List<Atividade> atividadesChecadas = listener.getAtividadesChecadas();
         List<Atividade> atividades = listener.getAtividades();
 
         //Muda o nome na instancia da Atividade. Se o nome for vazio, escolhe-se o nome padrao para uma Atividade
@@ -71,19 +69,20 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         Se a atividade estiver checada depois que o nome for alterado: chama-se o metodo que
         define o que deve ser feito na Activity listener quando o nome da Atividade mudar
         */
-        if (checkBox.isChecked()) {
+        if (atividade.isChecked()) {
             /*
             Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
             essa atividade deixa de estar checada.
              */
             int atividadesComEsseNome = 0;
-            for (Atividade atividadeIterada : atividadesChecadas) {
-                if (atividadeIterada.equals(atividade)) {
+            for (Atividade atividadeIterada : atividades) {
+                if (atividadeIterada.isChecked() && atividadeIterada.equals(atividade)) {
                     atividadesComEsseNome++;
                 }
             }
             if (atividadesComEsseNome > 1) {
                 Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
+                atividade.setChecked(false);
                 checkBox.setChecked(false);
             }else {
                 try {
