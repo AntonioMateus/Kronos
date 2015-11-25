@@ -2,6 +2,7 @@ package br.com.kronos.kronos;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,13 +11,19 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 
 import br.com.kronos.kronos.R;
 
 public class GoalActivity extends Activity implements View.OnClickListener {
     private ImageView _image;
     private float _newAngle, _oldAngle;
+    private ProgressBar mProgress;
+    private int mProgressStatus = 0;
+
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,9 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);
         _image = (ImageView) findViewById(R.id.imageButton_spinner);
+        mProgress = (ProgressBar) findViewById(R.id.progressBar_goal);
+        mProgress.setProgress(80);
+        mProgress.setIndeterminate(false);
     }
 
     public void onClick(View view) {
