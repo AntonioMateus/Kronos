@@ -17,11 +17,13 @@
         android:layout_width="@dimen/checkBox_inserir_grafico_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText_atividade_nome"
+        android:layout_alignBottom="@+id/imageButton_cancelar"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:gravity="center"/>
 
     <ImageButton
-        android:id="@+id/imageButton_cancelar"
+        android:id="@id/imageButton_cancelar"
         android:layout_width="@dimen/imageButton_activityCancel_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText_atividade_nome"
@@ -46,36 +48,33 @@
         android:text="@string/button_atividade_qualidade"/>
 
     <Spinner
-        android:id="@+id/spinner_minuto"
+        android:id="@+id/spinner_atividade_minuto"
         android:layout_width="@dimen/spinner_minute"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_toStartOf="@id/button_atividade_qualidade"
         android:layout_toLeftOf="@id/button_atividade_qualidade"
-        android:layout_below="@id/editText_atividade_nome"/>
+        android:layout_below="@id/editText_atividade_nome"
+        android:layout_alignBottom="@+id/spinner_atividade_horas"/>
 
     <TextView
         android:id="@+id/textView_doisPontos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/spinner_minuto"
-        android:layout_toLeftOf="@id/spinner_minuto"
+        android:layout_toStartOf="@id/spinner_atividade_minuto"
+        android:layout_toLeftOf="@id/spinner_atividade_minuto"
         android:layout_below="@id/editText_atividade_nome"
-        android:layout_alignBottom="@id/spinner_minuto"
+        android:layout_alignBottom="@id/spinner_atividade_minuto"
         android:text="@string/textView_doisPontos"
         android:textSize="@dimen/textView_doisPontos"
         android:textColor="@color/textView_doisPontos"/>
 
-    <EditText
-        android:id="@+id/editText_atividade_horas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Spinner
+        android:id="@id/spinner_atividade_horas"
+        android:layout_width="@dimen/spinner_horas"
+        android:layout_height="match_parent"
         android:layout_toStartOf="@id/textView_doisPontos"
         android:layout_toLeftOf="@id/textView_doisPontos"
         android:layout_below="@id/editText_atividade_nome"
-        android:layout_alignBottom="@id/button_atividade_qualidade"
-        android:gravity="center"
-        android:inputType="time"
-        android:hint="@string/editText_atividade_horas"
-        android:imeOptions="actionDone"/>
+        android:layout_alignBottom="@id/button_atividade_qualidade"/>
 
 </RelativeLayout>

@@ -1,23 +1,22 @@
 package br.com.kronos.kronos.adapters;
 
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
-import br.com.kronos.kronos.R;
-
 public class ViewAtividadeHolder {
 
     private EditText editTextNome; //EditText do nome da atividade
     private EditText editTextHora; //EditText da duraçao da parte em horas da atividade
-    private Spinner spinnerMinuto; //EditText da duraçao  da parte em minutos da atividade
+    private Spinner spinnerMinuto; //Spinner da duraçao  da parte em minutos da atividade
+    private Spinner spinnerHoras; //Spinner da duracao da parte em horas da atividade
 
     private ImageButton buttonDelete; //ImageButton que deleta a Atividade da lista
     private Button buttonRating; //ImageButton que avalia a qualidade da Atividade
     private CheckBox checkBox;
+
 
     public void setEditTextNome(EditText editTextNome) {
         this.editTextNome = editTextNome;
@@ -66,5 +65,13 @@ public class ViewAtividadeHolder {
     public boolean setCheckBox(CheckBox checkBox) {
         this.checkBox = checkBox;
         return true;
+    }
+
+    public Spinner getSpinnerHoras() {
+        return spinnerHoras;
+    }
+
+    public void setSpinnerHoras(Spinner spinnerHoras) {
+        this.spinnerHoras = spinnerHoras;
     }
 }

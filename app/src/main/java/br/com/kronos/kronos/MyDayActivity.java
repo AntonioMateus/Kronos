@@ -1,5 +1,6 @@
 package br.com.kronos.kronos;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -34,16 +35,18 @@ import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.listener.RatingFragmentListener;
 
 public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener,
-        View.OnTouchListener, RatingFragmentListener {
+        View.OnTouchListener, RatingFragmentListener{
 
     private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY;
 
     private KronosDatabase kronosDatabase;
     private List<Atividade> atividades; //lista de todas as atividades dentro do listView
+
     //private List<Atividade> atividadesChecadas; //lista das atividades com checkbox acionado
     private ListView listViewAtividades;
-
+    //private int listViewAtividadesEstadoScroll;
     private ListAtividadesAdapter listAtividadesAdapter;
+
     private PieChart pieChart;
 
     @Override
@@ -51,19 +54,23 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_day);
 
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         kronosDatabase = new KronosDatabase(this);
 
-        //TODO -- criar booleano de estar checado ou nao dentro da Atividade!
         //TODO -- cores dentro da Atividade
-        //TODO -- spinner para horas
         atividades = new LinkedList<>();
         //atividadesChecadas = new LinkedList<>();
 
-        //Linkando as Views
-        listViewAtividades = (ListView) findViewById(R.id.listView_atividades);
         Button buttonAddAtividade = (Button) findViewById(R.id.button_adicionar_atividdade);
         buttonAddAtividade.setOnClickListener(this);
         pieChart = (PieChart) findViewById(R.id.pieChart_atividades);
+
+        //ListView com as Atividades
+        listViewAtividades = (ListView) findViewById(R.id.listView_atividades);
 
         //lista de atividades é carregada com as atividades que jah constavam na lista
         atividades = kronosDatabase.getAtividadesLista();
@@ -191,6 +198,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     private PieData getData(List<Atividade> atividades) throws HorasDiaExcedidoException {
         ArrayList<Entry> atividadesDuracao = new ArrayList<>(); //lista com as duracoes de cada Atividade
         ArrayList<String> atividadesNomes = new ArrayList<>(); //lista com os nomes de cada Atividade
+        ArrayList<Integer> cores = new ArrayList<>(); //lista com as cores de cada atividade
 
         //Confere se a lista de atividades completa as 24h
         double somaDuracoes = 0; //soma das duracoes das atividades na lista carregadas
@@ -208,6 +216,23 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
                 atividadesDuracao.add(new Entry((float) atividade.getDuracao(), atividadeIndice));
 
                 somaDuracoes += atividade.getDuracao();
+
+                //Adiciona as cores às atividades caso não tenha sido escolhido uma cor para tal ainda.
+                if (atividade.getCor() == Color.WHITE) {
+                    int randomColor = Color.WHITE;
+                    Random random = new Random();
+                    while ( randomColor == Color.BLACK || randomColor == ATIVIDADE_NEUTRA_COR || randomColor == Color.WHITE || cores.contains(randomColor)) {
+                        int redRandom = random.nextInt(256);
+                        int greenRandom = random.nextInt(256);
+                        int blueRandom = random.nextInt(256);
+                        randomColor = Color.rgb(redRandom, greenRandom, blueRandom);
+                    }
+                    atividade.setCor(randomColor);
+                    cores.add(randomColor);
+                }else {
+                    int atividadeCor = atividade.getCor();
+                    cores.add(atividadeCor);
+                }
             }
         }
 
@@ -216,10 +241,12 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         caso a soma das duracoes nao complete o dia. A ideia eh que uma atividade neutra
         não represente uma Atividade específica e, ao mesmo tempo, todas as atividades que o usuário não inseriu do seu dia
          */
-        if (somaDuracoes <= 24.0) {
+        if (somaDuracoes < 24.0) {
             double duracaoAtividadeNeutra = 24 - somaDuracoes;
+            //Adicionando Atividade Neutra ao conjunto de Atividades
             atividadesNomes.add("");
             atividadesDuracao.add(new Entry((float) duracaoAtividadeNeutra, atividadesDuracao.size()));
+            cores.add(ATIVIDADE_NEUTRA_COR);
         }else if(somaDuracoes > 24.0) {
             throw new HorasDiaExcedidoException();
         }
@@ -228,30 +255,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
 
-        //Adiciona as cores possiveis no grafico. Aleatoriamente
-        ArrayList<Integer> colors = new ArrayList<>();
-        int numeroCores = atividadesNomes.size();
-        if (somaDuracoes < 24.0) {
-            numeroCores--;
-        }
-        for (int indiceCor = 0; indiceCor < numeroCores; indiceCor++) {
-            Random random = new Random();
-            int redRandom = random.nextInt(256);
-            int greenRandom = random.nextInt(256);
-            int blueRandom = random.nextInt(256);
-            int randomColor = Color.rgb(redRandom, greenRandom, blueRandom);
-            if (! (randomColor == Color.BLACK) && !(randomColor == ATIVIDADE_NEUTRA_COR)) {
-                colors.add(randomColor);
-            }else{
-                indiceCor--;
-            }
-        }
-        //Se houve adição da Atividade Neutra, adicionar a cor para ela
-        if(somaDuracoes < 24.0) {
-            colors.add( ATIVIDADE_NEUTRA_COR );
-        }
-
-        dataSet.setColors(colors);
+        dataSet.setColors(cores);
 
         PieData data = new PieData(atividadesNomes, dataSet);
         data.setValueTextSize(11f);

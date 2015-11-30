@@ -21,8 +21,8 @@ import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.fragmentos.QualidadeDialogFragment;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.textwatcher.SpinnerItemSelectedListener;
-import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeHora;
+import br.com.kronos.kronos.textwatcher.SpinnerHorasItemSelectedListener;
+import br.com.kronos.kronos.textwatcher.SpinnerMinutosItemSelectedListener;
 import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeNome;
 
 public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
@@ -90,8 +90,9 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         ViewAtividadeHolder holder = new ViewAtividadeHolder();
 
         holder.setEditTextNome((EditText) view.findViewById(R.id.editText_atividade_nome));
-        holder.setEditTextHora((EditText) view.findViewById(R.id.editText_atividade_horas));
-        holder.setSpinnerMinuto((Spinner) view.findViewById(R.id.spinner_minuto));
+        //holder.setEditTextHora((EditText) view.findViewById(R.id.spinner_atividade_horas));
+        holder.setSpinnerHoras((Spinner) view.findViewById(R.id.spinner_atividade_horas));
+        holder.setSpinnerMinuto((Spinner) view.findViewById(R.id.spinner_atividade_minuto));
 
         holder.setButtonDelete((ImageButton) view.findViewById(R.id.imageButton_cancelar));
         holder.setButtonRating((Button) view.findViewById(R.id.button_atividade_qualidade));
@@ -101,7 +102,8 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
 
         //View do item da Atividade
         EditText editTextNome = holder.getEditTextNome();
-        EditText editTextHora = holder.getEditTextHora();
+        //EditText editTextHora = holder.getEditTextHora();
+        Spinner spinnerHoras = holder.getSpinnerHoras();
         Spinner spinnerMinuto = holder.getSpinnerMinuto();
         final CheckBox checkBox = holder.getCheckBox();
 
@@ -109,12 +111,18 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         Preenchendo EditTexts com os dados da Atividade
          */
         editTextNome.setText(atividade.getNome());
-        editTextHora.setText("" + atividade.getHora());
+        //editTextHora.setText("" + atividade.getHora());
+        //Determina Spinner com as horas com as opcoes possiveis e com os dados da Atividade
+        ArrayAdapter<CharSequence> adapterHoras =
+                ArrayAdapter.createFromResource(spinnerHoras.getContext(), R.array.spinner_horas_opcoes, android.R.layout.simple_spinner_item);
+        adapterHoras.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerHoras.setAdapter(adapterHoras);
+        spinnerHoras.setSelection(atividade.getHora());
         //Determina Spinner com os minutos com as opcoes possiveis e com os dados da Atividade
-        ArrayAdapter<CharSequence> adapter =
+        ArrayAdapter<CharSequence> adapterMinutos =
                 ArrayAdapter.createFromResource(spinnerMinuto.getContext(), R.array.spinner_minutos_opcoes, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMinuto.setAdapter(adapter);
+        adapterMinutos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMinuto.setAdapter(adapterMinutos);
         spinnerMinuto.setSelection(atividade.getMinuto()/15);
 
         /*
@@ -196,13 +204,19 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         TextWatcher textWatcherNome = new TextWatcherAtividadeNome(atividade, listener, checkBox);
         editTextNome.addTextChangedListener(textWatcherNome);
 
+        /*
         //TextWatcher que define o que deve acontecer quando o campo Hora da Atividade mudar
         TextWatcher textWatcherHora = new TextWatcherAtividadeHora(atividade, listener, checkBox, spinnerMinuto);
         editTextHora.addTextChangedListener(textWatcherHora);
+        */
 
         //Define o que deve acontecer quando o Minuto da Atividade eh escolhido
-        SpinnerItemSelectedListener spinnerItemSelectedListener = new SpinnerItemSelectedListener(atividade, listener, checkBox);
-        spinnerMinuto.setOnItemSelectedListener(spinnerItemSelectedListener);
+        SpinnerHorasItemSelectedListener spinnerHorasItemSelectedListener = new SpinnerHorasItemSelectedListener(atividade, listener, holder);
+        spinnerHoras.setOnItemSelectedListener(spinnerHorasItemSelectedListener);
+
+        //Define o que deve acontecer quando o Minuto da Atividade eh escolhido
+        SpinnerMinutosItemSelectedListener spinnerMinutosItemSelectedListener = new SpinnerMinutosItemSelectedListener(atividade, listener, checkBox);
+        spinnerMinuto.setOnItemSelectedListener(spinnerMinutosItemSelectedListener);
 
         //return viewRecycled;
         return view;

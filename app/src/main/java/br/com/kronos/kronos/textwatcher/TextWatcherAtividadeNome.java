@@ -31,7 +31,7 @@ public class TextWatcherAtividadeNome implements TextWatcher {
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         //Armazenar nome antigo da Atividade para realizar update do Banco de Dados
-        this.atividadeNomeAntigo = charSequence.toString();
+        this.atividadeNomeAntigo = atividade.getNome();
     }
 
     @Override
@@ -49,21 +49,19 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         List<Atividade> atividades = listener.getAtividades();
 
         //Muda o nome na instancia da Atividade. Se o nome for vazio, escolhe-se o nome padrao para uma Atividade
-        if (!nomeNovo.equals("")) {
-            atividade.setNome(nomeNovo);
-        } else {
-            String atividadeAleatoriaNome = context.getString(R.string.activityDefaultName);
+        if (nomeNovo.equals("")) {
+            nomeNovo = context.getString(R.string.activityDefaultName);
 
             Iterator<Atividade> iteradorAtividades = atividades.iterator();
             for (int indiceAtividadeAleatoria = 0; iteradorAtividades.hasNext(); indiceAtividadeAleatoria++) {
                 Atividade atividadeIterada = iteradorAtividades.next();
-                if(atividadeIterada.getNome().equals(atividadeAleatoriaNome)){
-                    atividadeAleatoriaNome+=indiceAtividadeAleatoria;
+                if(atividadeIterada.getNome().equals(nomeNovo)){
+                    nomeNovo+=indiceAtividadeAleatoria;
                     iteradorAtividades = atividades.iterator();
                 }
             }
-            atividade.setNome(atividadeAleatoriaNome);
         }
+        atividade.setNome(nomeNovo);
 
         /*
         Se a atividade estiver checada depois que o nome for alterado: chama-se o metodo que

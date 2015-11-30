@@ -13,6 +13,7 @@
     <dimen name="checkBox_inserir_grafico_width">35dp</dimen>
     <dimen name="imageButton_activityRating_width">75dp</dimen>
     <dimen name="spinner_minute">60dp</dimen>
+    <dimen name="spinner_horas">60dp</dimen>
     <dimen name="textView_doisPontos">30sp</dimen>
 
     <!-- PieChart Activities-->

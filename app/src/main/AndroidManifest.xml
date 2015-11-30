@@ -20,6 +20,9 @@
             android:name=".MyDayActivity"
             android:label="@string/title_activity_my_day"
             android:windowSoftInputMode="adjustPan" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.kronos.kronos.MainActivity" />
         </activity>
         <activity
             android:name=".HistoryActivity"

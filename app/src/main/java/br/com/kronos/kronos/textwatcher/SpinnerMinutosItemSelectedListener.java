@@ -10,13 +10,13 @@ import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
 
-public class SpinnerItemSelectedListener implements AdapterView.OnItemSelectedListener {
+public class SpinnerMinutosItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
     private ListAtividadesAdapterListener listener;
     private CheckBox checkBox;
     private Atividade atividade;
 
-    public SpinnerItemSelectedListener(Atividade atividade, ListAtividadesAdapterListener listener, CheckBox checkBox) {
+    public SpinnerMinutosItemSelectedListener(Atividade atividade, ListAtividadesAdapterListener listener, CheckBox checkBox) {
         this.listener = listener;
         this.checkBox = checkBox;
         this.atividade = atividade;

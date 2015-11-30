@@ -1,5 +1,6 @@
 package br.com.kronos.kronos;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class Atividade {
     se ela so esta na lista de atividades mas nao foi cehcada para entrar no Historico (check = false)
      */
     private boolean check;
+    private int cor;
 
     public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
         this.nome = nome;
@@ -34,6 +36,8 @@ public class Atividade {
         this.ano = ano;
 
         this.check = false;
+
+        this.cor = Color.WHITE;
     }
 
     private void setDuracao(double duracao) {
@@ -145,5 +149,13 @@ public class Atividade {
 
     public boolean isChecked() {
         return check;
+    }
+
+    public int getCor() {
+        return cor;
+    }
+
+    public void setCor(int cor) {
+        this.cor = cor;
     }
 }
