@@ -35,7 +35,6 @@
         android:layout_alignTop="@+id/textView_goal_category"
         android:layout_toEndOf="@+id/textView_goal_category"
         android:layout_toRightOf="@+id/textView_goal_category"
-        android:src="@drawable/spinner_button_goal"
         />
 
     <ProgressBar

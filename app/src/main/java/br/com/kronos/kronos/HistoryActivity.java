@@ -20,6 +20,9 @@ public class HistoryActivity extends Activity {
     public KronosDatabase kronosDatabase;
     private Spinner period;
     private Spinner format;
+    private int day;
+    private int month;
+    private int year;
     public List<Atividade> activityList;
 
     //private ListHistoryActivitiesAdapter listAtividadesAdapter;
@@ -35,6 +38,7 @@ public class HistoryActivity extends Activity {
         kronosDatabase = new KronosDatabase(this);
         activityList = new LinkedList<>();
 
+
         //"creates" de spinner
         period = (Spinner) findViewById(R.id.spinner_selectPeriod);
         //get the spinner itens from the string array
@@ -42,7 +46,7 @@ public class HistoryActivity extends Activity {
         //create the adapter
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, period_options);
         //set the listener
-        period.setOnItemSelectedListener(new HistorySpinnerPeriodListener(activityList, kronosDatabase));
+        period.setOnItemSelectedListener(new HistorySpinnerPeriodListener(activityList, kronosDatabase,day,month,year));
         //set the view for the dropdown. Remember that you might have to use some attr from the simple spinner
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         //set the adapter

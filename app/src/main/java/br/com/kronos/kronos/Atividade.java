@@ -26,7 +26,7 @@ public class Atividade {
     private boolean check;
     private int cor;
 
-    public Atividade(String nome, double duracao, int qualidade, int dia, int mes, int ano) {
+    public Atividade(String nome, double duracao, double qualidade, int dia, int mes, int ano) {
         this.nome = nome;
         setDuracao(duracao);
         this.qualidade = qualidade;
