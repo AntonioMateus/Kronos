@@ -73,7 +73,7 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
                 day = Integer.parseInt(date.substring(0, 2));
                 month = Integer.parseInt(date.substring(2, 4));
                 year = Integer.parseInt(date.substring(4, 8));
-                tempActivityList = kronosDatabase(day,month,year);
+                tempActivityList = kronosDatabase.getAtividadesHistorico(day, month,year);
                 for(Atividade activities : tempActivityList){
                     if(!activityList.contains(activities)){
                         //creates another atividade
