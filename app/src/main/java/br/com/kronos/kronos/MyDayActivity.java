@@ -127,15 +127,19 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if(id == R.id.action_setVisibilidadeGrafico) {
-            if ( pieChartHeader ) {
-                listViewAtividades.removeHeaderView(pieChart);
-            }else{
-                listViewAtividades.addHeaderView(pieChart, null, false);
-            }
-            pieChartHeader = !pieChartHeader;
+            setVisibilidadeGrafico();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setVisibilidadeGrafico() {
+        if ( pieChartHeader ) {
+            listViewAtividades.removeHeaderView(pieChart);
+        }else{
+            listViewAtividades.addHeaderView(pieChart, null, false);
+        }
+        pieChartHeader = !pieChartHeader;
     }
 
     @Override
@@ -172,8 +176,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             }
         }
 
+        int pieChartWidth = 0;
+        int pieChartHeight = 0;
+
         if (haAtividadesChecadas) {
-            pieChart.setVisibility(View.VISIBLE);
+            pieChartWidth = AbsListView.LayoutParams.MATCH_PARENT;
+            pieChartHeight = getResources().getDimensionPixelSize(R.dimen.pieChart_activities_height);
+
             //pieChart.setDescription(getString(R.string.pieChart_description));
             pieChart.setDescription("");
             pieChart.setDrawSliceText(true);
@@ -197,9 +206,10 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
             PieData data = getData(atividades); //Dados para colocar no grafico
             pieChart.setData(data); //insere os dados no grafico
-        } else {
-            pieChart.setVisibility(View.GONE);
         }
+
+        AbsListView.LayoutParams pieChartLayoutParams = new AbsListView.LayoutParams(pieChartWidth, pieChartHeight);
+        pieChart.setLayoutParams(pieChartLayoutParams);
     }
 
     private PieData getData(List<Atividade> atividades) throws HorasDiaExcedidoException {
