@@ -1,4 +1,4 @@
-package br.com.kronos.kronos;
+package br.com.kronos.kronos.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
+import br.com.kronos.kronos.Meta;
+import br.com.kronos.kronos.R;
 
 /**
  * Created by antonio on 01/12/15.
