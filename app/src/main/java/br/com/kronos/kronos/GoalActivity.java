@@ -30,15 +30,18 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        /*
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);
         _image = (ImageView) findViewById(R.id.imageButton_spinner);
         mProgress = (ProgressBar) findViewById(R.id.progressBar_goal);
         mProgress.setProgress(80);
         mProgress.setIndeterminate(false);
+        */
     }
 
     public void onClick(View view) {
+        /*
         if (view.getId() == R.id.imageButton_spinner) {
             _newAngle = _oldAngle + 180;
             //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) _image.getLayoutParams();
@@ -53,5 +56,6 @@ public class GoalActivity extends Activity implements View.OnClickListener {
             _image.startAnimation(animation);
             _oldAngle = _newAngle;
         }
+        */
     }
 }

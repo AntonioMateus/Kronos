@@ -9,7 +9,7 @@
     <string name="button_history">History</string>
 
     <!-- MyDayActivity -->
-    <string name="title_activity_my_day">MyDay</string>
+    <string name="title_activity_my_day">How was your day?</string>
     <string name="textView_myDay_titulo">How was your day?</string>
 
     <!-- PieChart -->

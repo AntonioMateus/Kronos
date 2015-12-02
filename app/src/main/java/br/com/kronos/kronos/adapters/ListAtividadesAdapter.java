@@ -62,30 +62,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
      */
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        /*
-        View viewRecycled=view;
-        //usa como base as view utilizadas na classe ViewAtividadeHolder
-        ViewAtividadeHolder holder;
-
-        if(viewRecycled==null) { //Caso não há view para reciclar
-            viewRecycled=mLayoutInflater.inflate(resource, parent, false);
-            holder=new ViewAtividadeHolder();
-
-            holder.setEditTextNome((EditText) viewRecycled.findViewById(R.id.editText_activityName));
-            holder.setEditTextHora((EditText) viewRecycled.findViewById(R.id.editText_activityTimeHour));
-            holder.setEditTextMinuto((EditText) viewRecycled.findViewById(R.id.imageButton_activityTimeMinute));
-
-            holder.setButtonDelete((ImageButton) viewRecycled.findViewById(R.id.imageButton_activityCancel));
-            holder.setButtonRating((Button) viewRecycled.findViewById(R.id.button_activityRating));
-            holder.setCheckBox((CheckBox) viewRecycled.findViewById(R.id.checkBox_activityOK));
-
-            viewRecycled.setTag(holder);
-        }else { //Caso há opção de reciclar a View
-            holder = (ViewAtividadeHolder) viewRecycled.getTag();
-        }
-        */
-
-        //Sem reciclar Views :S não recomendado, mas eh o jeito que esta funcionando por hora
         view = mLayoutInflater.inflate(resource, parent, false);
         ViewAtividadeHolder holder = new ViewAtividadeHolder();
 
@@ -160,6 +136,11 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
                 atividade.switchQualidade();
                 int qualidade = ((int) atividade.getQualidade());
                 buttonRating.setText(qualidade + "");
+                try {
+                    listener.onAtividadeUpdated(atividade, atividade.getNome());
+                } catch (HorasDiaExcedidoException e) {
+                    //e.printStackTrace();
+                }
             }
         });
         buttonRating.setOnLongClickListener(new View.OnLongClickListener() {
@@ -181,7 +162,17 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if(!atividade.isChecked()) {
+                    /*
+                    Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
+                    essa atividade deixa de estar checada.
+                     */
+                    int atividadesComEsseNome = 0;
+                    for (Atividade atividadeIterada : atividades) {
+                        if (atividadeIterada.isChecked() && atividadeIterada.equals(atividade)) {
+                            atividadesComEsseNome++;
+                        }
+                    }
+                    if (atividadesComEsseNome < 1) {
                         try {
                             atividade.setChecked(true);
                             listener.onCheckedAtividade(atividade);

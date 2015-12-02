@@ -3,6 +3,7 @@ package br.com.kronos.kronos;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,14 +55,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_day);
 
-        ActionBar actionBar = getActionBar();
-        if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         kronosDatabase = new KronosDatabase(this);
 
-        //TODO -- cores dentro da Atividade
         atividades = new LinkedList<>();
         //atividadesChecadas = new LinkedList<>();
 
@@ -97,6 +92,9 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         } catch (HorasDiaExcedidoException e) {
             e.printStackTrace();
         }
+
+        //Animar grafico
+        pieChart.animateXY(2000, 2000);
     }
 
     private void setListViewAtividades() {
@@ -252,13 +250,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         }
 
         PieDataSet dataSet = new PieDataSet(atividadesDuracao, "");
-        dataSet.setSliceSpace(3);
+        dataSet.setSliceSpace(2);
         dataSet.setSelectionShift(5);
 
         dataSet.setColors(cores);
 
         PieData data = new PieData(atividadesNomes, dataSet);
-        data.setValueTextSize(11f);
+        data.setValueTextSize(10f);
         data.setValueTextColor(Color.BLACK);
 
         //Define o formato dos valores exibidos no grafico

@@ -33,12 +33,42 @@
         android:contentDescription="@string/editText_cancelar"
         android:src="@drawable/ic_action_remove"/>
 
+    <Spinner
+        android:id="@+id/spinner_atividade_horas"
+        android:layout_width="@dimen/spinner_horas"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/editText_atividade_nome"
+        android:layout_alignBottom="@+id/button_atividade_qualidade"/>
+
+    <TextView
+        android:id="@+id/textView_doisPontos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/spinner_atividade_horas"
+        android:layout_toRightOf="@id/spinner_atividade_horas"
+        android:layout_below="@id/editText_atividade_nome"
+        android:layout_alignBottom="@id/spinner_atividade_horas"
+        android:text="@string/textView_doisPontos"
+        android:textSize="@dimen/textView_doisPontos"
+        android:textColor="@color/textView_doisPontos"/>
+
+    <Spinner
+        android:id="@+id/spinner_atividade_minuto"
+        android:layout_width="@dimen/spinner_minute"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/textView_doisPontos"
+        android:layout_toRightOf="@id/textView_doisPontos"
+        android:layout_below="@id/editText_atividade_nome"
+        android:layout_alignBottom="@id/spinner_atividade_horas"/>
+
     <Button
-        android:id="@+id/button_atividade_qualidade"
+        android:id="@id/button_atividade_qualidade"
         android:layout_width="@dimen/imageButton_activityRating_width"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/imageButton_cancelar"
-        android:layout_toLeftOf="@id/imageButton_cancelar"
+        android:layout_toEndOf="@id/spinner_atividade_minuto"
+        android:layout_toRightOf="@id/spinner_atividade_minuto"
         android:layout_below="@id/editText_atividade_nome"
         android:layout_alignBaseline="@id/imageButton_cancelar"
         android:gravity="center"
@@ -46,35 +76,5 @@
         android:drawableEnd="@drawable/ic_action_important"
         android:drawableRight="@drawable/ic_action_important"
         android:text="@string/button_atividade_qualidade"/>
-
-    <Spinner
-        android:id="@+id/spinner_atividade_minuto"
-        android:layout_width="@dimen/spinner_minute"
-        android:layout_height="match_parent"
-        android:layout_toStartOf="@id/button_atividade_qualidade"
-        android:layout_toLeftOf="@id/button_atividade_qualidade"
-        android:layout_below="@id/editText_atividade_nome"
-        android:layout_alignBottom="@+id/spinner_atividade_horas"/>
-
-    <TextView
-        android:id="@+id/textView_doisPontos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/spinner_atividade_minuto"
-        android:layout_toLeftOf="@id/spinner_atividade_minuto"
-        android:layout_below="@id/editText_atividade_nome"
-        android:layout_alignBottom="@id/spinner_atividade_minuto"
-        android:text="@string/textView_doisPontos"
-        android:textSize="@dimen/textView_doisPontos"
-        android:textColor="@color/textView_doisPontos"/>
-
-    <Spinner
-        android:id="@id/spinner_atividade_horas"
-        android:layout_width="@dimen/spinner_horas"
-        android:layout_height="match_parent"
-        android:layout_toStartOf="@id/textView_doisPontos"
-        android:layout_toLeftOf="@id/textView_doisPontos"
-        android:layout_below="@id/editText_atividade_nome"
-        android:layout_alignBottom="@id/button_atividade_qualidade"/>
 
 </RelativeLayout>
