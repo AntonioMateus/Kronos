@@ -1,6 +1,5 @@
-package br.com.kronos.kronos.textwatcher;
+package br.com.kronos.kronos.viewListener;
 
-import android.preference.TwoStatePreference;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;

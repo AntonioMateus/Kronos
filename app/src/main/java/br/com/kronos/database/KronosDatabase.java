@@ -107,6 +107,26 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
     }
 
+    public int devolveProgressoMeta (String descricaoMeta){
+        SQLiteDatabase bd = this.getReadableDatabase();
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO,
+                            KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO};
+        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO +"=?";
+        String[] selecaoArgs = {descricaoMeta};
+        double tempoAcumulado = 1.0;
+        double tempoEstipulado = 1.0;
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,projecao,selecao,selecaoArgs,null,null,null,null);
+        if (iteradorTuplas.getCount() > 0) {
+            iteradorTuplas.moveToFirst();
+            while (!iteradorTuplas.isAfterLast()) {
+                tempoEstipulado = iteradorTuplas.getDouble(0);
+                tempoAcumulado = iteradorTuplas.getDouble(1);
+                iteradorTuplas.moveToNext();
+            }
+        }
+        return (int) Math.round((tempoAcumulado/tempoEstipulado)*100);
+    }
+
     public void removeMeta (Meta meta) {
         SQLiteDatabase bd = this.getWritableDatabase();
 
