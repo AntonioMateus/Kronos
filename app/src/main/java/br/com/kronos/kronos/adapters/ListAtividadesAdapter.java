@@ -21,9 +21,9 @@ import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.fragmentos.QualidadeDialogFragment;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.textwatcher.SpinnerHorasItemSelectedListener;
-import br.com.kronos.kronos.textwatcher.SpinnerMinutosItemSelectedListener;
-import br.com.kronos.kronos.textwatcher.TextWatcherAtividadeNome;
+import br.com.kronos.kronos.viewListener.SpinnerHorasItemSelectedListener;
+import br.com.kronos.kronos.viewListener.SpinnerMinutosItemSelectedListener;
+import br.com.kronos.kronos.viewListener.TextWatcherAtividadeNome;
 
 public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
     private final int resource;

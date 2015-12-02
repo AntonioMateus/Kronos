@@ -1,4 +1,4 @@
-package br.com.kronos.kronos.textwatcher;
+package br.com.kronos.kronos.viewListener;
 
 import android.content.Context;
 import android.text.Editable;
