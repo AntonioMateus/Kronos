@@ -37,7 +37,7 @@
         android:layout_toRightOf="@+id/textView_goal_category"
         />
 
-    <ProgressBar
+    <!-- <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,5 +47,5 @@
         android:layout_alignStart="@+id/textView_goal_category"
         android:layout_alignRight="@+id/imageButton_spinner"
         android:layout_alignEnd="@+id/imageButton_spinner"
-        android:indeterminate="false" />
+        android:indeterminate="false" /> -->
 </RelativeLayout>
