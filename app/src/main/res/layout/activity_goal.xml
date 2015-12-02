@@ -16,36 +16,9 @@
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/textView_goals_title"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView_goal_category"
-        android:text="Life"
-        android:textSize="@dimen/textView_goals_category"
-        android:layout_below="@+id/textView_goals_title"
-        android:layout_alignStart="@+id/textView_goals_title"
-        android:layout_alignLeft="@+id/textView_goals_title"
-        android:layout_marginTop="32dp"/>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton_spinner"
-        android:layout_alignTop="@+id/textView_goal_category"
-        android:layout_toEndOf="@+id/textView_goal_category"
-        android:layout_toRightOf="@+id/textView_goal_category"
-        />
-
-    <!-- <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar_goal"
-        android:layout_below="@+id/textView_goal_category"
-        android:layout_alignLeft="@+id/textView_goal_category"
-        android:layout_alignStart="@+id/textView_goal_category"
-        android:layout_alignRight="@+id/imageButton_spinner"
-        android:layout_alignEnd="@+id/imageButton_spinner"
-        android:indeterminate="false" /> -->
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width = "match_parent"
+        android:layout_height = "0dp"
+        android:layout_weight = "1" />
 </RelativeLayout>
