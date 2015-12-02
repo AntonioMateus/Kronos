@@ -1,9 +1,7 @@
 package br.com.kronos.kronos;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +9,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,7 +35,7 @@ import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.listener.RatingFragmentListener;
 
 public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener,
-        View.OnTouchListener, RatingFragmentListener{
+                                                        View.OnTouchListener, RatingFragmentListener{
 
     private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY;
 
@@ -49,6 +48,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     private ListAtividadesAdapter listAtividadesAdapter;
 
     private PieChart pieChart;
+    private boolean pieChartHeader = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +58,14 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         kronosDatabase = new KronosDatabase(this);
 
         atividades = new LinkedList<>();
-        //atividadesChecadas = new LinkedList<>();
 
         Button buttonAddAtividade = (Button) findViewById(R.id.button_adicionar_atividdade);
         buttonAddAtividade.setOnClickListener(this);
-        pieChart = (PieChart) findViewById(R.id.pieChart_atividades);
 
         //ListView com as Atividades
         listViewAtividades = (ListView) findViewById(R.id.listView_atividades);
+        //Infla PieChart com os atributos do layout especificado
+        pieChart = (PieChart) getLayoutInflater().inflate(R.layout.layout_piechart_atividades, listViewAtividades, false);
 
         //lista de atividades é carregada com as atividades que jah constavam na lista
         atividades = kronosDatabase.getAtividadesLista();
@@ -85,6 +85,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         //Listar atividades carregadas na ListView
         setListViewAtividades();
+        listViewAtividades.addHeaderView(pieChart, null, false);
+        pieChartHeader = true;
 
         //Plotar grafico com as atividades carregadas e que estao checadas
         try {
@@ -123,8 +125,15 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
+        int id = item.getItemId();
+        if(id == R.id.action_setVisibilidadeGrafico) {
+            if ( pieChartHeader ) {
+                listViewAtividades.removeHeaderView(pieChart);
+            }else{
+                listViewAtividades.addHeaderView(pieChart, null, false);
+            }
+            pieChartHeader = !pieChartHeader;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +164,6 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     Define tamanho e os dados do grafico de atividades em formato de pizza.
      */
     private void plotar() throws HorasDiaExcedidoException {
-
         boolean haAtividadesChecadas = false; //indica se ha atividades checadas
         for (Atividade atividade : atividades) {
             if (atividade.isChecked()) {
@@ -166,7 +174,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
         if (haAtividadesChecadas) {
             pieChart.setVisibility(View.VISIBLE);
-            pieChart.setDescription(getString(R.string.pieChart_description));
+            //pieChart.setDescription(getString(R.string.pieChart_description));
+            pieChart.setDescription("");
             pieChart.setDrawSliceText(true);
             pieChart.setRotationEnabled(true);
 
@@ -180,7 +189,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
 
             //Legenda do grafico
             Legend legend = pieChart.getLegend();
-            legend.setEnabled(true);
+            legend.setEnabled(false);
             legend.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
 
             pieChart.highlightValues(null);
@@ -327,8 +336,8 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
         if (atividadeAlterada.isChecked()) {
             kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
+            plotar();
         }
-        plotar();
     }
 
     @Override

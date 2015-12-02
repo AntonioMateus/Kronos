@@ -195,12 +195,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         TextWatcher textWatcherNome = new TextWatcherAtividadeNome(atividade, listener, checkBox);
         editTextNome.addTextChangedListener(textWatcherNome);
 
-        /*
-        //TextWatcher que define o que deve acontecer quando o campo Hora da Atividade mudar
-        TextWatcher textWatcherHora = new TextWatcherAtividadeHora(atividade, listener, checkBox, spinnerMinuto);
-        editTextHora.addTextChangedListener(textWatcherHora);
-        */
-
         //Define o que deve acontecer quando o Minuto da Atividade eh escolhido
         SpinnerHorasItemSelectedListener spinnerHorasItemSelectedListener = new SpinnerHorasItemSelectedListener(atividade, listener, holder);
         spinnerHoras.setOnItemSelectedListener(spinnerHorasItemSelectedListener);

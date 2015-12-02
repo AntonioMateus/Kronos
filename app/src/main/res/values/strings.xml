@@ -11,6 +11,7 @@
     <!-- MyDayActivity -->
     <string name="title_activity_my_day">How was your day?</string>
     <string name="textView_myDay_titulo">How was your day?</string>
+    <string name="action_setVisibilidadeGrafico">Esconder/Mostrar Grafico</string>
 
     <!-- PieChart -->
     <string name="pieChart_description">PieChart of Activities</string>

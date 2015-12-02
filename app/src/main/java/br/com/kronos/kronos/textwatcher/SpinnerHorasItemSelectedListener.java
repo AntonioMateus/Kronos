@@ -38,15 +38,13 @@ public class SpinnerHorasItemSelectedListener implements AdapterView.OnItemSelec
         /* Se a Atividade estiver checada:
         metodo que define o que deve ser feito na Activity quando a Hora da Atividade mudar
          */
-        if (atividade.isChecked()) {
-            try {
-                listener.onAtividadeUpdated(atividade, atividade.getNome());
-            } catch (HorasDiaExcedidoException e) {
-                CheckBox checkBox = viewAtividadeHolder.getCheckBox();
-                Toast.makeText(checkBox.getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
-                atividade.setChecked(false);
-                checkBox.setChecked(false);
-            }
+        try {
+            listener.onAtividadeUpdated(atividade, atividade.getNome());
+        } catch (HorasDiaExcedidoException e) {
+            CheckBox checkBox = viewAtividadeHolder.getCheckBox();
+            Toast.makeText(checkBox.getContext(), R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
+            atividade.setChecked(false);
+            checkBox.setChecked(false);
         }
     }
 
