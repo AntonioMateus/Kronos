@@ -26,9 +26,18 @@ public class HistoryActivity extends Activity {
     private int day;
     private int month;
     private int year;
-    public List<Atividade> activityList;
+    public List<Atividade> cumulativaActivityList;
 
-    //private ListHistoryActivitiesAdapter listAtividadesAdapter;
+    Date today = new java.util.Date();
+    long oneDay = 86400000l; //1 day in milliseconds
+    long oneMonth = 2592000000l; //1 month in milliseconds
+    long oneYear = 315360000000000l; //1 year in milliseconds
+
+    long diff;
+    Date searchDate;
+    DateFormat df = new SimpleDateFormat("ddMMyyyy");
+    String date;
+
     private PieChart pieChart;
 
     @Override
@@ -39,7 +48,7 @@ public class HistoryActivity extends Activity {
 
         //creates de database and the list
         kronosDatabase = new KronosDatabase(this);
-        activityList = new LinkedList<>();
+        cumulativaActivityList = new LinkedList<>();
 
 
         //"creates" de spinner
@@ -55,59 +64,6 @@ public class HistoryActivity extends Activity {
         //set the adapter
         period.setAdapter(dataAdapter);
 
-        Date today = new java.util.Date();
-        long oneDay = 86400000l; //1 day in milliseconds
-        long oneMonth = 2592000000l; //1 month in milliseconds
-        long oneYear = 315360000000000l; //1 year in milliseconds
-        long diff;
-        Date searchDate;
-        DateFormat df = new SimpleDateFormat("ddMMyyyy");
-        String date;
-
-        /*
-        if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("yesterday")) {
-            diff = today.getTime()-oneDay;
-            searchDate = new Date(diff);
-            date = df.format(searchDate);
-            day = Integer.parseInt(date.substring(0,2));
-            month = Integer.parseInt(date.substring(2, 4));
-            year = Integer.parseInt(date.substring(4,8));
-            activityList.removeAll(activityList);
-            activityList = kronosDatabase.getAtividadesHistorico(day, month, year);
-        }
-        if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("last month")) {
-            activityList.removeAll(activityList);
-            for(long daysIterator = oneDay; daysIterator<oneMonth; daysIterator+=oneDay){
-                diff = today.getTime() - daysIterator;
-                searchDate = new Date(diff);
-                date = df.format(searchDate);
-                day = Integer.parseInt(date.substring(0, 2));
-                month = Integer.parseInt(date.substring(2, 4));
-                year = Integer.parseInt(date.substring(4, 8));
-                tempActivityList = kronosDatabase.getAtividadesHistorico(day, month,year);
-                for(Atividade activities : tempActivityList){
-                    if(!activityList.contains(activities)){
-                        //creates another atividade
-                        //setting the falues to 1/30 to avoid iterating another time
-                        double duration = activities.getDuracao();
-                        double quality = activities.getQualidade();
-                        String name = activities.getNome();
-                        Atividade newActivity = new Atividade(name,duration,quality,day,month,year);
-                        activityList.add(newActivity);
-                    }
-                }
-            }
-        }
-        if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("last year")) {
-            diff = today.getTime()-oneYear;
-            searchDate = new Date(diff);
-            date = df.format(searchDate);
-            day = Integer.parseInt(date.substring(0,2));
-            month = Integer.parseInt(date.substring(2,4));
-            year = Integer.parseInt(date.substring(4, 8));
-        }
-        */
-
         /*TODO
               1)test the spinner item (we need a "textView", in this case checkedTextView
               to change the size of the text) we might need to get a simple spinner from
@@ -119,6 +75,64 @@ public class HistoryActivity extends Activity {
               6)the goals list
 
         */
+    }
+
+    //
+    public void onYesterday(){
+        diff = today.getTime()-oneDay;
+        searchDate = new Date(diff);
+        date = df.format(searchDate);
+        day = Integer.parseInt(date.substring(0,2));
+        month = Integer.parseInt(date.substring(2, 4));
+        year = Integer.parseInt(date.substring(4,8));
+        cumulativaActivityList.removeAll(cumulativaActivityList);
+        cumulativaActivityList = kronosDatabase.getAtividadesHistorico(day, month, year);
+    }
+
+    //
+    public void onLastMonth(){
+        List<Atividade> tempActivityList;
+        cumulativaActivityList.removeAll(cumulativaActivityList);
+        List<Integer> daysOfUse = new LinkedList<>();
+        int totalDays = 0;
+
+        for(long daysIterator = oneDay; daysIterator<oneMonth; daysIterator+=oneDay){
+            diff = today.getTime() - daysIterator;
+            searchDate = new Date(diff);
+            date = df.format(searchDate);
+            day = Integer.parseInt(date.substring(0, 2));
+            month = Integer.parseInt(date.substring(2, 4));
+            year = Integer.parseInt(date.substring(4, 8));
+            tempActivityList = kronosDatabase.getAtividadesHistorico(day, month,year);
+
+            if(tempActivityList.size()>0){
+                totalDays++;
+                daysOfUse.add(day);
+            }
+
+            for(Atividade activities : tempActivityList){
+                if(!cumulativaActivityList.contains(activities)){
+                    //creates another atividade
+                    //setting the falues to 1/30 to avoid iterating another time
+                    double duration = activities.getDuracao();
+                    double quality = activities.getQualidade();
+                    String name = activities.getNome();
+                    Atividade newActivity = new Atividade(name,duration,quality,day,month,year);
+                    cumulativaActivityList.add(newActivity);
+                }else{
+                    int index = cumulativaActivityList.indexOf(activities);
+                    Atividade cumuAct = cumulativaActivityList.get(index);
+                    if(activities.getNome().equalsIgnoreCase(cumuAct.getNome())){
+                        double cumuDuration = cumuAct.getDuracao();
+                        double cumuQuality = cumuAct.getQualidade();
+                        double tempDuration = activities.getDuracao();
+                        double tempQuality = activities.getQualidade();
+                        //cumuAct.setDuracao();
+                        //cumuAct.setQualidade();
+                    }
+                }
+            }
+        }
     }
 
 }

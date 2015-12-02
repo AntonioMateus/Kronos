@@ -40,7 +40,7 @@ public class Atividade {
         this.cor = Color.WHITE;
     }
 
-    private void setDuracao(double duracao) {
+    public void setDuracao(double duracao) {
         if (duracao > 0.0) {
             this.duracao = duracao;
         }else{
