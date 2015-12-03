@@ -11,7 +11,10 @@ import br.com.kronos.kronos.Meta;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class KronosDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
@@ -124,7 +127,33 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 iteradorTuplas.moveToNext();
             }
         }
+        bd.close();
         return (int) Math.round((tempoAcumulado/tempoEstipulado)*100);
+    }
+
+    public Meta devolveMeta (String descricao) {
+        SQLiteDatabase bd = this.getReadableDatabase();
+        Meta meta = null;
+        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO +"=?";
+        String[] selecaoArgs = new String[] {descricao};
+        Cursor iterador = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,null,selecao,selecaoArgs,null,null,null,null);
+        if (iterador.getCount() > 0) {
+            iterador.moveToFirst();
+            while (!iterador.isAfterLast()) {
+                int prazo = iterador.getInt(1);
+                double tempoAcumulado = iterador.getDouble(2);
+                double tempoEstipulado = iterador.getDouble(3);
+                String[] dataInicio = iterador.getString(4).split("_");
+                boolean repetir = Boolean.getBoolean(iterador.getString(5));
+                String categoria = iterador.getString(6);
+
+                meta = new Meta(descricao,prazo,repetir,categoria,Integer.valueOf(dataInicio[0]),Integer.valueOf(dataInicio[1]),Integer.valueOf(dataInicio[2]));
+                meta.setTempoAcumulado(tempoAcumulado);
+                meta.setTempoEstipulado(tempoEstipulado);
+            }
+        }
+        bd.close();
+        return meta;
     }
 
     public void removeMeta (Meta meta) {
@@ -134,7 +163,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         String[] selecaoArgs = new String[]{meta.getDescricao()};
         bd.delete(KronosContract.FeedEntry.TABLE_META_NAME, selecao, selecaoArgs);
         if (meta.getMetaTerminada()) {
-            bd.delete(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME,selecao,selecaoArgs);
+            bd.delete(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME, selecao, selecaoArgs);
         }
         bd.close();
     }
@@ -153,8 +182,35 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 iteradorTuplas.moveToNext();
             }
         }
-
+        bd.close();
         return categoriasEncontradas;
+    }
+
+    public HashMap<String, List<Meta>> devolveRelacaoCategoriaMeta() {
+        SQLiteDatabase bd = this.getReadableDatabase();
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA, KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO};
+        Cursor iterador = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,projecao,null,null, KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,null,null);
+        HashMap<String, List<Meta>> mapa = new HashMap<>();
+        String categoriaAnterior = null;
+        List<Meta> metas = new LinkedList<>();
+        if (iterador.getCount() > 0) {
+            iterador.moveToFirst();
+            categoriaAnterior = iterador.getString(0);
+            while (!iterador.isAfterLast()) {
+                String categoria = iterador.getString(0);
+                if (categoria.equals(categoriaAnterior)) {
+                    metas.add(devolveMeta(iterador.getString(1)));
+                }
+                else {
+                    mapa.put(categoriaAnterior,metas);
+                    metas = new LinkedList<>();
+                    categoriaAnterior = categoria;
+                }
+                iterador.moveToNext();
+            }
+        }
+        bd.close();
+        return mapa;
     }
 
     public void removeAtividadeHistorico(Atividade atividade) {
