@@ -42,9 +42,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
     private KronosDatabase kronosDatabase;
     private List<Atividade> atividades; //lista de todas as atividades dentro do listView
 
-    //private List<Atividade> atividadesChecadas; //lista das atividades com checkbox acionado
     private ListView listViewAtividades;
-    //private int listViewAtividadesEstadoScroll;
     private ListAtividadesAdapter listAtividadesAdapter;
 
     private PieChart pieChart;
@@ -180,6 +178,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
         int pieChartHeight = 0;
 
         if (haAtividadesChecadas) {
+            //Define o tamamho do Grafico, tornando ele visivel
             pieChartWidth = AbsListView.LayoutParams.MATCH_PARENT;
             pieChartHeight = getResources().getDimensionPixelSize(R.dimen.pieChart_activities_height);
 
@@ -196,13 +195,13 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             pieChart.setCenterTextSize(getResources().getDimensionPixelSize(R.dimen.pieChart_title));
             */
 
+            pieChart.highlightValues(null);
+            pieChart.invalidate();
+
             //Legenda do grafico
             Legend legend = pieChart.getLegend();
             legend.setEnabled(false);
             legend.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
-
-            pieChart.highlightValues(null);
-            pieChart.invalidate();
 
             PieData data = getData(atividades); //Dados para colocar no grafico
             pieChart.setData(data); //insere os dados no grafico
@@ -343,7 +342,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeUpdated(Atividade atividadeAlterada, String atividadeNomeAntigo) throws HorasDiaExcedidoException {
-        kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
+            kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
         if (atividadeAlterada.isChecked()) {
             kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
             plotar();

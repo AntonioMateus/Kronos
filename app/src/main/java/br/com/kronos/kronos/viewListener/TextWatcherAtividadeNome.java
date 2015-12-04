@@ -64,31 +64,25 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         atividade.setNome(nomeNovo);
 
         /*
-        Se a atividade estiver checada depois que o nome for alterado: chama-se o metodo que
-        define o que deve ser feito na Activity listener quando o nome da Atividade mudar
-        */
-        if (atividade.isChecked()) {
-            /*
             Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
             essa atividade deixa de estar checada.
              */
-            int atividadesComEsseNome = 0;
-            for (Atividade atividadeIterada : atividades) {
-                if (atividadeIterada.isChecked() && atividadeIterada.equals(atividade)) {
-                    atividadesComEsseNome++;
-                }
+        int atividadesComEsseNome = 0;
+        for (Atividade atividadeIterada : atividades) {
+            if (atividadeIterada.isChecked() && atividadeIterada.equals(atividade)) {
+                atividadesComEsseNome++;
             }
-            if (atividadesComEsseNome > 1) {
-                Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
-                atividade.setChecked(false);
-                checkBox.setChecked(false);
-            }else {
-                try {
-                    listener.onAtividadeUpdated(atividade, atividadeNomeAntigo);
-                } catch (HorasDiaExcedidoException e) {
-                    //Caso impossível
-                    Toast.makeText(context, R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
-                }
+        }
+        if (atividadesComEsseNome > 1) {
+            Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
+            atividade.setChecked(false);
+            checkBox.setChecked(false);
+        }else {
+            try {
+                listener.onAtividadeUpdated(atividade, atividadeNomeAntigo);
+            } catch (HorasDiaExcedidoException e) {
+                //Caso impossível
+                Toast.makeText(context, R.string.horasDoDiaExcedidas, Toast.LENGTH_SHORT).show();
             }
         }
     }
