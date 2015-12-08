@@ -8,10 +8,17 @@
     android:weightSum="1">
 
 
-    <ProgressBar
+   <!-- <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar_goal"
-        android:indeterminate="false" />
+        android:indeterminate="false" /> -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvItem"
+        android:layout_marginLeft="30dp" />
 </LinearLayout>

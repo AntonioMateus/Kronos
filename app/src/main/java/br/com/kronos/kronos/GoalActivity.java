@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +38,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
     private Handler mHandler = new Handler();
 
     private List<String> listGroup;
-    private HashMap<String,List<Meta>> listData;
+    private HashMap<String,List<String>> listData;
 
 
     @Override
@@ -63,9 +64,44 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         database.addMeta(meta2);
         database.addMeta(meta3);
         //---------------------------------------------
-        listGroup = database.getCategorias();
-        listData = database.devolveRelacaoCategoriaMeta();
-        Set<String> categorias = listData.keySet();
+        //listGroup = database.getCategorias();
+        //listData = database.devolveRelacaoCategoriaMeta();
+        listGroup = new ArrayList<>();
+        listGroup.add("grupo 1");
+        listGroup.add("grupo 2");
+        listGroup.add("grupo 3");
+        listGroup.add("grupo 4");
+
+        listData = new HashMap<>();
+        List<String> auxiliar = new ArrayList<>();
+        auxiliar.add("item 1");
+        auxiliar.add("item 2");
+        auxiliar.add("item 3");
+        auxiliar.add("item 4");
+        listData.put(listGroup.get(0), auxiliar);
+
+        auxiliar = new ArrayList<>();
+        auxiliar.add("item 5");
+        auxiliar.add("item 6");
+        auxiliar.add("item 7");
+        auxiliar.add("item 8");
+        listData.put(listGroup.get(1), auxiliar);
+
+        auxiliar = new ArrayList<>();
+        auxiliar.add("item 9");
+        auxiliar.add("item 10");
+        auxiliar.add("item 11");
+        auxiliar.add("item 12");
+        listData.put(listGroup.get(2), auxiliar);
+
+        auxiliar = new ArrayList<>();
+        auxiliar.add("item 13");
+        auxiliar.add("item 14");
+        auxiliar.add("item 15");
+        auxiliar.add("item 16");
+        listData.put(listGroup.get(3), auxiliar);
+
+        /*Set<String> categorias = listData.keySet();
         Iterator<String> it = categorias.iterator();
         String cat = it.next();
         Log.d(null, "**************** categoria: "+cat);
@@ -78,10 +114,10 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         metas = listData.get(cat);
         for (int i = 0; i < metas.size(); i++) {
             Log.d(null, "*********************** meta " +i +": " +metas.get(i).toString());
-        }
+        }*/
 
-        /*ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this,listData,listGroup));
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this, listData, listGroup));
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -104,7 +140,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         });
 
         expandableListView.setGroupIndicator(getResources().getDrawable(R.drawable.icon_group));
-        *//*
+                /*
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);
         _image = (ImageView) findViewById(R.id.imageButton_spinner);

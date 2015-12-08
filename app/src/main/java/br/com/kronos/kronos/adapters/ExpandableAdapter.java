@@ -20,11 +20,11 @@ import br.com.kronos.kronos.R;
  */
 public class ExpandableAdapter extends BaseExpandableListAdapter {
     private List<String> listGroup;
-    private HashMap<String, List<Meta>> listData;
+    private HashMap<String, List<String>> listData;
     private LayoutInflater inflater;
     private Context context;
 
-    public ExpandableAdapter(Context context, HashMap<String, List<Meta>> listData, List<String> listGroup) {
+    public ExpandableAdapter(Context context, HashMap<String, List<String>> listData, List<String> listGroup) {
         this.context = context;
         this.listGroup = listGroup;
         this.listData = listData;
@@ -77,19 +77,21 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ViewHolderItem holder;
-        Meta meta = (Meta) getChild(groupPosition,childPosition);
+        //Meta meta = (Meta) getChild(groupPosition,childPosition);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_expandable_list_view,null);
             holder = new ViewHolderItem();
             convertView.setTag(holder);
-            holder.progressBar_goal = (ProgressBar) convertView.findViewById(R.id.progressBar_goal);
+            //holder.progressBar_goal = (ProgressBar) convertView.findViewById(R.id.progressBar_goal);
+            holder.tvItem = (TextView) convertView.findViewById(R.id.tvItem);
         }
         else {
             holder = (ViewHolderItem) convertView.getTag();
         }
-        KronosDatabase database = new KronosDatabase(this.context);
+        /*KronosDatabase database = new KronosDatabase(this.context);
         holder.progressBar_goal.setIndeterminate(false);
-        holder.progressBar_goal.setProgress(database.devolveProgressoMeta(meta.getDescricao()));
+        holder.progressBar_goal.setProgress(database.devolveProgressoMeta(meta.getDescricao()));*/
+        holder.tvItem.setText(listData.get(listGroup.get(groupPosition)).get(childPosition));
         return convertView;
     }
 
@@ -102,6 +104,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     class ViewHolderItem {
-        ProgressBar progressBar_goal;
+        //ProgressBar progressBar_goal;
+        TextView tvItem;
     }
 }
