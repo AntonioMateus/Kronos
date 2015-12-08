@@ -189,54 +189,39 @@ public class KronosDatabase extends SQLiteOpenHelper {
         return categoriasEncontradas;
     }
 
-    public HashMap<String, List<Meta>> devolveRelacaoCategoriaMeta() {
+    public List<Meta> devolveMetasCategoria (String categoria) {
         SQLiteDatabase bd = getReadableDatabase();
-        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA, KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO};
-        Cursor iterador = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,projecao,null,null, KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,null,null);
-        HashMap<String, List<Meta>> mapa = new HashMap<>();
-        String categoriaAnterior = null;
-        List<Meta> metas = new LinkedList<>();
-        int linha = 0;
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO};
+        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA+"=?";
+        String[] selecaoArgs = {categoria};
+        List<Meta> metasCategoria = new LinkedList<>();
+        Cursor iterador = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,projecao,selecao,selecaoArgs,null,null,null);
         if (iterador.getCount() > 0) {
             iterador.moveToFirst();
-            /*categoriaAnterior = iterador.getString(0);
             while (!iterador.isAfterLast()) {
-                String categoria = iterador.getString(0);
-                if (categoria.equals(categoriaAnterior)) {
-                    metas.add(devolveMeta(iterador.getString(1)));
-                }
-                else {
-                    mapa.put(categoriaAnterior,metas);
-                    metas = new LinkedList<>();
-                    categoriaAnterior = categoria;
-                }
-                iterador.moveToNext();
-            }*/
-            categoriaAnterior = iterador.getString(0);
-            while (!iterador.isAfterLast()) {
-                if (linha == 0) { //primeira linha
-                    metas.add(devolveMeta(iterador.getString(1)));
-                }
-                else {
-                    String categoria = iterador.getString(0);
-                    if (categoria.equals(categoriaAnterior)) {
-                        metas.add(devolveMeta(iterador.getString(1)));
-                    }
-                    else {
-                        mapa.put(categoriaAnterior,metas);
-                        metas = new LinkedList<>();
-                        metas.add(devolveMeta(iterador.getString(1)));
-                        categoriaAnterior = categoria;
-                    }
-                }
-                linha++;
+                metasCategoria.add(devolveMeta(iterador.getString(0)));
                 iterador.moveToNext();
             }
-            mapa.put(categoriaAnterior,metas);
         }
         iterador.close();
         bd.close();
+        return metasCategoria;
+    }
+
+    public HashMap<String, List<Meta>> devolveRelacaoCategoriaMeta() {
+        HashMap<String, List<Meta>> mapa = new HashMap<>();
+        List<String> categorias = getCategorias();
+        for (String cat : categorias) {
+            mapa.put(cat,devolveMetasCategoria(cat));
+        }
         return mapa;
+    }
+
+    public void removeTodasMetas() {
+        SQLiteDatabase bd = this.getWritableDatabase();
+        bd.delete(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME, null, null);
+        bd.delete(KronosContract.FeedEntry.TABLE_META_NAME, null, null);
+        bd.close();
     }
 
     public void removeAtividadeHistorico(Atividade atividade) {

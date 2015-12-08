@@ -48,19 +48,38 @@ public class GoalActivity extends Activity implements View.OnClickListener {
 
         KronosDatabase database = new KronosDatabase(GoalActivity.this);
         //Criacao de metas para teste
-        Meta meta1 = new Meta("verao 2020",3,0,"saude",7,12,2015);
+        database.removeTodasMetas();
+        Meta meta1 = new Meta("projeto verao 2020",3,0,"saude",7,12,2015);
         meta1.setTempoAcumulado(0);
         meta1.setTempoEstipulado(130.0);
         Meta meta2 = new Meta("assistir star wars",2,0,"diversao",28,11,2015);
         meta2.setTempoAcumulado(15);
         meta2.setTempoEstipulado(18);
         meta2.setTerminoMeta(29, 11, 2015);
-
+        Meta meta3 = new Meta("terminar de ler a guerra civil",10,0,"diversao",9,12,2015);
+        meta3.setTempoAcumulado(0);
+        meta3.setTempoEstipulado(100.0);
         database.addMeta(meta1);
         database.addMeta(meta2);
+        database.addMeta(meta3);
         //---------------------------------------------
         listGroup = database.getCategorias();
         listData = database.devolveRelacaoCategoriaMeta();
+        Set<String> categorias = listData.keySet();
+        Iterator<String> it = categorias.iterator();
+        String cat = it.next();
+        Log.d(null, "**************** categoria: "+cat);
+        List<Meta> metas = listData.get(cat);
+        for (int i = 0; i < metas.size(); i++) {
+            Log.d(null, "*********************** meta " +i +": " +metas.get(i).toString());
+        }
+        cat = it.next();
+        Log.d(null, "**************** categoria: "+cat);
+        metas = listData.get(cat);
+        for (int i = 0; i < metas.size(); i++) {
+            Log.d(null, "*********************** meta " +i +": " +metas.get(i).toString());
+        }
+
         /*ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this,listData,listGroup));
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
