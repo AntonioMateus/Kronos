@@ -14,7 +14,7 @@ public class Meta {
     private double tempoAcumulado = 0.0;
     private double tempoEstipulado = 0.0;
     private double tempoExcedido;
-    private boolean repetir;
+    private int repetir;
     private String categoria;
     private boolean metaTerminada;
 
@@ -26,7 +26,7 @@ public class Meta {
     private int mesTermino;
     private int anoTermino;
 
-    public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) {
+    public Meta (String descricao, double prazo, int repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) {
         this.descricao = descricao;
         setPrazo(prazo);
         this.repetir = repetir;
@@ -87,7 +87,7 @@ public class Meta {
         return this.tempoExcedido;
     }
 
-    public boolean getRepetir() {
+    public int getRepetir() {
         return this.repetir;
     }
 

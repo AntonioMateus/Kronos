@@ -43,9 +43,22 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         KronosDatabase database = new KronosDatabase(GoalActivity.this);
-        listGroup = database.getCategorias();
-        listData = database.devolveRelacaoCategoriaMeta();
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        //Criacao de metas para teste
+        Meta meta1 = new Meta("verao 2020",3,0,"saude",7,12,2015);
+        meta1.setTempoAcumulado(0);
+        meta1.setTempoEstipulado(130.0);
+        Meta meta2 = new Meta("assistir star wars",2,0,"diversao",28,11,2015);
+        meta2.setTempoAcumulado(15);
+        meta2.setTempoEstipulado(18);
+        meta2.setTerminoMeta(29, 11, 2015);
+        database.addMeta(meta1);
+        database.addMeta(meta2);
+        //---------------------------------------------
+        //List<Atividade> teste2 = database.getAtividadesHistorico(1,12,2015);
+        Meta teste = database.devolveMeta("verao 2020");
+        //listGroup = database.getCategorias();
+        //listData = database.devolveRelacaoCategoriaMeta();
+        /*ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this,listData,listGroup));
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -69,7 +82,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         });
 
         expandableListView.setGroupIndicator(getResources().getDrawable(R.drawable.icon_group));
-        /*
+        *//*
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);
         _image = (ImageView) findViewById(R.id.imageButton_spinner);

@@ -54,7 +54,7 @@ public class KronosContract {
                     FeedEntry.COLUMN_META_NAME_CATEGORIA + ", PRIMARY KEY (" + FeedEntry.COLUMN_META_NAME_DESCRICAO +
                     ") )";
 
-    public static final String SQL_DELETE_ENTRIES3 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_LISTA_NAME;
+    public static final String SQL_DELETE_ENTRIES3 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_META_NAME;
 
     public static final String SQL_CREATE_ENTRIES4 =
             "CREATE TABLE " +FeedEntry.TABLE_META_CUMPRIDA_NAME + " (" +

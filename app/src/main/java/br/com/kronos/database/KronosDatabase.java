@@ -67,6 +67,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
     }
 
+    //funciona
     public void addMeta (Meta m) {
         SQLiteDatabase bd = this.getWritableDatabase();
         ContentValues tuplaASerAdicionada = new ContentValues();
@@ -89,6 +90,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
     }
 
+    //funciona
     public void addMetaCumprida(Meta meta) {
         SQLiteDatabase bd = this.getWritableDatabase();
         ContentValues tupla = new ContentValues();
@@ -132,29 +134,34 @@ public class KronosDatabase extends SQLiteOpenHelper {
     }
 
     public Meta devolveMeta (String descricao) {
-        SQLiteDatabase bd = this.getReadableDatabase();
-        Meta meta = null;
-        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO +"=?";
-        String[] selecaoArgs = new String[] {descricao};
-        Cursor iterador = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,null,selecao,selecaoArgs,null,null,null,null);
-        if (iterador.getCount() > 0) {
-            iterador.moveToFirst();
-            while (!iterador.isAfterLast()) {
-                int prazo = iterador.getInt(1);
-                double tempoAcumulado = iterador.getDouble(2);
-                double tempoEstipulado = iterador.getDouble(3);
-                String[] dataInicio = iterador.getString(4).split("_");
-                boolean repetir = Boolean.getBoolean(iterador.getString(5));
-                String categoria = iterador.getString(6);
+        SQLiteDatabase bd = getReadableDatabase();
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,
+                KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_PRAZO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR};
+        String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO + "=?";
+        String[] selecaoArgs = {descricao};
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, projecao, selecao, selecaoArgs,null,null,null,null);
 
-                meta = new Meta(descricao,prazo,repetir,categoria,Integer.valueOf(dataInicio[0]),Integer.valueOf(dataInicio[1]),Integer.valueOf(dataInicio[2]));
-                meta.setTempoAcumulado(tempoAcumulado);
-                meta.setTempoEstipulado(tempoEstipulado);
-            }
+        /*Meta metaRetornada;
+        if (iteradorTuplas.getCount() > 0) {
+            iteradorTuplas.moveToFirst();
+            String[] dataInicio = iteradorTuplas.getString(4).split("_");
+            metaRetornada = new Meta(iteradorTuplas.getString(0),iteradorTuplas.getInt(1),iteradorTuplas.getInt(5),iteradorTuplas.getString(6),Integer.valueOf(dataInicio[0]),Integer.valueOf(dataInicio[1]),Integer.valueOf(dataInicio[2]));
+            metaRetornada.setTempoAcumulado(iteradorTuplas.getDouble(2));
+            metaRetornada.setTempoEstipulado(iteradorTuplas.getDouble(3));
         }
+        else {
+            metaRetornada = null;
+        }*/
+        iteradorTuplas.close();
         bd.close();
-        return meta;
+        return null;
     }
+
 
     public void removeMeta (Meta meta) {
         SQLiteDatabase bd = this.getWritableDatabase();
@@ -171,7 +178,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
     public List<String> getCategorias() {
         SQLiteDatabase bd = this.getReadableDatabase();
         String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA};
-        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_META_NAME, projecao, null, null, null, null, null, null);
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_META_NAME, projecao, null, null, KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,null,null);
 
         ArrayList<String> categoriasEncontradas = new ArrayList<>();
         if (iteradorTuplas.getCount() > 0) {
@@ -182,6 +189,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 iteradorTuplas.moveToNext();
             }
         }
+        iteradorTuplas.close();
         bd.close();
         return categoriasEncontradas;
     }
