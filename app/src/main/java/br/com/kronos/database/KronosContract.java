@@ -51,17 +51,14 @@ public class KronosContract {
                     FeedEntry.COLUMN_META_NAME_DESCRICAO +", " +FeedEntry.COLUMN_META_NAME_PRAZO + ", " +
                     FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO +", " +FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO +", " +
                     FeedEntry.COLUMN_META_NAME_DATA_INICIO +", " +FeedEntry.COLUMN_META_NAME_REPETIR +", " +
-                    FeedEntry.COLUMN_META_NAME_CATEGORIA + ", PRIMARY KEY (" + FeedEntry.COLUMN_META_NAME_DESCRICAO +
-                    ") )";
+                    FeedEntry.COLUMN_META_NAME_CATEGORIA + " )";
 
     public static final String SQL_DELETE_ENTRIES3 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_META_NAME;
 
     public static final String SQL_CREATE_ENTRIES4 =
             "CREATE TABLE " +FeedEntry.TABLE_META_CUMPRIDA_NAME + " (" +
                     FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA +", " +FeedEntry.COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO+
-                    ", " +FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META +", PRIMARY KEY (" +FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA +
-                    "), FOREIGN KEY ("+FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META+
-                    ") REFERENCES " +FeedEntry.TABLE_META_NAME +" (" +FeedEntry.COLUMN_META_NAME_DESCRICAO +"))";
+                    ", " +FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META +" )";
 
     public static final String SQL_DELETE_ENTRIES4 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_META_CUMPRIDA_NAME;
 }

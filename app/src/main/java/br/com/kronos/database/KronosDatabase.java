@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class KronosDatabase extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Kronos";
 
     public KronosDatabase (Context context) {
@@ -67,9 +67,8 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
     }
 
-    //funciona
     public void addMeta (Meta m) {
-        SQLiteDatabase bd = this.getWritableDatabase();
+        SQLiteDatabase bd = getWritableDatabase();
         ContentValues tuplaASerAdicionada = new ContentValues();
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO,m.getDescricao());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_PRAZO,m.getPrazo());
@@ -81,16 +80,11 @@ public class KronosDatabase extends SQLiteOpenHelper {
 
         bd.insert(KronosContract.FeedEntry.TABLE_META_NAME, null, tuplaASerAdicionada);
         if (m.getMetaTerminada()) {
-            tuplaASerAdicionada = new ContentValues();
-            tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA,getDataFormatada(m.getDiaTermino(),m.getMesTermino(),m.getAnoTermino()));
-            tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META, m.getDescricao());
-            tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO, m.getTempoExcedido());
-            bd.insert(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME,null,tuplaASerAdicionada);
+            addMetaCumprida(m);
         }
         bd.close();
     }
 
-    //funciona
     public void addMetaCumprida(Meta meta) {
         SQLiteDatabase bd = this.getWritableDatabase();
         ContentValues tupla = new ContentValues();
@@ -129,6 +123,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 iteradorTuplas.moveToNext();
             }
         }
+        iteradorTuplas.close();
         bd.close();
         return (int) Math.round((tempoAcumulado/tempoEstipulado)*100);
     }
@@ -144,9 +139,9 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR};
         String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO + "=?";
         String[] selecaoArgs = {descricao};
-        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, projecao, selecao, selecaoArgs,null,null,null,null);
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_META_NAME, projecao, selecao, selecaoArgs,null,null,null,null);
 
-        /*Meta metaRetornada;
+        Meta metaRetornada;
         if (iteradorTuplas.getCount() > 0) {
             iteradorTuplas.moveToFirst();
             String[] dataInicio = iteradorTuplas.getString(4).split("_");
@@ -156,10 +151,10 @@ public class KronosDatabase extends SQLiteOpenHelper {
         }
         else {
             metaRetornada = null;
-        }*/
+        }
         iteradorTuplas.close();
         bd.close();
-        return null;
+        return metaRetornada;
     }
 
 
@@ -195,15 +190,16 @@ public class KronosDatabase extends SQLiteOpenHelper {
     }
 
     public HashMap<String, List<Meta>> devolveRelacaoCategoriaMeta() {
-        SQLiteDatabase bd = this.getReadableDatabase();
+        SQLiteDatabase bd = getReadableDatabase();
         String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA, KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO};
         Cursor iterador = bd.query(KronosContract.FeedEntry.TABLE_META_NAME,projecao,null,null, KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,null,null);
         HashMap<String, List<Meta>> mapa = new HashMap<>();
         String categoriaAnterior = null;
         List<Meta> metas = new LinkedList<>();
+        int linha = 0;
         if (iterador.getCount() > 0) {
             iterador.moveToFirst();
-            categoriaAnterior = iterador.getString(0);
+            /*categoriaAnterior = iterador.getString(0);
             while (!iterador.isAfterLast()) {
                 String categoria = iterador.getString(0);
                 if (categoria.equals(categoriaAnterior)) {
@@ -215,8 +211,30 @@ public class KronosDatabase extends SQLiteOpenHelper {
                     categoriaAnterior = categoria;
                 }
                 iterador.moveToNext();
+            }*/
+            categoriaAnterior = iterador.getString(0);
+            while (!iterador.isAfterLast()) {
+                if (linha == 0) { //primeira linha
+                    metas.add(devolveMeta(iterador.getString(1)));
+                }
+                else {
+                    String categoria = iterador.getString(0);
+                    if (categoria.equals(categoriaAnterior)) {
+                        metas.add(devolveMeta(iterador.getString(1)));
+                    }
+                    else {
+                        mapa.put(categoriaAnterior,metas);
+                        metas = new LinkedList<>();
+                        metas.add(devolveMeta(iterador.getString(1)));
+                        categoriaAnterior = categoria;
+                    }
+                }
+                linha++;
+                iterador.moveToNext();
             }
+            mapa.put(categoriaAnterior,metas);
         }
+        iterador.close();
         bd.close();
         return mapa;
     }

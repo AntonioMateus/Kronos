@@ -3,6 +3,7 @@ package br.com.kronos.kronos;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,10 @@ import android.widget.Toast;
 
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.kronos.R;
@@ -51,13 +55,12 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         meta2.setTempoAcumulado(15);
         meta2.setTempoEstipulado(18);
         meta2.setTerminoMeta(29, 11, 2015);
+
         database.addMeta(meta1);
         database.addMeta(meta2);
         //---------------------------------------------
-        //List<Atividade> teste2 = database.getAtividadesHistorico(1,12,2015);
-        Meta teste = database.devolveMeta("verao 2020");
-        //listGroup = database.getCategorias();
-        //listData = database.devolveRelacaoCategoriaMeta();
+        listGroup = database.getCategorias();
+        listData = database.devolveRelacaoCategoriaMeta();
         /*ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this,listData,listGroup));
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
