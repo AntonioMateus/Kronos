@@ -22,7 +22,7 @@
     <string name="horasDoDiaExcedidas">You exceeded the 24 hours of your day</string>
 
     <!-- Activity Item -->
-    <string name="listaAtividadesVazia">There are no Activities in your list in the moment.\nPress \"+ Add a new Activity\" for let Kronos help you :)</string>
+    <string name="listaAtividadesVazia">There are no Activities in your list in the moment.\nPress \"+ Add a new Activity\" to let Kronos help you :)</string>
     <string name="editText_atividade_nome">Name</string>
     <string name="editText_atividade_horas">hour</string>
     <string name="editText_activityTimeMinute">min</string>

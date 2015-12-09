@@ -66,7 +66,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
         ViewAtividadeHolder holder = new ViewAtividadeHolder();
 
         holder.setEditTextNome((EditText) view.findViewById(R.id.editText_atividade_nome));
-        //holder.setEditTextHora((EditText) view.findViewById(R.id.spinner_atividade_horas));
         holder.setSpinnerHoras((Spinner) view.findViewById(R.id.spinner_atividade_horas));
         holder.setSpinnerMinuto((Spinner) view.findViewById(R.id.spinner_atividade_minuto));
 
@@ -78,7 +77,6 @@ public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
 
         //View do item da Atividade
         EditText editTextNome = holder.getEditTextNome();
-        //EditText editTextHora = holder.getEditTextHora();
         Spinner spinnerHoras = holder.getSpinnerHoras();
         Spinner spinnerMinuto = holder.getSpinnerMinuto();
         final CheckBox checkBox = holder.getCheckBox();
