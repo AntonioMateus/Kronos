@@ -7,11 +7,13 @@
     <!-- MainActivity -->
     <string name="button_myDay">My Day</string>
     <string name="button_history">History</string>
+    <string name="button_goal">Goal</string>
+    <string name="button_generateData">Generate random data</string>
 
     <!-- MyDayActivity -->
     <string name="title_activity_my_day">How was your day?</string>
     <string name="textView_myDay_titulo">How was your day?</string>
-    <string name="action_setVisibilidadeGrafico">Esconder/Mostrar Grafico</string>
+    <string name="action_setVisibilidadeGrafico">Hide/Show Chart</string>
 
     <!-- PieChart -->
     <string name="pieChart_description">PieChart of Activities</string>
