@@ -1,9 +1,12 @@
 package br.com.kronos.kronos;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +42,6 @@ public class GoalActivity extends Activity implements View.OnClickListener {
 
     private List<String> listGroup;
     private HashMap<String,List<String>> listData;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +142,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         });
 
         expandableListView.setGroupIndicator(getResources().getDrawable(R.drawable.icon_group));
+        //expandableListView.setVisibility(View.VISIBLE);
                 /*
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);
@@ -168,4 +171,44 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         }
         */
     }
+
+    /*public void setGroupParents() {
+        parentItems.add("Android");
+        parentItems.add("Core Java");
+        parentItems.add("Desktop Java");
+        parentItems.add("Enterprise Java");
+    }
+
+    public void setChildData() {
+        // Android
+        ArrayList<String> child = new ArrayList<String>();
+        child.add("Core");
+        child.add("Games");
+        childItems.add(child);
+
+        // Core Java
+        child = new ArrayList<String>();
+        child.add("Apache");
+        child.add("Applet");
+        child.add("AspectJ");
+        child.add("Beans");
+        child.add("Crypto");
+        childItems.add(child);
+
+        // Desktop Java
+        child = new ArrayList<String>();
+        child.add("Accessibility");
+        child.add("AWT");
+        child.add("ImageIO");
+        child.add("Print");
+        childItems.add(child);
+
+        // Enterprise Java
+        child = new ArrayList<String>();
+        child.add("EJB3");
+        child.add("GWT");
+        child.add("Hibernate");
+        child.add("JSP");
+        childItems.add(child);
+    }*/
 }
