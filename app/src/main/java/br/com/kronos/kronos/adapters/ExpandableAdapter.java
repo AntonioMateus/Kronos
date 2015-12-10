@@ -1,10 +1,13 @@
 package br.com.kronos.kronos.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,9 +18,6 @@ import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.kronos.Meta;
 import br.com.kronos.kronos.R;
 
-/**
- * Created by antonio on 01/12/15.
- */
 public class ExpandableAdapter extends BaseExpandableListAdapter {
     private List<String> listGroup;
     private HashMap<String, List<Meta>> listData;
@@ -83,16 +83,20 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.item_expandable_list_view,null);
             holder = new ViewHolderItem();
             convertView.setTag(holder);
-            //holder.progressBar_goal = (ProgressBar) convertView.findViewById(R.id.progressBar_goal);
-            holder.tvItem = (TextView) convertView.findViewById(R.id.tvItem);
+            holder.progressBar_goal = (ProgressBar) convertView.findViewById(R.id.progressBar_goal);
+            holder.tvItem1 = (TextView) convertView.findViewById(R.id.tvItem1);
+            holder.tvItem2 = (TextView) convertView.findViewById(R.id.tvItem2);
         }
         else {
             holder = (ViewHolderItem) convertView.getTag();
         }
-        /*KronosDatabase database = new KronosDatabase(this.context);
+        holder.tvItem1.setText(meta.getDescricao());
+        KronosDatabase database = new KronosDatabase(this.context);
+        int progresso = database.devolveProgressoMeta(meta.getDescricao());
         holder.progressBar_goal.setIndeterminate(false);
-        holder.progressBar_goal.setProgress(database.devolveProgressoMeta(meta.getDescricao()));*/
-        holder.tvItem.setText(meta.getDescricao());
+        holder.progressBar_goal.setProgress(progresso);
+        holder.progressBar_goal.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        holder.tvItem2.setText("meta "+progresso+"% concluida");
         return convertView;
     }
 
@@ -105,7 +109,8 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     class ViewHolderItem {
-        //ProgressBar progressBar_goal;
-        TextView tvItem;
+        ProgressBar progressBar_goal;
+        TextView tvItem1;
+        TextView tvItem2;
     }
 }
