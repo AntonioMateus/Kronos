@@ -41,7 +41,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
     private Handler mHandler = new Handler();
 
     private List<String> listGroup;
-    private HashMap<String,List<String>> listData;
+    private HashMap<String,List<Meta>> listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,42 +66,8 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         database.addMeta(meta2);
         database.addMeta(meta3);
         //---------------------------------------------
-        //listGroup = database.getCategorias();
-        //listData = database.devolveRelacaoCategoriaMeta();
-        listGroup = new ArrayList<>();
-        listGroup.add("grupo 1");
-        listGroup.add("grupo 2");
-        listGroup.add("grupo 3");
-        listGroup.add("grupo 4");
-
-        listData = new HashMap<>();
-        List<String> auxiliar = new ArrayList<>();
-        auxiliar.add("item 1");
-        auxiliar.add("item 2");
-        auxiliar.add("item 3");
-        auxiliar.add("item 4");
-        listData.put(listGroup.get(0), auxiliar);
-
-        auxiliar = new ArrayList<>();
-        auxiliar.add("item 5");
-        auxiliar.add("item 6");
-        auxiliar.add("item 7");
-        auxiliar.add("item 8");
-        listData.put(listGroup.get(1), auxiliar);
-
-        auxiliar = new ArrayList<>();
-        auxiliar.add("item 9");
-        auxiliar.add("item 10");
-        auxiliar.add("item 11");
-        auxiliar.add("item 12");
-        listData.put(listGroup.get(2), auxiliar);
-
-        auxiliar = new ArrayList<>();
-        auxiliar.add("item 13");
-        auxiliar.add("item 14");
-        auxiliar.add("item 15");
-        auxiliar.add("item 16");
-        listData.put(listGroup.get(3), auxiliar);
+        listGroup = database.getCategorias();
+        listData = database.devolveRelacaoCategoriaMeta();
 
         /*Set<String> categorias = listData.keySet();
         Iterator<String> it = categorias.iterator();
@@ -142,7 +108,6 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         });
 
         expandableListView.setGroupIndicator(getResources().getDrawable(R.drawable.icon_group));
-        //expandableListView.setVisibility(View.VISIBLE);
                 /*
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);

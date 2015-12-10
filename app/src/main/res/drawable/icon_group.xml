@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_expanded="true" android:drawable="@drawable/spinner_button_goal_down"/>
-    <item android:drawable="@drawable/spinner_button_goal_right"/>
+    <item android:state_empty="true">
+        <layer-list>
+            <item
+                android:left="5dp"
+                android:right="-20dp"
+                android:top="10dp"
+                android:bottom="10dp"
+                android:drawable="@drawable/spinner_button_goal_right">
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_expanded="true">
+        <layer-list>
+            <item
+                android:left="5dp"
+                android:right="-25dp"
+                android:top="10dp"
+                android:bottom="15dp"
+                android:drawable="@drawable/spinner_button_goal_down"
+                >
+            </item>
+        </layer-list>
+    </item>
 </selector>

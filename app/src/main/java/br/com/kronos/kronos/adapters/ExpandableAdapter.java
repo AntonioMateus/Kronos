@@ -20,14 +20,15 @@ import br.com.kronos.kronos.R;
  */
 public class ExpandableAdapter extends BaseExpandableListAdapter {
     private List<String> listGroup;
-    private HashMap<String, List<String>> listData;
+    private HashMap<String, List<Meta>> listData;
     private LayoutInflater inflater;
     private Context context;
 
-    public ExpandableAdapter(Context context, HashMap<String, List<String>> listData, List<String> listGroup) {
+    public ExpandableAdapter(Context context, HashMap<String, List<Meta>> listData, List<String> listGroup) {
         this.context = context;
         this.listGroup = listGroup;
         this.listData = listData;
+        this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -77,7 +78,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ViewHolderItem holder;
-        //Meta meta = (Meta) getChild(groupPosition,childPosition);
+        Meta meta = (Meta) getChild(groupPosition,childPosition);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_expandable_list_view,null);
             holder = new ViewHolderItem();
@@ -91,7 +92,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         /*KronosDatabase database = new KronosDatabase(this.context);
         holder.progressBar_goal.setIndeterminate(false);
         holder.progressBar_goal.setProgress(database.devolveProgressoMeta(meta.getDescricao()));*/
-        holder.tvItem.setText(listData.get(listGroup.get(groupPosition)).get(childPosition));
+        holder.tvItem.setText(meta.getDescricao());
         return convertView;
     }
 
