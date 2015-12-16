@@ -32,7 +32,7 @@ public class HistoryActivity extends Activity {
     long oneDay = 86400000l; //1 day in milliseconds
     long oneWeek = 604800000l; //1 week in milliseconds
     long oneMonth = 2592000000l; //1 month in milliseconds
-    long oneYear = 315360000000000l; //1 year in milliseconds
+    long oneYear = oneDay*365; //1 year in milliseconds
 
     long diff;
     Date searchDate;
@@ -99,24 +99,11 @@ public class HistoryActivity extends Activity {
                 forLimit = oneYear;
                 break;
         }
-        /*
-        if(periodSelected.equalsIgnoreCase("yesterday")){
-            forLimit = oneDay;
-        }
-        else if(periodSelected.equalsIgnoreCase("last week")){
-            forLimit = oneWeek;
-        }
-        else if(periodSelected.equalsIgnoreCase("last month")){
-            forLimit = oneMonth;
-        }
-        else if(periodSelected.equalsIgnoreCase("last year")){
-            forLimit = oneDay*365;
-        }
-        */
 
         //clean the memory
         //cumulativeActivityList.removeAll(cumulativeActivityList);
         cumulativeActivityList = new LinkedList<>();
+        itens = new LinkedList<>();
         //days that the user used the app, useful for showing the days of use
         //^not done yet, might create a class for it
         //number of days that the app was used
@@ -148,7 +135,7 @@ public class HistoryActivity extends Activity {
                         Atividade newActivity = new Atividade(name, duration, quality, day, month, year);
                         cumulativeActivityList.add(newActivity);
                     } else {
-                        //if already exists, acummulate
+                        //if already exists, accumulate
                         int index = cumulativeActivityList.indexOf(activity);
                         Atividade cumuAct = cumulativeActivityList.get(index);
                         double cumuDuration = cumuAct.getDuracao();
@@ -173,7 +160,8 @@ public class HistoryActivity extends Activity {
             itens.add(listItem);
         }
 
+
         HistoryAdapterListView adapterListView = new HistoryAdapterListView(this, itens);
-        listView.setAdapter(adapterListView);//Alimentar a lista de atividades com o Adapter
+        listView.setAdapter(adapterListView);
     }
 }
