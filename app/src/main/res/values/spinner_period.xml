@@ -4,6 +4,7 @@
         <item>yesterday</item>
         <item>last week</item>
         <item>last month</item>
+        <item>last year</item>
         <item>custom</item>
     </string-array>
 </resources>

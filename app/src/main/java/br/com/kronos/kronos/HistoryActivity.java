@@ -2,11 +2,14 @@ package br.com.kronos.kronos;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,6 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
+import br.com.kronos.kronos.adapters.HistoryAdapterListView;
 import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 import br.com.kronos.listener.HistorySpinnerPeriodListener;
 
@@ -22,21 +27,9 @@ public class HistoryActivity extends Activity {
 
     public KronosDatabase kronosDatabase;
     private Spinner period;
-    private Spinner format;
-    private int day;
-    private int month;
-    private int year;
-    public List<Atividade> cumulativaActivityList;
-
-    Date today = new java.util.Date();
-    long oneDay = 86400000l; //1 day in milliseconds
-    long oneMonth = 2592000000l; //1 month in milliseconds
-    long oneYear = 315360000000000l; //1 year in milliseconds
-
-    long diff;
-    Date searchDate;
-    DateFormat df = new SimpleDateFormat("ddMMyyyy");
-    String date;
+    public List<Atividade> cumulativeActivityList;
+    public HistoryAdapterListView historyAdapterListView;
+    public ListView listView;
 
     private PieChart pieChart;
 
@@ -47,9 +40,9 @@ public class HistoryActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //creates de database and the list
+        listView = (ListView) findViewById(R.id.listView_history_activities);
         kronosDatabase = new KronosDatabase(this);
-        cumulativaActivityList = new LinkedList<>();
-
+        cumulativeActivityList = new LinkedList<>();
 
         //"creates" de spinner
         period = (Spinner) findViewById(R.id.spinner_selectPeriod);
@@ -58,7 +51,7 @@ public class HistoryActivity extends Activity {
         //create the adapter
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, period_options);
         //set the listener
-        period.setOnItemSelectedListener(new HistorySpinnerPeriodListener());
+        period.setOnItemSelectedListener(new HistorySpinnerPeriodListener(this,cumulativeActivityList, kronosDatabase,historyAdapterListView,listView));
         //set the view for the dropdown. Remember that you might have to use some attr from the simple spinner
         dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         //set the adapter
@@ -76,63 +69,4 @@ public class HistoryActivity extends Activity {
 
         */
     }
-
-    //
-    public void onYesterday(){
-        diff = today.getTime()-oneDay;
-        searchDate = new Date(diff);
-        date = df.format(searchDate);
-        day = Integer.parseInt(date.substring(0,2));
-        month = Integer.parseInt(date.substring(2, 4));
-        year = Integer.parseInt(date.substring(4,8));
-        cumulativaActivityList.removeAll(cumulativaActivityList);
-        cumulativaActivityList = kronosDatabase.getAtividadesHistorico(day, month, year);
-    }
-
-    //
-    public void onLastMonth(){
-        List<Atividade> tempActivityList;
-        cumulativaActivityList.removeAll(cumulativaActivityList);
-        List<Integer> daysOfUse = new LinkedList<>();
-        int totalDays = 0;
-
-        for(long daysIterator = oneDay; daysIterator<oneMonth; daysIterator+=oneDay){
-            diff = today.getTime() - daysIterator;
-            searchDate = new Date(diff);
-            date = df.format(searchDate);
-            day = Integer.parseInt(date.substring(0, 2));
-            month = Integer.parseInt(date.substring(2, 4));
-            year = Integer.parseInt(date.substring(4, 8));
-            tempActivityList = kronosDatabase.getAtividadesHistorico(day, month,year);
-
-            if(tempActivityList.size()>0){
-                totalDays++;
-                daysOfUse.add(day);
-            }
-
-            for(Atividade activities : tempActivityList){
-                if(!cumulativaActivityList.contains(activities)){
-                    //creates another atividade
-                    //setting the falues to 1/30 to avoid iterating another time
-                    double duration = activities.getDuracao();
-                    double quality = activities.getQualidade();
-                    String name = activities.getNome();
-                    Atividade newActivity = new Atividade(name,duration,quality,day,month,year);
-                    cumulativaActivityList.add(newActivity);
-                }else{
-                    int index = cumulativaActivityList.indexOf(activities);
-                    Atividade cumuAct = cumulativaActivityList.get(index);
-                    if(activities.getNome().equalsIgnoreCase(cumuAct.getNome())){
-                        double cumuDuration = cumuAct.getDuracao();
-                        double cumuQuality = cumuAct.getQualidade();
-                        double tempDuration = activities.getDuracao();
-                        double tempQuality = activities.getQualidade();
-                        //cumuAct.setDuracao();
-                        //cumuAct.setQualidade();
-                    }
-                }
-            }
-        }
-    }
-
 }

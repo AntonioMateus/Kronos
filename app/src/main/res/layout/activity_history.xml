@@ -27,11 +27,21 @@
         android:layout_marginLeft="@dimen/history_spinner_margin"
         />
 
+    <ListView
+        android:id="@+id/listView_history_activities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_history_title"
+        android:descendantFocusability="beforeDescendants" />
+
+
+    <!-- depois vai virar o header
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart_activities"
         android:layout_below="@id/textView_history_title"
         android:layout_width="0dp"
         android:layout_height="0dp"/>
+        -->
     <!-- 1 coisa de cada vez
 
     <TextView
@@ -52,13 +62,6 @@
         android:layout_toRightOf="@id/textView_history_activity_title"
         android:layout_toEndOf="@id/textView_history_activity_title"
         />
-
-    <ListView
-        android:id="@+id/listView_history_activities"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView_history_activity_title"
-        android:descendantFocusability="beforeDescendants" />
 
     <TextView
         android:id="@+id/textView_history_goals_title"
