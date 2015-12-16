@@ -19,7 +19,6 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
     public KronosDatabase kronosDatabase;
     public List<Atividade> cumulativeActivityList;
     public HistoryAdapterListView historyAdapterListView;
-    //public Badass bad;
     public HistoryActivity historyActivity;
     public ListView listView;
 
@@ -29,7 +28,6 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
         this.historyAdapterListView = historyAdapterListView;
         this.historyActivity = historyActivity;
         this.listView = listView;
-        //bad = new Badass(context,cumulativeActivityList,kronosDatabase,historyAdapterListView,listView);
     }
 
 
@@ -43,25 +41,6 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
 
         String periodSelected = parent.getItemAtPosition(pos).toString().toLowerCase();
         historyActivity.selectedTime(periodSelected);
-
-        /*
-        if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("yesterday")){
-            bad.selectedTime("yesterday");
-            bad.setTheMiracle();
-        }
-        else if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("last week")) {
-            bad.selectedTime("last week");
-            bad.setTheMiracle();
-        }
-        else if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("last month")) {
-            bad.selectedTime("last month");
-            bad.setTheMiracle();
-        }
-        else if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("last year")) {
-            bad.selectedTime("last year");
-            bad.setTheMiracle();
-        }
-        */
     }
 
     @Override
