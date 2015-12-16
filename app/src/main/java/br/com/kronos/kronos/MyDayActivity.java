@@ -283,7 +283,11 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
             public String getFormattedValue(float value) {
                 int hora = (int) value;
                 int minuto = (int) (value * 60) % 60;
-                return hora + "h" + minuto + "min";
+                if (minuto > 0) {
+                    return hora + "h" + minuto + "min";
+                }else{
+                    return hora + "h";
+                }
             }
         });
 
