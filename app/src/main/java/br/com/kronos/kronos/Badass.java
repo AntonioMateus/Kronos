@@ -75,7 +75,7 @@ public class Badass {
         int cont = 0;
 
         //for that goes day by day
-        for(long daysIterator = oneDay; daysIterator<=forLimit; daysIterator+=oneDay){
+        for (long daysIterator = oneDay; daysIterator <= forLimit; daysIterator += oneDay) {
             diff = today.getTime() - daysIterator;
             searchDate = new Date(diff);
             date = df.format(searchDate);
@@ -83,21 +83,21 @@ public class Badass {
             int month = Integer.parseInt(date.substring(2, 4));
             int year = Integer.parseInt(date.substring(4, 8));
             //gets the list of a specific day
-            tempActivityList = kronosDatabase.getAtividadesHistorico(day, month,year);
+            tempActivityList = kronosDatabase.getAtividadesHistorico(day, month, year);
 
             //if the list is not empty means that the app was used
-            if(tempActivityList.size()>0){
+            if (tempActivityList.size() > 0) {
                 totalDays = totalDays + 1;
                 //iterates on the activities of a day
-                for(Atividade activities : tempActivityList){
+                for (Atividade activities : tempActivityList) {
                     //if its new stores in a list called cumulative
-                    if(!cumulativeActivityList.contains(activities)){
+                    if (!cumulativeActivityList.contains(activities)) {
                         double duration = activities.getDuracao();
                         double quality = activities.getQualidade();
                         String name = activities.getNome();
-                        Atividade newActivity = new Atividade(name,duration,quality,day,month,year);
+                        Atividade newActivity = new Atividade(name, duration, quality, day, month, year);
                         cumulativeActivityList.add(newActivity);
-                    } else{
+                    } else {
                         //if already exists, acummulate
                         int index = cumulativeActivityList.indexOf(activities);
                         Atividade cumuAct = cumulativeActivityList.get(index);
@@ -105,8 +105,8 @@ public class Badass {
                         double cumuQuality = cumuAct.getQualidade();
                         double tempDuration = activities.getDuracao();
                         double tempQuality = activities.getQualidade();
-                        cumuAct.setDuracao(cumuDuration+tempDuration);
-                        cumuAct.setQualidade(cumuQuality+tempQuality);
+                        cumuAct.setDuracao(cumuDuration + tempDuration);
+                        cumuAct.setQualidade(cumuQuality + tempQuality);
                     }
                 }
             }

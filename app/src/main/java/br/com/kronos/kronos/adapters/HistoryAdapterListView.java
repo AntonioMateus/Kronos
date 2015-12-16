@@ -12,9 +12,6 @@ import java.util.List;
 
 import br.com.kronos.kronos.R;
 
-/**
- * Created by gustavo on 15/12/15.
- */
 public class HistoryAdapterListView extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<HistoryListViewItem> itens;
@@ -63,8 +60,8 @@ public class HistoryAdapterListView extends BaseAdapter {
         //and set the item values.
         HistoryListViewItem item = itens.get(position);
         itemHolder.actName.setText(item.getActivityName());
-        itemHolder.actQuality.setText(""+item.getDuration());
-        itemHolder.actDuration.setText(""+item.getDuration());
+        itemHolder.actQuality.setText("" + item.getDuration());
+        itemHolder.actDuration.setText("" + item.getDuration());
 
         //retorna a view com as informações
         return view;

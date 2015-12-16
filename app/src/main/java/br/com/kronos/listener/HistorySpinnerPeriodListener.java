@@ -1,24 +1,15 @@
 package br.com.kronos.listener;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.kronos.Atividade;
-import br.com.kronos.kronos.Badass;
 import br.com.kronos.kronos.HistoryActivity;
 import br.com.kronos.kronos.adapters.HistoryAdapterListView;
 
@@ -28,17 +19,17 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
     public KronosDatabase kronosDatabase;
     public List<Atividade> cumulativeActivityList;
     public HistoryAdapterListView historyAdapterListView;
-    public Badass bad;
-    public Context context;
+    //public Badass bad;
+    public HistoryActivity historyActivity;
     public ListView listView;
 
-    public HistorySpinnerPeriodListener(Context context,List<Atividade> cumulativeActivityList, KronosDatabase kronosDatabase,HistoryAdapterListView historyAdapterListView, ListView listView ){
+    public HistorySpinnerPeriodListener(HistoryActivity historyActivity,List<Atividade> cumulativeActivityList, KronosDatabase kronosDatabase,HistoryAdapterListView historyAdapterListView, ListView listView ){
         this.cumulativeActivityList = cumulativeActivityList;
         this.kronosDatabase = kronosDatabase;
         this.historyAdapterListView = historyAdapterListView;
-        this.context = context;
+        this.historyActivity = historyActivity;
         this.listView = listView;
-        bad = new Badass(context,cumulativeActivityList,kronosDatabase,historyAdapterListView,listView);
+        //bad = new Badass(context,cumulativeActivityList,kronosDatabase,historyAdapterListView,listView);
     }
 
 
@@ -50,6 +41,10 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
         */
         Toast.makeText(parent.getContext(), "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
 
+        String periodSelected = parent.getItemAtPosition(pos).toString().toLowerCase();
+        historyActivity.selectedTime(periodSelected);
+
+        /*
         if(parent.getItemAtPosition(pos).toString().equalsIgnoreCase("yesterday")){
             bad.selectedTime("yesterday");
             bad.setTheMiracle();
@@ -66,6 +61,7 @@ public class HistorySpinnerPeriodListener implements OnItemSelectedListener {
             bad.selectedTime("last year");
             bad.setTheMiracle();
         }
+        */
     }
 
     @Override
