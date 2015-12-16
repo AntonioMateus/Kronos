@@ -19,7 +19,8 @@
         <activity
             android:name=".MyDayActivity"
             android:label="@string/title_activity_my_day"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.kronos.kronos.MainActivity" />
