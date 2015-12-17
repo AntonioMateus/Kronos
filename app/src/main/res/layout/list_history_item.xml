@@ -4,24 +4,45 @@
 
     <TextView
         android:id="@+id/history_activity"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_toLeftOf="@+id/history_activity_quality"
+        android:layout_toStartOf="@id/history_activity_quality"
+        android:textSize="@dimen/textView_history_activity"
+        android:textColor="@color/textView_history_activity"
+        android:text="Dormir"/>
+
     <TextView
-        android:id="@+id/history_activity_quality"
+        android:id="@id/history_activity_quality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/history_activity"
-        android:layout_toRightOf="@id/history_activity"
         android:layout_marginStart="5sp"
-        />
+        android:layout_toLeftOf="@+id/separator"
+        android:layout_toStartOf="@id/separator"
+        android:textSize="@dimen/textView_history_activity_quality"
+        android:textColor="@color/textView_history_activity_quality"
+        android:text="5"/>
+
     <TextView
-        android:id="@+id/history_activity_duration"
+        android:id="@id/separator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/history_activity_quality"
-        android:layout_toRightOf="@id/history_activity_quality"
+        android:layout_toLeftOf="@+id/history_activity_duration"
+        android:layout_toStartOf="@id/history_activity_duration"
         android:layout_marginStart="5sp"
-        />
+        android:layout_marginEnd="5sp"
+        android:textSize="@dimen/textView_separator"
+        android:textColor="@color/textView_separator"
+        android:text="@string/textView_separator"/>
+
+    <TextView
+        android:id="@id/history_activity_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/textView_history_activity_duration"
+        android:textColor="@color/textView_history_activity_duration"
+        android:text="4.0"/>
 
 </RelativeLayout>

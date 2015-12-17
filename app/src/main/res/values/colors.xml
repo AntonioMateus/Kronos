@@ -17,6 +17,10 @@
     <color name="spinner_selectPeriod">#000000</color>
     <color name="textView_history_activity_title">#000000</color>
     <color name="textView_goals_title">#000000</color>
+    <color name="textView_history_activity">#000000</color>
+    <color name="textView_history_activity_quality">#2196f3</color>
+    <color name="textView_history_activity_duration">#2196f3</color>
+    <color name="textView_separator">#2196f3</color>
 
     <!-- QualidadeDialog -->
     <color name="button_avaliar">#000000</color>

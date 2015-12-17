@@ -43,6 +43,7 @@
     <string name="title_activity_history">History</string>
     <string name="history_activities_title">Activities</string>
     <string name="history_goals_title">Goals</string>
+    <string name="textView_separator">-</string>
 
     <!-- Goals -->
     <string name="title_activity_goal">Goals</string>

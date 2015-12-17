@@ -124,7 +124,7 @@ public class HistoryActivity extends Activity {
 
             //if the list is not empty means that the app was used
             if ( !tempActivityList.isEmpty() ) {
-                totalDays = totalDays + 1;
+                totalDays += 1;
                 //iterates on the activities of a day
                 for (Atividade activity : tempActivityList) {
                     //if its new stores in a list called cumulative

@@ -116,7 +116,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             if(pRandomico < probabilidadeDeUsarOKronos) {
                 for (String atividadeNome : atividadesNome) {
-                    double duracao = random.nextInt((24 / atividadesNome.length) * 60) / 60;
+                    double duracao = random.nextDouble() * (24/ atividadesNome.length);
                     if (duracao != 0) {
                         double qualidade = random.nextInt(5);
                         Atividade atividade = new Atividade(atividadeNome, duracao, qualidade, diaCorrente, mesCorrente, anoCorrente);

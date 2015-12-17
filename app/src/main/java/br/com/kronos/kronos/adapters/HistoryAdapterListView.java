@@ -59,9 +59,18 @@ public class HistoryAdapterListView extends BaseAdapter {
         //get the data from the list
         //and set the item values.
         HistoryListViewItem item = itens.get(position);
-        itemHolder.actName.setText("Atividade: " + item.getActivityName());
-        itemHolder.actQuality.setText("Duração: " + (int) item.getDuration());
-        itemHolder.actDuration.setText("Qualidade: " + (int) item.getDuration());
+        itemHolder.actName.setText(item.getActivityName());
+        itemHolder.actQuality.setText("" + (int) item.getQuality());
+
+        String duration = "";
+        if(item.getDuration() >= 1) {
+            duration += (int) item.getDuration() + "h";
+        }
+        int minutes = (int) ((item.getDuration() - (int) item.getDuration()) * 60);
+        if( minutes > 0) {
+            duration += minutes + "min";
+        }
+        itemHolder.actDuration.setText(duration);
 
         //retorna a view com as informações
         return view;
