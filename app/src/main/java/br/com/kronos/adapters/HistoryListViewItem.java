@@ -1,8 +1,5 @@
-package br.com.kronos.kronos.adapters;
+package br.com.kronos.adapters;
 
-/**
- * Created by gustavo on 15/12/15.
- */
 public class HistoryListViewItem {
     private String activityName;
     private double quality;

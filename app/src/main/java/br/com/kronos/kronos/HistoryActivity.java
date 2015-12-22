@@ -3,9 +3,17 @@ package br.com.kronos.kronos;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,9 +22,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import br.com.kronos.adapters.ViewPagerAdapter;
+import br.com.kronos.chartmakers.AtividadesBarChartMaker;
+import br.com.kronos.chartmakers.ChartMaker;
+import br.com.kronos.chartmakers.DiarioPieChartMaker;
 import br.com.kronos.database.KronosDatabase;
-import br.com.kronos.kronos.adapters.HistoryAdapterListView;
-import br.com.kronos.kronos.adapters.HistoryListViewItem;
+import br.com.kronos.adapters.HistoryAdapterListView;
+import br.com.kronos.adapters.HistoryListViewItem;
+import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.listener.HistorySpinnerPeriodListener;
 
 public class HistoryActivity extends Activity {
@@ -26,7 +39,10 @@ public class HistoryActivity extends Activity {
     public HistoryAdapterListView historyAdapterListView;
     public List<HistoryListViewItem> itens;
     public List<Atividade> cumulativeActivityList;
+
     public ListView listView;
+    private PieChart pieChart;
+    private BarChart barChart;
 
     Date today = new java.util.Date();
     long oneDay = 86400000l; //1 day in milliseconds
@@ -38,8 +54,6 @@ public class HistoryActivity extends Activity {
     Date searchDate;
     DateFormat df = new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH);
     String date;
-
-    //private PieChart pieChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +70,9 @@ public class HistoryActivity extends Activity {
         kronosDatabase = new KronosDatabase(this);
         cumulativeActivityList = new LinkedList<>();
         itens = new LinkedList<>();
+        //cria os graficos que serao eventualmente serem colocados como headers da ListView
+        pieChart = (PieChart) getLayoutInflater().inflate(R.layout.layout_piechart_atividades, listView, false);
+        barChart = (BarChart) getLayoutInflater().inflate(R.layout.layout_barchart_atividades, listView, false);
 
         //"creates" de spinner
         Spinner period = (Spinner) findViewById(R.id.spinner_selectPeriod);
@@ -83,25 +100,18 @@ public class HistoryActivity extends Activity {
         */
     }
 
-    public void selectedTime(String periodSelected){
+    public void selectedTime(String periodSelected) {
         long forLimit = 0;
-        switch (periodSelected) {
-            case "yesterday":
-                forLimit = oneDay;
-                break;
-            case "last week":
-                forLimit = oneWeek;
-                break;
-            case "last month":
-                forLimit = oneMonth;
-                break;
-            case "last year":
-                forLimit = oneYear;
-                break;
+        if (periodSelected.equals(getString(R.string.yesterday))) {
+            forLimit = oneDay;
+        } else if (periodSelected.equals(getString(R.string.last_week))) {
+            forLimit = oneWeek;
+        } else if (periodSelected.equals(getString(R.string.last_month))) {
+            forLimit = oneMonth;
+        } else if (periodSelected.equals(getString(R.string.last_year))) {
+            forLimit = oneYear;
         }
 
-        //clean the memory
-        //cumulativeActivityList.removeAll(cumulativeActivityList);
         cumulativeActivityList = new LinkedList<>();
         itens = new LinkedList<>();
         //days that the user used the app, useful for showing the days of use
@@ -123,7 +133,7 @@ public class HistoryActivity extends Activity {
             List<Atividade> tempActivityList = kronosDatabase.getAtividadesHistorico(day, month, year);
 
             //if the list is not empty means that the app was used
-            if ( !tempActivityList.isEmpty() ) {
+            if (!tempActivityList.isEmpty()) {
                 totalDays += 1;
                 //iterates on the activities of a day
                 for (Atividade activity : tempActivityList) {
@@ -150,18 +160,45 @@ public class HistoryActivity extends Activity {
         }
 
         //divide the result by the number of the days that the app was used
-        for(Atividade cumuActivity : cumulativeActivityList){
-            double changeDuration = cumuActivity.getDuracao()/totalDays;
-            double changeQuality = cumuActivity.getQualidade()/totalDays;
+        for (Atividade cumuActivity : cumulativeActivityList) {
+            double changeDuration = cumuActivity.getDuracao() / totalDays;
+            double changeQuality = cumuActivity.getQualidade() / totalDays;
             cumuActivity.setDuracao(changeDuration);
             cumuActivity.setQualidade(changeQuality);
+            cumuActivity.setChecked(true); //para ser inclusa no grafico
             //and add it to the adapter so that we can expand the list
-            HistoryListViewItem listItem = new HistoryListViewItem(cumuActivity.getNome(),cumuActivity.getQualidade(),cumuActivity.getDuracao());
+            HistoryListViewItem listItem = new HistoryListViewItem(cumuActivity.getNome(), cumuActivity.getQualidade(), cumuActivity.getDuracao());
             itens.add(listItem);
         }
 
+        updateListView();
+    }
 
+    public void updateListView(){
+        //Atualiza ListView com os cada um dos itens calculados
         HistoryAdapterListView adapterListView = new HistoryAdapterListView(this, itens);
         listView.setAdapter(adapterListView);
+
+        //Remove o Header atual e Adiciona o Header atualizado
+        listView.removeHeaderView(pieChart);
+        listView.removeHeaderView(barChart);
+        //Cria graficos e adiciona-os ao pager
+        try {
+            DiarioPieChartMaker diarioChartMaker = new DiarioPieChartMaker();
+            int pieChartWidth = AbsListView.LayoutParams.MATCH_PARENT;
+            int pieChartHeight = getResources().getDimensionPixelSize(R.dimen.pieChart_activities_height);
+            diarioChartMaker.getChart(pieChart, cumulativeActivityList, pieChartWidth, pieChartHeight);
+
+            AtividadesBarChartMaker atividadesBarChartMaker = new AtividadesBarChartMaker();
+            int barChartWidth = AbsListView.LayoutParams.MATCH_PARENT;
+            int barChartHeight = getResources().getDimensionPixelSize(R.dimen.pieChart_activities_height);
+            atividadesBarChartMaker.getChart(barChart, cumulativeActivityList, barChartWidth, barChartHeight);
+
+            //Adiciona Graficos ao header
+            listView.addHeaderView(pieChart);
+            listView.addHeaderView(barChart);
+        } catch (HorasDiaExcedidoException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -12,7 +12,6 @@ import android.widget.RatingBar;
 
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.adapters.ListAtividadesAdapter;
 
 public class QualidadeDialogFragment extends DialogFragment implements RatingBar.OnRatingBarChangeListener {
     private Atividade atividade;

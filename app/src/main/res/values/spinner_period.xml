@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="spinner_period_options">
-        <item>yesterday</item>
-        <item>last week</item>
-        <item>last month</item>
-        <item>last year</item>
-        <item>custom</item>
+        <item>@string/yesterday</item>
+        <item>@string/last_week</item>
+        <item>@string/last_month</item>
+        <item>@string/last_year</item>
+        <item>@string/custom</item>
     </string-array>
 </resources>

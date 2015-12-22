@@ -1,4 +1,4 @@
-package br.com.kronos.kronos.viewListener;
+package br.com.kronos.listener;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,8 +9,8 @@ import android.widget.Toast;
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
-import br.com.kronos.kronos.adapters.ViewAtividadeHolder;
+import br.com.kronos.adapters.ListAtividadesAdapterListener;
+import br.com.kronos.adapters.ViewAtividadeHolder;
 
 public class SpinnerHorasItemSelectedListener implements AdapterView.OnItemSelectedListener {
 

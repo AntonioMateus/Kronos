@@ -1,8 +1,4 @@
-package br.com.kronos.kronos.adapters;
-
-/**
- * Created by gustavo on 15/12/15.
- */
+package br.com.kronos.adapters;
 
 import android.widget.TextView;
 

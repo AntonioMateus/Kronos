@@ -44,9 +44,14 @@
     <string name="history_activities_title">Activities</string>
     <string name="history_goals_title">Goals</string>
     <string name="textView_separator">-</string>
+    <string name="yesterday">yesterday</string>
+    <string name="last_week">last week</string>
+    <string name="last_month">last month</string>
+    <string name="last_year">last year</string>
+    <string name="custom">custom</string>
 
     <!-- Goals -->
-    <string name="title_activity_goal">Goals</string>
+    <string name="title_activity_goal">What do you want?</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

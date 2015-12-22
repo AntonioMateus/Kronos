@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tvItem1"
+        android:textColor="@color/tvItem1"
         android:layout_marginLeft="30dp" />
 
     <ProgressBar
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/tvItem2"
+        android:textColor="@color/tvItem2"
         android:layout_marginLeft="30dp"
         android:layout_below="@id/progressBar_goal" />
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package br.com.kronos.kronos.adapters;
+package br.com.kronos.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -25,7 +25,7 @@
         android:entries="@array/spinner_period_options"
         android:textColor="@color/spinner_selectPeriod"
         android:layout_marginLeft="@dimen/history_spinner_margin"
-        />
+        android:layout_marginStart="@dimen/history_spinner_margin"/>
 
     <ListView
         android:id="@+id/listView_history_activities"

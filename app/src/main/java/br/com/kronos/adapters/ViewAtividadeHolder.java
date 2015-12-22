@@ -1,4 +1,4 @@
-package br.com.kronos.kronos.adapters;
+package br.com.kronos.adapters;
 
 import android.widget.Button;
 import android.widget.CheckBox;

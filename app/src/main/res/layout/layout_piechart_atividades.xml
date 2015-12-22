@@ -2,6 +2,6 @@
 <com.github.mikephil.charting.charts.PieChart
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="220dp">
+    android:layout_height="@dimen/pieChart_activities_height">
 
 </com.github.mikephil.charting.charts.PieChart>

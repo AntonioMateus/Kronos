@@ -19,6 +19,8 @@
     <!-- PieChart Activities-->
     <dimen name="pieChart_activities_height">250dp</dimen>
     <dimen name="pieChart_title">30sp</dimen>
+    <!-- BarChart Activities -->
+    <dimen name="barChart_activities_height">250dp</dimen>
 
     <!-- History -->
     <dimen name="textView_history_title">25sp</dimen>
@@ -35,6 +37,7 @@
     <!-- Goals -->
     <dimen name="textView_goals_title">30dp</dimen>
     <dimen name="textView_goals_category">30dp</dimen>
+    <dimen name="expandableListView_metas_divider">4px</dimen>
 
     <!-- QualidadeDialog -->
     <dimen name="dialog_qualidade_padding">5dp</dimen>

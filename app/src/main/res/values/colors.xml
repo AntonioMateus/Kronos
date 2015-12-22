@@ -24,4 +24,10 @@
 
     <!-- QualidadeDialog -->
     <color name="button_avaliar">#000000</color>
+
+    <!-- Goals -->
+    <color name="expandableListView_metas_divider">#000000</color>
+    <color name="tvGroup">#000000</color>
+    <color name="tvItem1">#000000</color>
+    <color name="tvItem2">#000000</color>
 </resources>

@@ -1,36 +1,20 @@
 package br.com.kronos.kronos;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ExpandableListActivity;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import br.com.kronos.database.KronosDatabase;
-import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.adapters.ExpandableAdapter;
+import br.com.kronos.adapters.ExpandableAdapter;
 
 public class GoalActivity extends Activity implements View.OnClickListener {
     private ImageView _image;
@@ -47,9 +31,13 @@ public class GoalActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         KronosDatabase database = new KronosDatabase(GoalActivity.this);
+
         //Criacao de metas para teste
         database.removeTodasMetas();
         Meta meta1 = new Meta("projeto verao 2020",3,0,"saude",7,12,2015);
@@ -66,6 +54,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         database.addMeta(meta2);
         database.addMeta(meta3);
         //---------------------------------------------
+
         listGroup = database.getCategorias();
         listData = database.devolveRelacaoCategoriaMeta();
 
@@ -84,31 +73,31 @@ public class GoalActivity extends Activity implements View.OnClickListener {
             Log.d(null, "*********************** meta " +i +": " +metas.get(i).toString());
         }*/
 
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_metas);
         expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this, listData, listGroup));
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(GoalActivity.this, "item " + childPosition + " do grupo " + groupPosition, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoalActivity.this, "item " + childPosition + " do grupo " + groupPosition, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(GoalActivity.this, "grupo " + groupPosition + " expandindo", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoalActivity.this, "grupo " + groupPosition + " expandindo", Toast.LENGTH_SHORT).show();
             }
         });
 
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(GoalActivity.this, "grupo " + groupPosition + " retraindo", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoalActivity.this, "grupo " + groupPosition + " retraindo", Toast.LENGTH_SHORT).show();
             }
         });
 
         expandableListView.setGroupIndicator(getResources().getDrawable(R.drawable.icon_group));
-                /*
+        /*
         ImageButton botao = (ImageButton) findViewById(R.id.imageButton_spinner);
         botao.setOnClickListener(this);
         _image = (ImageView) findViewById(R.id.imageButton_spinner);

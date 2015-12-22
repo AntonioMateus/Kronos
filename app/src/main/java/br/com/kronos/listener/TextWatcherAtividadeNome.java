@@ -1,4 +1,4 @@
-package br.com.kronos.kronos.viewListener;
+package br.com.kronos.listener;
 
 import android.content.Context;
 import android.text.Editable;
@@ -12,7 +12,7 @@ import java.util.List;
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.adapters.ListAtividadesAdapterListener;
+import br.com.kronos.adapters.ListAtividadesAdapterListener;
 
 public class TextWatcherAtividadeNome implements TextWatcher {
     private Context context;

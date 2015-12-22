@@ -1,4 +1,4 @@
-package br.com.kronos.kronos.adapters;
+package br.com.kronos.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,9 +21,9 @@ import br.com.kronos.exceptions.HorasDiaExcedidoException;
 import br.com.kronos.fragmentos.QualidadeDialogFragment;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
-import br.com.kronos.kronos.viewListener.SpinnerHorasItemSelectedListener;
-import br.com.kronos.kronos.viewListener.SpinnerMinutosItemSelectedListener;
-import br.com.kronos.kronos.viewListener.TextWatcherAtividadeNome;
+import br.com.kronos.listener.SpinnerHorasItemSelectedListener;
+import br.com.kronos.listener.SpinnerMinutosItemSelectedListener;
+import br.com.kronos.listener.TextWatcherAtividadeNome;
 
 public class ListAtividadesAdapter extends ArrayAdapter<Atividade>{
     private final int resource;

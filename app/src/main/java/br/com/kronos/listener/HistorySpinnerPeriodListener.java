@@ -11,7 +11,7 @@ import java.util.List;
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.HistoryActivity;
-import br.com.kronos.kronos.adapters.HistoryAdapterListView;
+import br.com.kronos.adapters.HistoryAdapterListView;
 
 
 public class HistorySpinnerPeriodListener implements OnItemSelectedListener {

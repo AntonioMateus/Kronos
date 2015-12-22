@@ -11,5 +11,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tvGroup"
+        android:textColor="@color/tvGroup"
         android:layout_marginLeft="20dp" />
 </LinearLayout>
