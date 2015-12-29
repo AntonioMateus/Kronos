@@ -53,7 +53,16 @@
     <!-- Goals -->
     <string name="title_activity_goal">What do you want?</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!-- AddGoal -->
+    <string name="title_activity_add_goal">Add Goal</string>
+    <string name="editText_metaDescricao">Description</string>
+    <string name="textView_metaDuracao">Duration</string>
+    <string name="editText_metaDuracaoHoras">hours</string>
+    <string name="editText_metaDuracaoMinutos">minutes</string>
+    <string name="button_associarAtividade">Associar atividade</string>
+    <string name="checkBox_notificar">Notificar</string>
+    <string name="imageButton_salvar">Salvar</string>
 
 </resources>

@@ -42,5 +42,11 @@
     <!-- QualidadeDialog -->
     <dimen name="dialog_qualidade_padding">5dp</dimen>
     <dimen name="ratingBar_qualidade">240sp</dimen>
+
+    <!-- AddGoal -->
+    <dimen name="editText_metaDuracaoMinutos_width">80dp</dimen>
+    <dimen name="editText_metaDuracaoHoras_width">80dp</dimen>
+    <dimen name="imageButton_metaCancelar_width">50dp</dimen>
+    <dimen name="imageButton_metaSalvar_width">50dp</dimen>
 </resources>
 

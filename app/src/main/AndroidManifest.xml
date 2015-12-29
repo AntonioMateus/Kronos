@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.kronos.kronos" >
+    package="br.com.kronos.kronos">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,8 +19,8 @@
         <activity
             android:name=".MyDayActivity"
             android:label="@string/title_activity_my_day"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.kronos.kronos.MainActivity" />
@@ -28,7 +28,7 @@
         <activity
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.kronos.kronos.MainActivity" />
@@ -36,10 +36,18 @@
         <activity
             android:name=".GoalActivity"
             android:label="@string/title_activity_goal"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.kronos.kronos.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AddGoalActivity"
+            android:label="@string/title_activity_add_goal"
+            android:parentActivityName=".GoalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.kronos.kronos.GoalActivity" />
         </activity>
     </application>
 
