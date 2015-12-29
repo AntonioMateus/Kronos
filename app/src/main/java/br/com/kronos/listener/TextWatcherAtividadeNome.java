@@ -66,14 +66,14 @@ public class TextWatcherAtividadeNome implements TextWatcher {
         /*
             Se esta atividade estiver checada e ja houver uma Atividade com esse nome,
             essa atividade deixa de estar checada.
-             */
+         */
         int atividadesComEsseNome = 0;
         for (Atividade atividadeIterada : atividades) {
             if (atividadeIterada.isChecked() && atividadeIterada.equals(atividade)) {
                 atividadesComEsseNome++;
             }
         }
-        if (atividadesComEsseNome > 1) {
+        if (atividadesComEsseNome > 1) { //Se houver essa atividade e mais uma com o nome em questão
             Toast.makeText(context, R.string.atividadeChecadaComMesmoNome, Toast.LENGTH_SHORT).show();
             atividade.setChecked(false);
             checkBox.setChecked(false);

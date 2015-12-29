@@ -2,7 +2,6 @@ package br.com.kronos.kronos;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,18 +14,10 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.ValueFormatter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import br.com.kronos.chartmakers.DiarioPieChartMaker;
 import br.com.kronos.exceptions.HorasDiaExcedidoException;
@@ -37,8 +28,6 @@ import br.com.kronos.listener.RatingFragmentListener;
 
 public class MyDayActivity extends Activity implements View.OnClickListener, ListAtividadesAdapterListener,
                                                         View.OnTouchListener, RatingFragmentListener{
-
-    private static final int ATIVIDADE_NEUTRA_COR = Color.GRAY;
 
     private KronosDatabase kronosDatabase;
     private List<Atividade> atividades; //lista de todas as atividades dentro do listView
@@ -243,7 +232,7 @@ public class MyDayActivity extends Activity implements View.OnClickListener, Lis
      */
     @Override
     public void onAtividadeUpdated(Atividade atividadeAlterada, String atividadeNomeAntigo) throws HorasDiaExcedidoException {
-            kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
+        kronosDatabase.updateLista(atividadeAlterada, atividadeNomeAntigo);
         if (atividadeAlterada.isChecked()) {
             kronosDatabase.updateHistorico(atividadeAlterada, atividadeNomeAntigo);
             plotar();
