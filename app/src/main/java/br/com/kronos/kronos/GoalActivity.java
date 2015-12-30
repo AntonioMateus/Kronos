@@ -2,9 +2,11 @@ package br.com.kronos.kronos;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.adapters.ExpandableAdapter;
+import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
 
 public class GoalActivity extends Activity implements View.OnClickListener {
     private ImageView _image;
@@ -36,23 +39,30 @@ public class GoalActivity extends Activity implements View.OnClickListener {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        Button buttonAdicionarMeta = (Button) findViewById(R.id.button_adicionarMeta);
+        buttonAdicionarMeta.setOnClickListener(this);
+
         KronosDatabase database = new KronosDatabase(GoalActivity.this);
 
-        //Criacao de metas para teste
-        database.removeTodasMetas();
-        Meta meta1 = new Meta("projeto verao 2020",3,0,"saude",7,12,2015);
-        meta1.setTempoAcumulado(0);
-        meta1.setTempoEstipulado(130.0);
-        Meta meta2 = new Meta("assistir star wars",2,0,"diversao",28,11,2015);
-        meta2.setTempoAcumulado(15);
-        meta2.setTempoEstipulado(18);
-        meta2.setTerminoMeta(29, 11, 2015);
-        Meta meta3 = new Meta("terminar de ler a guerra civil",10,0,"diversao",9,12,2015);
-        meta3.setTempoAcumulado(0);
-        meta3.setTempoEstipulado(100.0);
-        database.addMeta(meta1);
-        database.addMeta(meta2);
-        database.addMeta(meta3);
+        try {
+            //Criacao de metas para teste
+            database.removeTodasMetas();
+            Meta meta1 = new Meta("projeto verao 2020", 3, false, "saude", 7, 12, 2015);
+            meta1.setTempoAcumulado(0);
+            meta1.setTempoEstipulado(130.0);
+            Meta meta2 = new Meta("assistir star wars", 2, false, "diversao", 28, 11, 2015);
+            meta2.setTempoAcumulado(15);
+            meta2.setTempoEstipulado(18);
+            meta2.setTerminoMeta(29, 11, 2015);
+            Meta meta3 = new Meta("terminar de ler a guerra civil", 10, false, "diversao", 9, 12, 2015);
+            meta3.setTempoAcumulado(0);
+            meta3.setTempoEstipulado(100.0);
+            database.addMeta(meta1);
+            database.addMeta(meta2);
+            database.addMeta(meta3);
+        } catch (DescricaoDeMetaInvalidaException descricaoDaMetaInvalidaException) {
+            descricaoDaMetaInvalidaException.printStackTrace();
+        }
         //---------------------------------------------
 
         listGroup = database.getCategorias();
@@ -108,6 +118,11 @@ public class GoalActivity extends Activity implements View.OnClickListener {
     }
 
     public void onClick(View view) {
+        if (view.getId() == R.id.button_adicionarMeta) {
+            Intent intentAdicionarMeta = new Intent(this, AddGoalActivity.class);
+            startActivity(intentAdicionarMeta);
+        }
+
         /*
         if (view.getId() == R.id.imageButton_spinner) {
             _newAngle = _oldAngle + 180;

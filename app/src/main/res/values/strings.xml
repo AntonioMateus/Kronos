@@ -52,6 +52,7 @@
 
     <!-- Goals -->
     <string name="title_activity_goal">What do you want?</string>
+    <string name="button_adicionarMeta">Add New Goal</string>
 
     <string name="action_settings">Settings</string>
 
@@ -61,8 +62,23 @@
     <string name="textView_metaDuracao">Duration</string>
     <string name="editText_metaDuracaoHoras">hours</string>
     <string name="editText_metaDuracaoMinutos">minutes</string>
-    <string name="button_associarAtividade">Associar atividade</string>
-    <string name="checkBox_notificar">Notificar</string>
-    <string name="imageButton_salvar">Salvar</string>
+    <string name="editText_metaCategoria">category</string>
+    <string name="editText_metaPrazoCustom">days</string>
+    <string name="button_associarAtividade">Connect Activity</string>
+    <string name="checkBox_notificar">Notifify</string>
+    <string name="checkBox_repetir">Impose Goal just once</string>
+    <string name="imageButton_addMeta">Add Goal</string>
+    <string name="alertDialog_duracaoMetaNaoPreenchida">You didn\'t put a Duration! Please fill this field :)</string>
+    <string name="alertDialog_duracaoMetaNaoPreenchida_button">So, let me put</string>
+    <string name="alertDialog_descricaoMetaNaoPreenchida">You didn\'t put a Duration! Please fill this field before create your Goal :)</string>
+    <string name="alertDialog_descricaoMetaNaoPreenchida_button">So, let me put</string>
+    <!-- Opcoes de Prazo -->
+    <string name="semPrazo">No Deadline</string>
+    <string name="prazoUmaSemana">One week</string>
+    <string name="prazoMeioMes">15 days</string>
+    <string name="prazoUmMes">One month</string>
+    <string name="prazoUmSemestre">6 months</string>
+    <string name="prazoUmAno">One year</string>
+    <string name="prazoCustomizado">Custom</string>
 
 </resources>

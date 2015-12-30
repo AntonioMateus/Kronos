@@ -1,20 +1,16 @@
 package br.com.kronos.kronos;
 
-import android.util.Log;
-import java.util.List;
+import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
 
-/**
- * Created by antonio on 11/11/15.
- */
 public class Meta {
-    private final double PRAZO_MINIMO = 0.25;
+    public static final double PRAZO_MINIMO = 0.25;
 
     private String descricao;
     private double prazo;
     private double tempoAcumulado = 0.0;
     private double tempoEstipulado = 0.0;
     private double tempoExcedido;
-    private int repetir;
+    private boolean repetir; //diz se a Meta irá ser definida com Meta novamente depois do prazo acabar
     private String categoria;
     private boolean metaTerminada;
 
@@ -26,8 +22,8 @@ public class Meta {
     private int mesTermino;
     private int anoTermino;
 
-    public Meta (String descricao, double prazo, int repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) {
-        this.descricao = descricao;
+    public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
+        setDescricao(descricao);
         setPrazo(prazo);
         this.repetir = repetir;
         this.categoria = categoria;
@@ -51,6 +47,13 @@ public class Meta {
         else {
             this.prazo = prazo;
         }
+    }
+
+    public void setDescricao(String descricao) throws DescricaoDeMetaInvalidaException {
+        if (descricao.isEmpty()) {
+            throw new DescricaoDeMetaInvalidaException();
+        }
+        this.descricao = descricao;
     }
 
     public String getDescricao () {
@@ -87,7 +90,7 @@ public class Meta {
         return this.tempoExcedido;
     }
 
-    public int getRepetir() {
+    public boolean getRepetir() {
         return this.repetir;
     }
 
@@ -122,7 +125,11 @@ public class Meta {
     @Override
     public boolean equals (Object o) {
         if (this == o) { return true; }
-        if (o == null| o.getClass()!=this.getClass()) { return false; }
+        if (o == null){
+            return false;
+        } else if (o.getClass()!=this.getClass()){
+                return false;
+        }
 
         Meta meta = (Meta) o;
         boolean descricaoIgual = !(getDescricao() != null ? !getDescricao().equals(meta.getDescricao()) : meta.getDescricao() != null);

@@ -6,9 +6,6 @@ import android.util.Log;
 import java.util.List;
 
 public class Atividade {
-    public static final double MINUTO_MINIMO = 15;
-    private static final double DURACAO_MINIMA = 0.25;
-
     private String nome;
     private double duracao; //em horas
 
@@ -25,6 +22,9 @@ public class Atividade {
      */
     private boolean check;
     private int cor;
+
+    public static final double MINUTO_MINIMO = 15;
+    private static final double DURACAO_MINIMA = 0.25;
 
     public Atividade(String nome, double duracao, double qualidade, int dia, int mes, int ano) {
         this.nome = nome;

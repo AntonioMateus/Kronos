@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.Meta;
 
@@ -67,20 +68,24 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
     }
 
-    public void addMeta (Meta m) {
+    public void addMeta (Meta meta) {
         SQLiteDatabase bd = getWritableDatabase();
         ContentValues tuplaASerAdicionada = new ContentValues();
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO,m.getDescricao());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_PRAZO,m.getPrazo());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR,m.getRepetir());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,m.getCategoria());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO,getDataFormatada(m.getDiaInicio(), m.getMesInicio(), m.getAnoInicio()));
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO,m.getTempoAcumulado());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO,m.getTempoEstipulado());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO, meta.getDescricao());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_PRAZO, meta.getPrazo());
+        int repetir = 0;
+        if (meta.getRepetir()){
+            repetir = 1;
+        }
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR, repetir);
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA, meta.getCategoria());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO, getDataFormatada(meta.getDiaInicio(), meta.getMesInicio(), meta.getAnoInicio()));
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO, meta.getTempoAcumulado());
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO, meta.getTempoEstipulado());
 
         bd.insert(KronosContract.FeedEntry.TABLE_META_NAME, null, tuplaASerAdicionada);
-        if (m.getMetaTerminada()) {
-            addMetaCumprida(m);
+        if (meta.getMetaTerminada()) {
+            addMetaCumprida(meta);
         }
         bd.close();
     }
@@ -141,19 +146,28 @@ public class KronosDatabase extends SQLiteOpenHelper {
         String[] selecaoArgs = {descricao};
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_META_NAME, projecao, selecao, selecaoArgs,null,null,null,null);
 
-        Meta metaRetornada;
+        Meta metaRetornada = null;
         if (iteradorTuplas.getCount() > 0) {
             iteradorTuplas.moveToFirst();
             String[] dataInicio = iteradorTuplas.getString(4).split("_");
-            metaRetornada = new Meta(iteradorTuplas.getString(0),iteradorTuplas.getInt(1),iteradorTuplas.getInt(5),iteradorTuplas.getString(6),Integer.valueOf(dataInicio[0]),Integer.valueOf(dataInicio[1]),Integer.valueOf(dataInicio[2]));
-            metaRetornada.setTempoAcumulado(iteradorTuplas.getDouble(2));
-            metaRetornada.setTempoEstipulado(iteradorTuplas.getDouble(3));
-        }
-        else {
-            metaRetornada = null;
+            double prazo = iteradorTuplas.getInt(1);
+            boolean repetir = (iteradorTuplas.getInt(5) == 1);
+            String categoria = iteradorTuplas.getString(6);
+            int diaInicio = Integer.valueOf(dataInicio[0]);
+            int mesInicio = Integer.valueOf(dataInicio[1]);
+            int anoInicio = Integer.valueOf(dataInicio[2]);
+            try {
+                metaRetornada = new Meta(descricao, prazo, repetir, categoria, diaInicio, mesInicio, anoInicio);
+                metaRetornada.setTempoAcumulado(iteradorTuplas.getDouble(2));
+                metaRetornada.setTempoEstipulado(iteradorTuplas.getDouble(3));
+            } catch (DescricaoDeMetaInvalidaException e) {
+                //Aconteceu alguma coisa errada no momento de adicionar as Metas
+                e.printStackTrace();
+            }
         }
         iteradorTuplas.close();
         bd.close();
+
         return metaRetornada;
     }
 

@@ -11,5 +11,14 @@
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
         android:divider="@color/expandableListView_metas_divider"
-        android:dividerHeight="@dimen/expandableListView_metas_divider"/>
+        android:dividerHeight="@dimen/expandableListView_metas_divider"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/button_adicionarMeta"/>
+
+    <Button
+        android:id="@id/button_adicionarMeta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/button_adicionarMeta"/>
 </RelativeLayout>

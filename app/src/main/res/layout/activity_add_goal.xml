@@ -15,28 +15,11 @@
         android:layout_height="wrap_content"
         android:hint="@string/editText_metaDescricao"/>
 
-    <Spinner
-        android:id="@+id/spinner_metaFrequencia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editText_metaDescricao"/>
-
-    <TextView
-        android:id="@+id/textView_metaDuracao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinner_metaFrequencia"
-        android:layout_alignBaseline="@+id/editText_metaDuracaoHoras"
-        android:layout_toStartOf="@id/editText_metaDuracaoHoras"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/textView_metaDuracao"/>
-
     <EditText
-        android:id="@id/editText_metaDuracaoHoras"
+        android:id="@+id/editText_metaDuracaoHoras"
         android:layout_width="@dimen/editText_metaDuracaoHoras_width"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinner_metaFrequencia"
+        android:layout_below="@id/editText_metaDescricao"
         android:layout_toStartOf="@+id/editText_metaDuracaoMinutos"
         android:hint="@string/editText_metaDuracaoHoras"/>
 
@@ -44,15 +27,38 @@
         android:id="@id/editText_metaDuracaoMinutos"
         android:layout_width="@dimen/editText_metaDuracaoMinutos_width"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinner_metaFrequencia"
+        android:layout_below="@id/editText_metaDescricao"
         android:layout_alignParentEnd="true"
         android:hint="@string/editText_metaDuracaoMinutos"/>
+
+    <EditText
+        android:id="@+id/editText_metaCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_metaDuracaoHoras"
+        android:hint="@string/editText_metaCategoria"/>
+
+    <Spinner
+        android:id="@+id/spinner_metaPrazo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/editText_metaPrazoCustom"
+        android:layout_below="@id/editText_metaCategoria"/>
+
+    <EditText
+        android:id="@id/editText_metaPrazoCustom"
+        android:layout_width="@dimen/editText_metaPrazoCustom_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/editText_metaCategoria"
+        android:hint="@string/editText_metaPrazoCustom"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/button_associarAtividade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_metaDuracao"
+        android:layout_below="@id/spinner_metaPrazo"
         android:text="@string/button_associarAtividade"/>
 
     <CheckBox
@@ -61,6 +67,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/button_associarAtividade"
         android:text="@string/checkBox_notificar"/>
+
+    <CheckBox
+        android:id="@+id/chechBox_repetir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chechBox_notificar"
+        android:text="@string/checkBox_repetir"/>
 
     <ImageButton
         android:id="@+id/imageButton_cancelar"
@@ -73,13 +86,13 @@
         android:src="@drawable/ic_action_remove"/>
 
     <ImageButton
-        android:id="@+id/imageButton_salvar"
+        android:id="@+id/imageButton_adicionarMeta"
         android:layout_width="@dimen/imageButton_metaSalvar_width"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         style="?android:attr/borderlessButtonStyle"
-        android:contentDescription="@string/imageButton_salvar"
+        android:contentDescription="@string/imageButton_addMeta"
         android:src="@drawable/ic_action_accept"/>
 
 </RelativeLayout>

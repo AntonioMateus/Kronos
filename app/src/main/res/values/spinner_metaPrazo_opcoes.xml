@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_metaPrazo_opcoes">
+        <item>@string/semPrazo</item>
+        <item>@string/prazoUmaSemana</item>
+        <item>@string/prazoMeioMes</item>
+        <item>@string/prazoUmMes</item>
+        <item>@string/prazoUmSemestre</item>
+        <item>@string/prazoUmAno</item>
+        <item>@string/prazoCustomizado</item>
+    </string-array>
+</resources>
