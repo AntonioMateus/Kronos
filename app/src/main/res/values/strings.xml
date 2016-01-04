@@ -58,13 +58,14 @@
 
     <!-- AddGoal -->
     <string name="title_activity_add_goal">Add Goal</string>
-    <string name="editText_metaDescricao">Description</string>
-    <string name="textView_metaDuracao">Duration</string>
+    <string name="editText_metaDescricao">Description*</string>
+    <string name="textView_metaAtingir">Reach*:</string>
     <string name="editText_metaDuracaoHoras">hours</string>
     <string name="editText_metaDuracaoMinutos">minutes</string>
     <string name="editText_metaCategoria">category</string>
-    <string name="editText_metaPrazoCustom">days</string>
-    <string name="button_associarAtividade">Connect Activity</string>
+    <string name="editText_metaPrazoCustom">days*</string>
+    <string name="button_associarAtividades">Connect Activities</string>
+    <string name="textView_atividadesAssociadas">Activities connected: </string>
     <string name="checkBox_notificar">Notifify</string>
     <string name="checkBox_repetir">Impose Goal just once</string>
     <string name="imageButton_addMeta">Add Goal</string>
@@ -80,5 +81,7 @@
     <string name="prazoUmSemestre">6 months</string>
     <string name="prazoUmAno">One year</string>
     <string name="prazoCustomizado">Custom</string>
+    <!-- Associar Atividade Dialog Fragment -->
+    <string name="textView_associarAtividade">Choose the Activities connected with your Goal</string>
 
 </resources>

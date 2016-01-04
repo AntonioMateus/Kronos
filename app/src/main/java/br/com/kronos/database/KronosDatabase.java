@@ -354,6 +354,24 @@ public class KronosDatabase extends SQLiteOpenHelper {
     }
 
 
+    public List<Atividade> getAtividadesDistintas() {
+        SQLiteDatabase bd = getReadableDatabase();
+
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME};
+        String groupBy = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME;
+        Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, projecao, null, null, groupBy, null, null, null);
+
+        ArrayList<Atividade> atividadesARetornar = new ArrayList<>();
+        while (iteradorTuplas.moveToNext()) {
+            String nome = iteradorTuplas.getString(0);
+            Atividade atividadeReferenciada = new Atividade(nome, Atividade.DURACAO_MINIMA, 0, 1, 1, 0 );
+            atividadesARetornar.add(atividadeReferenciada);
+        }
+
+        iteradorTuplas.close();
+        bd.close();
+        return atividadesARetornar;
+    }
 }
 
 

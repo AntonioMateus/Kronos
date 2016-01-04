@@ -30,4 +30,10 @@
     <color name="tvGroup">#000000</color>
     <color name="tvItem1">#000000</color>
     <color name="tvItem2">#000000</color>
+
+    <!-- AddGOal -->
+    <color name="spinner_metaPrazo_text">#000000</color>
+    <color name="textView_metaAtingir">#000000</color>
+    <color name="textView_associarAtividade">#000000</color>
+    <color name="checkBox_atividadeAssociada_text">#000000</color>
 </resources>

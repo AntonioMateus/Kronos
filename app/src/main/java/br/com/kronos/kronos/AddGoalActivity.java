@@ -6,20 +6,29 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
+import br.com.kronos.fragmentos.AssociarAtividadeDialogFragment;
+import br.com.kronos.fragmentos.AssociarAtividadeDialogFragmentListener;
 
-public class AddGoalActivity extends Activity implements View.OnClickListener {
+public class AddGoalActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AssociarAtividadeDialogFragmentListener {
 
-    private Spinner spinnerPrazo;
+    private Spinner spinnerPrazo; //opções para Prazo da Meta
+    private List<Atividade> atividadesAssociadas; //Lista de atividades que foram associadas a essa meta
+    private TextView textViewAtividadesAssociadas; //indica quantas atividades foram associadas até agora
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,28 +39,47 @@ public class AddGoalActivity extends Activity implements View.OnClickListener {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        ImageButton buttonAdicionarMeta = (ImageButton) findViewById(R.id.imageButton_adicionarMeta);
-        spinnerPrazo = (Spinner) findViewById(R.id.spinner_metaPrazo);
+        //Instancia Lista de Atividades Associadas
+        atividadesAssociadas = new LinkedList<>();
 
-        buttonAdicionarMeta.setOnClickListener(this);//adicionando funcao do botao -> quando for acionado onClick() (definido em algum lugar dessa classe) ira ser chamado
+        ImageButton imageButtonAdicionarMeta = (ImageButton) findViewById(R.id.imageButton_adicionarMeta);
+        spinnerPrazo = (Spinner) findViewById(R.id.spinner_metaPrazo);
+        Button buttonAssociarAtividade = (Button) findViewById(R.id.button_associarAtividades);
+        textViewAtividadesAssociadas = (TextView) findViewById(R.id.textView_atividadesAssociadas);
+
+        //Set do indicador da quantidade de atividades que foram associadas
+        textViewAtividadesAssociadas.setText(getString(R.string.textView_atividadesAssociadas) + atividadesAssociadas.size());
+
+        //adicionando funcao do botao -> quando for acionado onClick() (definido em algum lugar dessa classe) ira ser chamado
+        imageButtonAdicionarMeta.setOnClickListener(this);
+        buttonAssociarAtividade.setOnClickListener(this);
 
         //Definir as opcoes disponiveis no Spinner do Prazo da Meta
-        ArrayAdapter spinnerPrazoAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_metaPrazo_opcoes, android.R.layout.simple_spinner_item);
+        ArrayAdapter spinnerPrazoAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_metaPrazo_opcoes, R.layout.spinner_metaprazo_item);
         spinnerPrazo.setAdapter(spinnerPrazoAdapter);
+        spinnerPrazo.setOnItemSelectedListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.imageButton_adicionarMeta) {
             adicionarMeta();
+        }else if (v.getId() == R.id.button_associarAtividades) {
+            associarAtividades();
         }
+    }
+
+    private void associarAtividades() {
+        AssociarAtividadeDialogFragment associarAtividadeDialogFragment = new AssociarAtividadeDialogFragment(atividadesAssociadas);
+        associarAtividadeDialogFragment.show(getFragmentManager(), "AssociarAtividadeDialogFragment");
     }
 
     private void adicionarMeta() {
         EditText editTextDescricao = (EditText) findViewById(R.id.editText_metaDescricao);
         String descricao = editTextDescricao.getText().toString();
 
-        CheckBox checkBoxRepetir = (CheckBox) findViewById(R.id.chechBox_repetir);
+        CheckBox checkBoxRepetir = (CheckBox) findViewById(R.id.chechBox_metaRepetir);
         boolean repetir = checkBoxRepetir.isChecked();
 
         EditText editTextCategoria = (EditText) findViewById(R.id.editText_metaCategoria);
@@ -120,6 +148,7 @@ public class AddGoalActivity extends Activity implements View.OnClickListener {
         try {
             meta = new Meta(descricao, prazo, repetir, categoria, diaInicio, mesInicio, anoInicio);
             meta.setTempoEstipulado(tempoEstipulado);
+            meta.setAtividadesAssociadas(atividadesAssociadas);
 
             KronosDatabase kronosDatabase = new KronosDatabase(this);
             kronosDatabase.addMeta(meta);
@@ -136,5 +165,30 @@ public class AddGoalActivity extends Activity implements View.OnClickListener {
             builder.create().show();
         }
 
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.spinner_metaPrazo) {
+            String prazoSelecionado = (String) parent.getItemAtPosition(position);
+            EditText editTextPrazoCustom = (EditText) findViewById(R.id.editText_metaPrazoCustom);
+            if (prazoSelecionado.equals(getString(R.string.prazoCustomizado))) {
+                editTextPrazoCustom.setVisibility(View.VISIBLE);
+            } else {
+                editTextPrazoCustom.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onAtividadesAssociadas(List<Atividade> atividadesAssociadas) {
+        this.atividadesAssociadas = atividadesAssociadas;
+
+        textViewAtividadesAssociadas.setText(getString(R.string.textView_atividadesAssociadas) + atividadesAssociadas.size());
     }
 }

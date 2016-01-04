@@ -13,14 +13,28 @@
         android:id="@+id/editText_metaDescricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/editText_metaDescricao_text"
         android:hint="@string/editText_metaDescricao"/>
 
+    <TextView
+        android:id="@+id/textView_metaAtingir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/editText_metaDuracaoHoras"
+        android:layout_below="@id/editText_metaDescricao"
+        android:layout_alignBaseline="@id/editText_metaDuracaoHoras"
+        android:textSize="@dimen/textView_metaAtingir"
+        android:textColor="@color/textView_metaAtingir"
+        android:text="@string/textView_metaAtingir"/>
+
     <EditText
-        android:id="@+id/editText_metaDuracaoHoras"
+        android:id="@id/editText_metaDuracaoHoras"
         android:layout_width="@dimen/editText_metaDuracaoHoras_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText_metaDescricao"
         android:layout_toStartOf="@+id/editText_metaDuracaoMinutos"
+        android:inputType="number"
+        android:textSize="@dimen/editText_metaDuracaoHoras_text"
         android:hint="@string/editText_metaDuracaoHoras"/>
 
     <EditText
@@ -29,6 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editText_metaDescricao"
         android:layout_alignParentEnd="true"
+        android:inputType="number"
+        android:textSize="@dimen/editText_metaDuracaoMinutos_text"
         android:hint="@string/editText_metaDuracaoMinutos"/>
 
     <EditText
@@ -36,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText_metaDuracaoHoras"
+        android:textSize="@dimen/editText_metaCategoria_text"
         android:hint="@string/editText_metaCategoria"/>
 
     <Spinner
@@ -43,7 +60,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/editText_metaPrazoCustom"
-        android:layout_below="@id/editText_metaCategoria"/>
+        android:layout_below="@id/editText_metaCategoria"
+        android:layout_alignBaseline="@id/editText_metaPrazoCustom"
+        android:layout_marginTop="@dimen/spinner_metaPrazo_margin"
+        android:layout_marginBottom="@dimen/spinner_metaPrazo_margin"/>
 
     <EditText
         android:id="@id/editText_metaPrazoCustom"
@@ -51,28 +71,39 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/editText_metaCategoria"
+        android:textSize="@dimen/editText_metaPrazoCustom_text"
         android:hint="@string/editText_metaPrazoCustom"
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/button_associarAtividade"
+        android:id="@+id/button_associarAtividades"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinner_metaPrazo"
-        android:text="@string/button_associarAtividade"/>
+        android:text="@string/button_associarAtividades"/>
 
-    <CheckBox
-        android:id="@+id/chechBox_notificar"
+    <TextView
+        android:id="@+id/textView_atividadesAssociadas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button_associarAtividade"
+        android:layout_below="@id/button_associarAtividades"
+        android:gravity="center"
+        android:text="@string/textView_atividadesAssociadas" />
+
+    <CheckBox
+        android:id="@+id/chechBox_metaNotificar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_atividadesAssociadas"
+        android:textSize="@dimen/checkBox_metaNotificar_text"
         android:text="@string/checkBox_notificar"/>
 
     <CheckBox
-        android:id="@+id/chechBox_repetir"
+        android:id="@+id/chechBox_metaRepetir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/chechBox_notificar"
+        android:layout_below="@id/chechBox_metaNotificar"
+        android:textSize="@dimen/checkBox_metaRepetir_text"
         android:text="@string/checkBox_repetir"/>
 
     <ImageButton

@@ -1,5 +1,7 @@
 package br.com.kronos.kronos;
 
+import java.util.List;
+
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
 
 public class Meta {
@@ -21,6 +23,7 @@ public class Meta {
     private int diaTermino;
     private int mesTermino;
     private int anoTermino;
+    private List<Atividade> atividadesAssociadas;
 
     public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
         setDescricao(descricao);
@@ -140,5 +143,9 @@ public class Meta {
     @Override
     public String toString() {
         return "Meta - descricao:"+getDescricao()+"; categoria:"+getCategoria()+"; data de inicio:"+getDiaInicio()+"/"+getMesInicio()+"/"+getAnoInicio()+" ("+(getMetaTerminada()?"ja":"nao")+" finalizada)";
+    }
+
+    public void setAtividadesAssociadas(List<Atividade> atividadesAssociadas) {
+        this.atividadesAssociadas = atividadesAssociadas;
     }
 }

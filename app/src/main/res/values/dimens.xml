@@ -44,10 +44,23 @@
     <dimen name="ratingBar_qualidade">240sp</dimen>
 
     <!-- AddGoal -->
-    <dimen name="editText_metaDuracaoMinutos_width">80dp</dimen>
-    <dimen name="editText_metaDuracaoHoras_width">80dp</dimen>
-    <dimen name="editText_metaPrazoCustom_width">80dp</dimen>
+    <dimen name="editText_metaDescricao_text">25sp</dimen>
+    <dimen name="textView_metaAtingir">@dimen/editText_metaDescricao_text</dimen>
+    <dimen name="editText_metaDuracaoHoras_text">@dimen/editText_metaDescricao_text</dimen>
+    <dimen name="editText_metaDuracaoMinutos_text">@dimen/editText_metaDuracaoHoras_text</dimen>
+    <dimen name="editText_metaCategoria_text">@dimen/editText_metaDescricao_text</dimen>
+    <dimen name="editText_metaPrazoCustom_text">@dimen/editText_metaDescricao_text</dimen>
+    <dimen name="spinner_metaPrazo_text">@dimen/editText_metaDescricao_text</dimen>
+    <dimen name="checkBox_metaNotificar_text">20sp</dimen>
+    <dimen name="checkBox_metaRepetir_text">@dimen/checkBox_metaNotificar_text</dimen>
+    <dimen name="editText_metaDuracaoMinutos_width">100dp</dimen>
+    <dimen name="editText_metaDuracaoHoras_width">90dp</dimen>
+    <dimen name="editText_metaPrazoCustom_width">100dp</dimen>
     <dimen name="imageButton_metaCancelar_width">50dp</dimen>
     <dimen name="imageButton_metaSalvar_width">50dp</dimen>
+    <dimen name="spinner_metaPrazo_margin">10dp</dimen>
+    <!-- Associar Atividade -->
+    <dimen name="textView_associarAtividade">25sp</dimen>
+    <dimen name="checkBox_atividadeAssociada_text">20sp</dimen>
 </resources>
 

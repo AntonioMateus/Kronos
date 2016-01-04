@@ -24,7 +24,7 @@ public class Atividade {
     private int cor;
 
     public static final double MINUTO_MINIMO = 15;
-    private static final double DURACAO_MINIMA = 0.25;
+    public static final double DURACAO_MINIMA = 0.25;
 
     public Atividade(String nome, double duracao, double qualidade, int dia, int mes, int ano) {
         this.nome = nome;
