@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class KronosDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
@@ -84,7 +83,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO, meta.getTempoEstipulado());
 
         bd.insert(KronosContract.FeedEntry.TABLE_META_NAME, null, tuplaASerAdicionada);
-        if (meta.getMetaTerminada()) {
+        if (meta.getMetaAtingida()) {
             addMetaCumprida(meta);
         }
         bd.close();
@@ -178,7 +177,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         String selecao = KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO + "=?";
         String[] selecaoArgs = new String[]{meta.getDescricao()};
         bd.delete(KronosContract.FeedEntry.TABLE_META_NAME, selecao, selecaoArgs);
-        if (meta.getMetaTerminada()) {
+        if (meta.getMetaAtingida()) {
             bd.delete(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME, selecao, selecaoArgs);
         }
         bd.close();

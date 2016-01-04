@@ -7,40 +7,56 @@ import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
 public class Meta {
     public static final double PRAZO_MINIMO = 0.25;
 
+    /*
+    Descreve qual explicitamente ou implicitamente (vai da vontade do Usuario do Kronos) qual é a Meta
+    Serve como um titulo para a Meta e é o que a diferencia das outras.
+     */
     private String descricao;
-    private double prazo;
-    private double tempoAcumulado = 0.0;
-    private double tempoEstipulado = 0.0;
-    private double tempoExcedido;
-    private boolean repetir; //diz se a Meta irá ser definida com Meta novamente depois do prazo acabar
-    private String categoria;
-    private boolean metaTerminada;
+    private String categoria; //maneira de categorizar uma Meta, agrupando com outras Metas
 
-    private int diaInicio;
-    private int mesInicio;
-    private int anoInicio;
-
-    private int diaTermino;
-    private int mesTermino;
-    private int anoTermino;
+    /*
+    Lista de Atividades Associadas a Meta. Significa que para essa meta ser atingida
+    o tempo gasto nessas Atividades deve ultrapassar o Tempo Estipulado para essa Meta
+     */
     private List<Atividade> atividadesAssociadas;
+    private double tempoEstipulado = 0.0; //tempo em horas que o usuário deve "Alcançar" (com as Atividades) para que essa Meta seja atingida
+    private double tempoAcumulado = 0.0; //quanto tempo jah foi gasto nas Atividades que associadas a Meta
+    private double prazo; //tempo em horas que define em quanto tempo o usuario deve terminar a Meta
 
-    public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
+    private boolean repetir; //diz se a Meta irá ser definida com Meta novamente depois que o Prazo acabar
+
+    private int diaInicio; //Dia do mes em que essa Meta foi estipulada
+    private int mesInicio; //Mes em que essa Meta foi estipulada (Janeiro = 1 ... Dezembro = 2)
+    private int anoInicio; //Ano em que essa Meta foi estipulada
+
+    private int diaTermino; //Dia do mes em que essa Meta foi atingida
+    private int mesTermino; //Mes em que essa Meta foi atingida (Janeiro = 1 ... Dezembro = 2)
+    private int anoTermino; //Ano em que essa Meta foi atingida
+
+    public Meta(String descricao, double tempoEstipulado, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
         setDescricao(descricao);
-        setPrazo(prazo);
-        this.repetir = repetir;
-        this.categoria = categoria;
+        this.tempoEstipulado = tempoEstipulado;
         this.diaInicio = diaInicio;
         this.mesInicio = mesInicio;
         this.anoInicio = anoInicio;
-        this.metaTerminada = false;
+    }
+
+    public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
+        this(descricao, Double.MAX_VALUE, diaInicio, mesInicio, anoInicio);
+        setPrazo(prazo);
+        this.repetir = repetir;
+        this.categoria = categoria;
+    }
+
+    //Retorna um booleano que diz se a Meta foi Atingida ou não
+    public boolean getMetaAtingida() {
+        return tempoAcumulado >= tempoEstipulado;
     }
 
     public void setTerminoMeta (int diaTermino, int mesTermino, int anoTermino) {
         this.diaTermino = diaTermino;
         this.mesTermino = mesTermino;
         this.anoTermino = anoTermino;
-        this.metaTerminada = true;
     }
 
     private void setPrazo (double prazo) {
@@ -73,12 +89,10 @@ public class Meta {
 
     public void setTempoAcumulado (double tempoAcumulado) {
         this.tempoAcumulado = tempoAcumulado;
-        this.tempoExcedido = this.tempoAcumulado - this.tempoEstipulado;
     }
 
     public void setTempoEstipulado (double tempoEstipulado) {
         this.tempoEstipulado = tempoEstipulado;
-        this.tempoExcedido = this.tempoAcumulado - this.tempoEstipulado;
     }
 
     public double getTempoAcumulado() {
@@ -90,16 +104,14 @@ public class Meta {
     }
 
     public double getTempoExcedido() {
-        return this.tempoExcedido;
+        return this.tempoAcumulado - this.tempoEstipulado;
     }
 
     public boolean getRepetir() {
         return this.repetir;
     }
 
-    public boolean getMetaTerminada() {
-        return this.metaTerminada;
-    }
+
 
     public int getDiaInicio() {
         return this.diaInicio;
@@ -142,7 +154,7 @@ public class Meta {
 
     @Override
     public String toString() {
-        return "Meta - descricao:"+getDescricao()+"; categoria:"+getCategoria()+"; data de inicio:"+getDiaInicio()+"/"+getMesInicio()+"/"+getAnoInicio()+" ("+(getMetaTerminada()?"ja":"nao")+" finalizada)";
+        return "Meta - descricao:"+getDescricao()+"; categoria:"+getCategoria()+"; data de inicio:"+getDiaInicio()+"/"+getMesInicio()+"/"+getAnoInicio()+" ("+(getMetaAtingida()?"ja":"nao")+" finalizada)";
     }
 
     public void setAtividadesAssociadas(List<Atividade> atividadesAssociadas) {
