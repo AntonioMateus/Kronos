@@ -30,6 +30,11 @@ public class KronosContract {
         public static final String COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA = "dataCumprida";
         public static final String COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO = "tempoExcedido";
         public static final String COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META = "descricaoDaMeta";
+
+        public static final String TABLE_META_ASSOCIADA_ATIVIDADE_NAME = "MetaAssociadaAtividades";
+        public static final String COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO = "metaDescricao";
+        public static final String COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME = "atividadeNome";
+
     }
 
     public static final String SQL_CREATE_ENTRIES1 =
@@ -64,4 +69,13 @@ public class KronosContract {
                     ") REFERENCES " +FeedEntry.TABLE_META_NAME +" (" +FeedEntry.COLUMN_META_NAME_DESCRICAO +"))";
 
     public static final String SQL_DELETE_ENTRIES4 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_META_CUMPRIDA_NAME;
+
+    public static final String SQL_CREATE_ENTRIES5 =
+            "CREATE TABLE " + FeedEntry.TABLE_META_ASSOCIADA_ATIVIDADE_NAME + " (" +
+                    FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME + ", " + FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO +
+                    ", PRIMARY KEY (" + FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME + ", " + FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO +
+                    "), FOREIGN KEY (" + FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO +
+                    ") REFERENCES " + FeedEntry.TABLE_META_NAME + " (" + FeedEntry.COLUMN_META_NAME_DESCRICAO + "))";
+
+    public static final String SQL_DELETE_ENTRIES5 = "DROP TABLE IF EXISTS " +FeedEntry.TABLE_META_ASSOCIADA_ATIVIDADE_NAME;
 }

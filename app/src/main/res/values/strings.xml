@@ -87,5 +87,6 @@
     <string name="prazoCustomizado">Custom</string>
     <!-- Associar Atividade Dialog Fragment -->
     <string name="textView_associarAtividade">Choose the Activities connected with your Goal</string>
+    <string name="editText_associarNovaAtividade">new actvity\'s name</string>
 
 </resources>

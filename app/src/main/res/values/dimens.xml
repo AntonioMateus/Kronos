@@ -62,5 +62,6 @@
     <!-- Associar Atividade -->
     <dimen name="textView_associarAtividade">25sp</dimen>
     <dimen name="checkBox_atividadeAssociada_text">20sp</dimen>
+    <dimen name="editText_associarNovaAtividade">25sp</dimen>
 </resources>
 

@@ -1,5 +1,6 @@
 package br.com.kronos.kronos;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
@@ -37,6 +38,7 @@ public class Meta {
     public Meta(String descricao, double tempoEstipulado, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException, TempoEstipuladoInvalidoException {
         setDescricao(descricao);
         setTempoEstipulado(tempoEstipulado);
+        atividadesAssociadas = new LinkedList<>();
         this.diaInicio = diaInicio;
         this.mesInicio = mesInicio;
         this.anoInicio = anoInicio;
@@ -171,5 +173,9 @@ public class Meta {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public List<Atividade> getAtividadesAssociadas() {
+        return atividadesAssociadas;
     }
 }

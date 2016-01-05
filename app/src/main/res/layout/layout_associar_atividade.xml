@@ -21,13 +21,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textView_associarAtividade"/>
 
-    <Button
-        android:id="@+id/button_associarAtividades"
+    <CheckBox
+        android:id="@+id/checkBox_associarNovaAtividade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/button_associarAtividades"/>
+
+    <EditText
+        android:id="@+id/editText_associarNovaAtividade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/checkBox_associarNovaAtividade"
         android:layout_below="@id/listView_atividades"
+        android:textSize="@dimen/editText_associarNovaAtividade"
+        android:hint="@string/editText_associarNovaAtividade"/>
+
+    <Button
+        android:id="@id/button_associarAtividades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/editText_associarNovaAtividade"
         android:text="@string/button_associarAtividades"
         style="?android:borderlessButtonStyle"/>
 

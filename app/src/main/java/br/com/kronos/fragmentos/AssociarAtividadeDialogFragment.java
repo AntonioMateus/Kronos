@@ -7,7 +7,9 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.LinkedList;
@@ -18,10 +20,13 @@ import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.R;
 
-public class AssociarAtividadeDialogFragment extends DialogFragment implements View.OnClickListener {
+public class AssociarAtividadeDialogFragment extends DialogFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private List<Atividade> atividades;
     private AssociarAtividadeDialogFragmentListener listener;
+    private EditText editTextAssociarNovaAtividade;
+    private CheckBox checkBoxAssociarNovaAtividade;
+    private ListView listViewAtividades;
 
     public AssociarAtividadeDialogFragment(List<Atividade> atividadesAssociadas) {
         atividades = new LinkedList<>(atividadesAssociadas);
@@ -40,18 +45,26 @@ public class AssociarAtividadeDialogFragment extends DialogFragment implements V
 
 
         View viewAssociarAtividade = getActivity().getLayoutInflater().inflate(R.layout.layout_associar_atividade, null);
+        editTextAssociarNovaAtividade = (EditText) viewAssociarAtividade.findViewById(R.id.editText_associarNovaAtividade);
 
-        ListView listViewAtividades = (ListView) viewAssociarAtividade.findViewById(R.id.listView_atividades);
-        AssociarAtividadesListAdapter listViewAtividadesAdapter = new AssociarAtividadesListAdapter(getActivity(), R.layout.layout_associar_atividade_item, atividades);
-        listViewAtividades.setAdapter(listViewAtividadesAdapter);
+        listViewAtividades = (ListView) viewAssociarAtividade.findViewById(R.id.listView_atividades);
+        atualizarListView();
 
         Button buttonAssociarAtividade = (Button) viewAssociarAtividade.findViewById(R.id.button_associarAtividades);
         buttonAssociarAtividade.setOnClickListener(this);
+
+        checkBoxAssociarNovaAtividade = (CheckBox) viewAssociarAtividade.findViewById(R.id.checkBox_associarNovaAtividade);
+        checkBoxAssociarNovaAtividade.setOnCheckedChangeListener(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(viewAssociarAtividade);
 
         return builder.create();
+    }
+
+    private void atualizarListView() {
+        AssociarAtividadesListAdapter listViewAtividadesAdapter = new AssociarAtividadesListAdapter(getActivity(), R.layout.layout_associar_atividade_item, atividades);
+        listViewAtividades.setAdapter(listViewAtividadesAdapter);
     }
 
     @Override
@@ -73,5 +86,22 @@ public class AssociarAtividadeDialogFragment extends DialogFragment implements V
     public void onAttach(Activity activity) {
         this.listener = (AssociarAtividadeDialogFragmentListener) activity;
         super.onAttach(activity);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        String nome = editTextAssociarNovaAtividade.getText().toString();
+        if (isChecked && !nome.isEmpty()) {
+            Atividade atividade = new Atividade(nome, Atividade.DURACAO_MINIMA, 0, 1, 1, 0);
+            atividade.setChecked(true);
+
+            if(!atividades.contains(atividade)) {
+                atividades.add(atividade);
+                atualizarListView();
+            }
+        }
+
+        checkBoxAssociarNovaAtividade.setChecked(false);
+        editTextAssociarNovaAtividade.setText("");
     }
 }

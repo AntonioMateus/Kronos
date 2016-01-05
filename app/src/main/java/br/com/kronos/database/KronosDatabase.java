@@ -33,6 +33,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES2);
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES3);
         bd.execSQL(KronosContract.SQL_CREATE_ENTRIES4);
+        bd.execSQL(KronosContract.SQL_CREATE_ENTRIES5);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES2);
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES3);
         bd.execSQL(KronosContract.SQL_DELETE_ENTRIES4);
+        bd.execSQL(KronosContract.SQL_DELETE_ENTRIES5);
         onCreate(bd);
     }
 
@@ -90,11 +92,27 @@ public class KronosDatabase extends SQLiteOpenHelper {
             // muito provavelmente aconteceu de a Meta ter o mesmo nome que outra
             throw new MetaRepetidaException();
         }
+        bd.close();
 
         if (meta.getMetaAtingida()) {
             addMetaCumprida(meta);
         }
-        bd.close();
+        associarAtividadesAMeta(meta);
+    }
+
+    private void associarAtividadesAMeta(Meta meta) {
+        SQLiteDatabase writableDatabase = this.getWritableDatabase();
+
+        List<Atividade> atividadesAssociadas = meta.getAtividadesAssociadas();
+        for (Atividade atividade : atividadesAssociadas) {
+            ContentValues tuplaAInserir = new ContentValues();
+            tuplaAInserir.put(KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME, atividade.getNome());
+            tuplaAInserir.put(KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO, meta.getDescricao());
+
+            writableDatabase.insert(KronosContract.FeedEntry.TABLE_META_ASSOCIADA_ATIVIDADE_NAME, null, tuplaAInserir);
+        }
+
+        writableDatabase.close();
     }
 
     public void addMetaCumprida(Meta meta) {
