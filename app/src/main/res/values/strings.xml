@@ -69,10 +69,14 @@
     <string name="checkBox_notificar">Notifify</string>
     <string name="checkBox_repetir">Impose Goal just once</string>
     <string name="imageButton_addMeta">Add Goal</string>
-    <string name="alertDialog_duracaoMetaNaoPreenchida">You didn\'t put a Duration! Please fill this field :)</string>
+    <string name="alertDialog_metaCriada">Goal created!</string>
+    <string name="alertDialog_metaCriada_button">Cool!</string>
+    <string name="alertDialog_duracaoMetaNaoPreenchida">You didn\'t put a time to reach! Please fill this field :)</string>
     <string name="alertDialog_duracaoMetaNaoPreenchida_button">So, let me put</string>
-    <string name="alertDialog_descricaoMetaNaoPreenchida">You didn\'t put a Duration! Please fill this field before create your Goal :)</string>
+    <string name="alertDialog_descricaoMetaNaoPreenchida">You didn\'t put a Description! Please fill this field before create your Goal :)</string>
     <string name="alertDialog_descricaoMetaNaoPreenchida_button">So, let me put</string>
+    <string name="alertDialog_metaRepetida">There is a Goal with this same Description. Change it, please.</string>
+    <string name="alertDialog_metaRepetida_button">So, let me change the Description</string>
     <!-- Opcoes de Prazo -->
     <string name="semPrazo">No Deadline</string>
     <string name="prazoUmaSemana">One week</string>

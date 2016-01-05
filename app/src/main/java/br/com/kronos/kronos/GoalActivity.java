@@ -18,6 +18,8 @@ import java.util.List;
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.adapters.ExpandableAdapter;
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
+import br.com.kronos.exceptions.MetaRepetidaException;
+import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 
 public class GoalActivity extends Activity implements View.OnClickListener {
     private ImageView _image;
@@ -60,8 +62,8 @@ public class GoalActivity extends Activity implements View.OnClickListener {
             database.addMeta(meta1);
             database.addMeta(meta2);
             database.addMeta(meta3);
-        } catch (DescricaoDeMetaInvalidaException descricaoDaMetaInvalidaException) {
-            descricaoDaMetaInvalidaException.printStackTrace();
+        } catch (DescricaoDeMetaInvalidaException | TempoEstipuladoInvalidoException | MetaRepetidaException e) {
+            e.printStackTrace();
         }
         //---------------------------------------------
 

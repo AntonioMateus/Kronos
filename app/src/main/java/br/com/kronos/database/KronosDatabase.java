@@ -5,8 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
+import br.com.kronos.exceptions.MetaRepetidaException;
+import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.Meta;
 
@@ -67,7 +70,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
     }
 
-    public void addMeta (Meta meta) {
+    public void addMeta (Meta meta) throws MetaRepetidaException {
         SQLiteDatabase bd = getWritableDatabase();
         ContentValues tuplaASerAdicionada = new ContentValues();
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO, meta.getDescricao());
@@ -82,7 +85,12 @@ public class KronosDatabase extends SQLiteOpenHelper {
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO, meta.getTempoAcumulado());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO, meta.getTempoEstipulado());
 
-        bd.insert(KronosContract.FeedEntry.TABLE_META_NAME, null, tuplaASerAdicionada);
+        long insert = bd.insert(KronosContract.FeedEntry.TABLE_META_NAME, null, tuplaASerAdicionada);
+        if(insert == -1) { //código de erro padrao quando algum erro aconteceu
+            // muito provavelmente aconteceu de a Meta ter o mesmo nome que outra
+            throw new MetaRepetidaException();
+        }
+
         if (meta.getMetaAtingida()) {
             addMetaCumprida(meta);
         }
@@ -159,7 +167,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 metaRetornada = new Meta(descricao, prazo, repetir, categoria, diaInicio, mesInicio, anoInicio);
                 metaRetornada.setTempoAcumulado(iteradorTuplas.getDouble(2));
                 metaRetornada.setTempoEstipulado(iteradorTuplas.getDouble(3));
-            } catch (DescricaoDeMetaInvalidaException e) {
+            } catch (DescricaoDeMetaInvalidaException | TempoEstipuladoInvalidoException e) {
                 //Aconteceu alguma coisa errada no momento de adicionar as Metas
                 e.printStackTrace();
             }

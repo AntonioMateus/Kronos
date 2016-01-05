@@ -107,7 +107,7 @@
         android:text="@string/checkBox_repetir"/>
 
     <ImageButton
-        android:id="@+id/imageButton_cancelar"
+        android:id="@+id/imageButton_cancelarAdicaoMeta"
         android:layout_width="@dimen/imageButton_metaCancelar_width"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

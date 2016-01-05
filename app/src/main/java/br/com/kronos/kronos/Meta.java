@@ -3,6 +3,7 @@ package br.com.kronos.kronos;
 import java.util.List;
 
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
+import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 
 public class Meta {
     public static final double PRAZO_MINIMO = 0.25;
@@ -33,15 +34,15 @@ public class Meta {
     private int mesTermino; //Mes em que essa Meta foi atingida (Janeiro = 1 ... Dezembro = 2)
     private int anoTermino; //Ano em que essa Meta foi atingida
 
-    public Meta(String descricao, double tempoEstipulado, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
+    public Meta(String descricao, double tempoEstipulado, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException, TempoEstipuladoInvalidoException {
         setDescricao(descricao);
-        this.tempoEstipulado = tempoEstipulado;
+        setTempoEstipulado(tempoEstipulado);
         this.diaInicio = diaInicio;
         this.mesInicio = mesInicio;
         this.anoInicio = anoInicio;
     }
 
-    public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException {
+    public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException, TempoEstipuladoInvalidoException {
         this(descricao, Double.MAX_VALUE, diaInicio, mesInicio, anoInicio);
         setPrazo(prazo);
         this.repetir = repetir;
@@ -59,7 +60,7 @@ public class Meta {
         this.anoTermino = anoTermino;
     }
 
-    private void setPrazo (double prazo) {
+    public void setPrazo(double prazo) {
         if (prazo < PRAZO_MINIMO) {
             this.prazo = PRAZO_MINIMO;
         }
@@ -91,8 +92,13 @@ public class Meta {
         this.tempoAcumulado = tempoAcumulado;
     }
 
-    public void setTempoEstipulado (double tempoEstipulado) {
-        this.tempoEstipulado = tempoEstipulado;
+    public void setTempoEstipulado(double tempoEstipulado) throws TempoEstipuladoInvalidoException {
+        //O Tempo Estipulado não pode ser menor que a duração de uma Atividade mínima
+        if (tempoEstipulado >= Atividade.DURACAO_MINIMA) {
+            this.tempoEstipulado = tempoEstipulado;
+        }else {
+            throw new TempoEstipuladoInvalidoException();
+        }
     }
 
     public double getTempoAcumulado() {
@@ -111,7 +117,9 @@ public class Meta {
         return this.repetir;
     }
 
-
+    public void setRepetir(boolean repetir) {
+        this.repetir = repetir;
+    }
 
     public int getDiaInicio() {
         return this.diaInicio;
@@ -159,5 +167,9 @@ public class Meta {
 
     public void setAtividadesAssociadas(List<Atividade> atividadesAssociadas) {
         this.atividadesAssociadas = atividadesAssociadas;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

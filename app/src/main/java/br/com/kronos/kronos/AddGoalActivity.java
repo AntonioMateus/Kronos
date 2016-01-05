@@ -21,6 +21,8 @@ import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
+import br.com.kronos.exceptions.MetaRepetidaException;
+import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 import br.com.kronos.fragmentos.AssociarAtividadeDialogFragment;
 import br.com.kronos.fragmentos.AssociarAtividadeDialogFragmentListener;
 
@@ -42,7 +44,8 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
         //Instancia Lista de Atividades Associadas
         atividadesAssociadas = new LinkedList<>();
 
-        ImageButton imageButtonAdicionarMeta = (ImageButton) findViewById(R.id.imageButton_adicionarMeta);
+        ImageButton buttonAdicionarMeta = (ImageButton) findViewById(R.id.imageButton_adicionarMeta);
+        ImageButton buttonCancelarAdicaoMeta = (ImageButton) findViewById(R.id.imageButton_cancelarAdicaoMeta);
         spinnerPrazo = (Spinner) findViewById(R.id.spinner_metaPrazo);
         Button buttonAssociarAtividade = (Button) findViewById(R.id.button_associarAtividades);
         textViewAtividadesAssociadas = (TextView) findViewById(R.id.textView_atividadesAssociadas);
@@ -51,7 +54,8 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
         textViewAtividadesAssociadas.setText(getString(R.string.textView_atividadesAssociadas) + atividadesAssociadas.size());
 
         //adicionando funcao do botao -> quando for acionado onClick() (definido em algum lugar dessa classe) ira ser chamado
-        imageButtonAdicionarMeta.setOnClickListener(this);
+        buttonAdicionarMeta.setOnClickListener(this);
+        buttonCancelarAdicaoMeta.setOnClickListener(this);
         buttonAssociarAtividade.setOnClickListener(this);
 
         //Definir as opcoes disponiveis no Spinner do Prazo da Meta
@@ -63,10 +67,13 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.imageButton_adicionarMeta) {
+        int id = v.getId();
+        if (id == R.id.imageButton_adicionarMeta) {
             adicionarMeta();
-        }else if (v.getId() == R.id.button_associarAtividades) {
+        }else if (id == R.id.button_associarAtividades) {
             associarAtividades();
+        }else if (id == R.id.imageButton_cancelarAdicaoMeta) {
+            finish();
         }
     }
 
@@ -79,92 +86,105 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
         EditText editTextDescricao = (EditText) findViewById(R.id.editText_metaDescricao);
         String descricao = editTextDescricao.getText().toString();
 
-        CheckBox checkBoxRepetir = (CheckBox) findViewById(R.id.chechBox_metaRepetir);
-        boolean repetir = checkBoxRepetir.isChecked();
-
-        EditText editTextCategoria = (EditText) findViewById(R.id.editText_metaCategoria);
-        String categoria = editTextCategoria.getText().toString();
-
-        String prazoSelecionado = (String) spinnerPrazo.getSelectedItem();
-        double prazo;
-        if (prazoSelecionado.equals(getString(R.string.semPrazo))) {
-            prazo = Double.MAX_VALUE;
-        }else if (prazoSelecionado.equals(getString(R.string.prazoUmaSemana))) {
-            prazo = 7 * 24; //sete dias * 24h
-        }else if (prazoSelecionado.equals(getString(R.string.prazoMeioMes))) {
-            prazo = 15 * 24; //quinze dias * 24h
-        }else if (prazoSelecionado.equals(getString(R.string.prazoUmMes))) {
-            prazo = 30 * 24; //trinta dias * 24h
-        }else if (prazoSelecionado.equals(getString(R.string.prazoUmSemestre))) {
-            prazo = 6 * 30 * 24; //seis meses * trinta dias * 24h
-        }else if (prazoSelecionado.equals(getString(R.string.prazoUmAno))) {
-            prazo = 12 * 30 * 24; //doze meses * trinta dias * 24h
-        } else { //periodo custom
-            EditText editTextPrazoCustom = (EditText) findViewById(R.id.editText_metaPrazoCustom);
-            String prazoCustoDigitado = editTextPrazoCustom.getText().toString();
-            if (prazoCustoDigitado.isEmpty()) {
-                prazo = Double.MAX_VALUE;
-            } else {
-                prazo = Double.parseDouble(prazoCustoDigitado) * 24; //dias digitados * 24h
-            }
+        EditText editTextHoras = (EditText) findViewById(R.id.editText_metaDuracaoHoras);
+        String horasEstipuladaDigitada = editTextHoras.getText().toString();
+        double horasEstipulada = 0;
+        if(!horasEstipuladaDigitada.isEmpty()) {
+            horasEstipulada = Double.parseDouble(horasEstipuladaDigitada);
         }
+
+        EditText editTextMinutos = (EditText) findViewById(R.id.editText_metaDuracaoMinutos);
+        String minutosEstipuladoDigitado = editTextMinutos.getText().toString();
+        double minutosEstipulado = 0;
+        if(!minutosEstipuladoDigitado.isEmpty()) {
+            minutosEstipulado = Double.parseDouble(minutosEstipuladoDigitado) / 60;
+        }
+        double tempoEstipulado = horasEstipulada + minutosEstipulado;
 
         Calendar calendar = Calendar.getInstance();
         int diaInicio = calendar.get(Calendar.DAY_OF_MONTH);
         int mesInicio = calendar.get(Calendar.MONTH) + 1;
         int anoInicio = calendar.get(Calendar.YEAR);
 
-        EditText editTextHoras = (EditText) findViewById(R.id.editText_metaDuracaoHoras);
-        EditText editTextMinutos = (EditText) findViewById(R.id.editText_metaDuracaoMinutos);
-        if (editTextHoras.getText().toString().isEmpty() && editTextMinutos.getText().toString().isEmpty()) { //Se o usuario não definiu uma duração
-            //Meta não é criada e o usuário é avisado
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.alertDialog_duracaoMetaNaoPreenchida);
-            builder.setPositiveButton(R.string.alertDialog_duracaoMetaNaoPreenchida_button, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //O dialogo desaparece
-                }
-            });
-            builder.create().show();
-            return;
-        }
-
-        String horasEstipuladaDigitada = editTextHoras.getText().toString();
-        double horasEstipulada = 0;
-        if(!horasEstipuladaDigitada.isEmpty()) {
-            horasEstipulada = Double.parseDouble(horasEstipuladaDigitada);
-        }
-        String minutosEstipuladoDigitado = editTextMinutos.getText().toString();
-        double minutosEstipulado = 0;
-        if(!minutosEstipuladoDigitado.isEmpty()) {
-            minutosEstipulado = Double.parseDouble(minutosEstipuladoDigitado) / 60;
-        }else if (horasEstipulada == 0) {
-            minutosEstipulado = Meta.PRAZO_MINIMO;
-        }
-        double tempoEstipulado = horasEstipulada + minutosEstipulado;
-
-        Meta meta;
+        AlertDialog.Builder builderFeedback = new AlertDialog.Builder(this);
         try {
-            meta = new Meta(descricao, prazo, repetir, categoria, diaInicio, mesInicio, anoInicio);
-            meta.setTempoEstipulado(tempoEstipulado);
+            Meta meta = new Meta(descricao, tempoEstipulado, diaInicio, mesInicio, anoInicio);
             meta.setAtividadesAssociadas(atividadesAssociadas);
+
+            CheckBox checkBoxRepetir = (CheckBox) findViewById(R.id.chechBox_metaRepetir);
+            boolean repetir = checkBoxRepetir.isChecked();
+            meta.setRepetir(repetir);
+
+            EditText editTextCategoria = (EditText) findViewById(R.id.editText_metaCategoria);
+            String categoria = editTextCategoria.getText().toString();
+            meta.setCategoria(categoria);
+
+            String prazoSelecionado = (String) spinnerPrazo.getSelectedItem();
+            double prazo;
+            if (prazoSelecionado.equals(getString(R.string.semPrazo))) {
+                prazo = Double.MAX_VALUE;
+            }else if (prazoSelecionado.equals(getString(R.string.prazoUmaSemana))) {
+                prazo = 7 * 24; //sete dias * 24h
+            }else if (prazoSelecionado.equals(getString(R.string.prazoMeioMes))) {
+                prazo = 15 * 24; //quinze dias * 24h
+            }else if (prazoSelecionado.equals(getString(R.string.prazoUmMes))) {
+                prazo = 30 * 24; //trinta dias * 24h
+            }else if (prazoSelecionado.equals(getString(R.string.prazoUmSemestre))) {
+                prazo = 6 * 30 * 24; //seis meses * trinta dias * 24h
+            }else if (prazoSelecionado.equals(getString(R.string.prazoUmAno))) {
+                prazo = 12 * 30 * 24; //doze meses * trinta dias * 24h
+            } else { //periodo custom
+                EditText editTextPrazoCustom = (EditText) findViewById(R.id.editText_metaPrazoCustom);
+                String prazoCustoDigitado = editTextPrazoCustom.getText().toString();
+                if (prazoCustoDigitado.isEmpty()) {
+                    prazo = Double.MAX_VALUE;
+                } else {
+                    prazo = Double.parseDouble(prazoCustoDigitado) * 24; //dias digitados * 24h
+                }
+            }
+            meta.setPrazo(prazo);
 
             KronosDatabase kronosDatabase = new KronosDatabase(this);
             kronosDatabase.addMeta(meta);
+
+            builderFeedback.setMessage(R.string.alertDialog_metaCriada);
+            builderFeedback.setPositiveButton(R.string.alertDialog_metaCriada_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Faz o diálogo desaparecer e fecha a Activity
+                    finish();
+                }
+            });
         } catch (DescricaoDeMetaInvalidaException e) {
-            //e.printStackTrace();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.alertDialog_descricaoMetaNaoPreenchida);
-            builder.setPositiveButton(R.string.alertDialog_descricaoMetaNaoPreenchida_button, new DialogInterface.OnClickListener() {
+            //Meta não é criada e o usuário é avisado
+            builderFeedback.setMessage(R.string.alertDialog_descricaoMetaNaoPreenchida);
+            builderFeedback.setPositiveButton(R.string.alertDialog_descricaoMetaNaoPreenchida_button, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //Faz o diálogo desaparecer
                 }
             });
-            builder.create().show();
+        } catch (TempoEstipuladoInvalidoException e) {
+            //Meta não é criada e o usuário é avisado
+            builderFeedback.setMessage(R.string.alertDialog_duracaoMetaNaoPreenchida);
+            builderFeedback.setPositiveButton(R.string.alertDialog_duracaoMetaNaoPreenchida_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //O dialogo desaparece
+                }
+            });
+        } catch (MetaRepetidaException e) {
+            //Meta não é criada e o usuário é avisado
+            builderFeedback.setMessage(R.string.alertDialog_metaRepetida);
+            builderFeedback.setPositiveButton(R.string.alertDialog_metaRepetida_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //O dialogo desaparece
+                }
+            });
         }
 
+        builderFeedback.create().show();
     }
 
     @Override
