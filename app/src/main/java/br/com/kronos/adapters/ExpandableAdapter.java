@@ -11,9 +11,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
+import br.com.kronos.kronos.GoalActivity;
 import br.com.kronos.kronos.Meta;
 import br.com.kronos.kronos.R;
 
@@ -23,12 +25,24 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     private LayoutInflater inflater;
     private Context context;
 
-    public ExpandableAdapter(Context context, HashMap<String, List<Meta>> listData, List<String> listGroup) {
-        this.context = context;
-        this.listGroup = listGroup;
-        this.listData = listData;
+    public ExpandableAdapter(Context context, List<Meta> metas) {
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        HashMap<String, List<Meta>> mapaCategoriaMetas = new HashMap<>();
+        for (Meta meta : metas) {
+            String categoria = meta.getCategoria();
+            List<Meta> metasCategoria = mapaCategoriaMetas.get(categoria);
+            if(metasCategoria == null){
+                metasCategoria = new LinkedList<>();
+            }
+            metasCategoria.add(meta);
+
+            mapaCategoriaMetas.put(categoria, metasCategoria);
+        }
+
+        this.listGroup = new LinkedList<>(mapaCategoriaMetas.keySet());
+        this.listData = mapaCategoriaMetas;
     }
 
     public int getGroupCount() {

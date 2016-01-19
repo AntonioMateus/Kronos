@@ -13,13 +13,11 @@ import android.widget.ProgressBar;
 
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.adapters.ExpandableAdapter;
-import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
-import br.com.kronos.exceptions.MetaRepetidaException;
-import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 
 public class GoalActivity extends Activity implements View.OnClickListener {
     private ImageView _image;
@@ -30,7 +28,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
     private Handler mHandler = new Handler();
 
     private List<String> listGroup;
-    private HashMap<String,List<Meta>> listData;
+    private HashMap<String,List<Meta>> mapaCategoriaMetas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +44,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
 
         KronosDatabase database = new KronosDatabase(GoalActivity.this);
 
+        /*
         try {
             //Criacao de metas para teste
             database.removeTodasMetas();
@@ -65,28 +64,19 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         } catch (DescricaoDeMetaInvalidaException | TempoEstipuladoInvalidoException | MetaRepetidaException e) {
             e.printStackTrace();
         }
+        */
         //---------------------------------------------
 
-        listGroup = database.getCategorias();
-        listData = database.devolveRelacaoCategoriaMeta();
+        //listGroup = database.getCategorias(); //Armazena na lista as categorias já existentes
+        //mapaCategoriaMetas = database.devolveRelacaoCategoriaMeta();
 
-        /*Set<String> categorias = listData.keySet();
-        Iterator<String> it = categorias.iterator();
-        String cat = it.next();
-        Log.d(null, "**************** categoria: "+cat);
-        List<Meta> metas = listData.get(cat);
-        for (int i = 0; i < metas.size(); i++) {
-            Log.d(null, "*********************** meta " +i +": " +metas.get(i).toString());
-        }
-        cat = it.next();
-        Log.d(null, "**************** categoria: "+cat);
-        metas = listData.get(cat);
-        for (int i = 0; i < metas.size(); i++) {
-            Log.d(null, "*********************** meta " +i +": " +metas.get(i).toString());
-        }*/
+        //Mapeia Meta em relacao a Categoria
+        List<Meta> metas = database.getMetas();
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_metas);
-        expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this, listData, listGroup));
+        //expandableListView.setAdapter(new ExpandableAdapter(GoalActivity.this, mapaCategoriaMetas, listGroup));
+        ExpandableAdapter expandableAdapter = new ExpandableAdapter(GoalActivity.this, metas);
+        expandableListView.setAdapter(expandableAdapter);
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

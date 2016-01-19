@@ -26,6 +26,9 @@ import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 import br.com.kronos.fragmentos.AssociarAtividadeDialogFragment;
 import br.com.kronos.fragmentos.AssociarAtividadeDialogFragmentListener;
 
+/*
+Essa Activity representa a tela para adicionar uma Meta
+ */
 public class AddGoalActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AssociarAtividadeDialogFragmentListener {
 
     private Spinner spinnerPrazo; //opções para Prazo da Meta
@@ -184,7 +187,7 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
             });
         }
 
-        builderFeedback.create().show();
+        builderFeedback.create().show(); //exibe a caixa de dialogo para mostrar o feedback
     }
 
     @Override

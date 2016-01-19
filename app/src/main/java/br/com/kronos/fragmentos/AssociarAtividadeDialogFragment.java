@@ -43,7 +43,6 @@ public class AssociarAtividadeDialogFragment extends DialogFragment implements V
             }
         }
 
-
         View viewAssociarAtividade = getActivity().getLayoutInflater().inflate(R.layout.layout_associar_atividade, null);
         editTextAssociarNovaAtividade = (EditText) viewAssociarAtividade.findViewById(R.id.editText_associarNovaAtividade);
 

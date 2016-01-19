@@ -158,6 +158,48 @@ public class KronosDatabase extends SQLiteOpenHelper {
         return (int) Math.round((tempoAcumulado/tempoEstipulado)*100);
     }
 
+    public List<Meta> getMetas() {
+        SQLiteDatabase leitor = getReadableDatabase();
+
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_PRAZO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR,
+                KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA,
+                KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO,
+                KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO};
+        Cursor cursor = leitor.query(KronosContract.FeedEntry.TABLE_META_NAME, projecao, null, null, null, null, null);
+
+        List<Meta> metas = new LinkedList<>();
+        while (cursor.moveToNext()) {
+            String descricao = cursor.getString(0);
+            double prazo = cursor.getDouble(1);
+            boolean repetir = cursor.getInt(2) == 1;
+            String categoria = cursor.getString(3);
+            String[] dataInicio = cursor.getString(4).split("_");
+            int diaInicio = Integer.valueOf(dataInicio[0]);
+            int mesInicio = Integer.valueOf(dataInicio[1]);
+            int anoInicio = Integer.valueOf(dataInicio[2]);
+            try {
+                Meta meta = new Meta(descricao, prazo, repetir, categoria, diaInicio, mesInicio, anoInicio);
+
+                double tempoEstipulado = cursor.getDouble(5);
+                meta.setTempoEstipulado(tempoEstipulado);
+                double tempoAcumulado = cursor.getDouble(6);
+                meta.setTempoAcumulado(tempoAcumulado);
+
+                metas.add(meta);
+            } catch (DescricaoDeMetaInvalidaException | TempoEstipuladoInvalidoException metaException) {
+                //caso improvavel que só acontencerá caso tiver tido uma inserção incorreta no banco de dados
+                metaException.printStackTrace();
+            }
+        }
+
+        cursor.close();
+        leitor.close();
+        return metas;
+    }
+
     public Meta devolveMeta (String descricao) {
         SQLiteDatabase bd = getReadableDatabase();
         String[] projecao = {KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO,
@@ -247,6 +289,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         return metasCategoria;
     }
 
+    /*
     public HashMap<String, List<Meta>> devolveRelacaoCategoriaMeta() {
         HashMap<String, List<Meta>> mapa = new HashMap<>();
         List<String> categorias = getCategorias();
@@ -255,6 +298,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         }
         return mapa;
     }
+    */
 
     public void removeTodasMetas() {
         SQLiteDatabase bd = this.getWritableDatabase();
