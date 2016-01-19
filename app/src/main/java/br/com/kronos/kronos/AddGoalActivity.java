@@ -76,7 +76,8 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
         }else if (id == R.id.button_associarAtividades) {
             associarAtividades();
         }else if (id == R.id.imageButton_cancelarAdicaoMeta) {
-            finish();
+            //finish();
+            finishActivity(GoalActivity.RESULT_CODE_ADD_GOAL - 1);
         }
     }
 
@@ -155,7 +156,8 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //Faz o diálogo desaparecer e fecha a Activity
-                    finish();
+                    //finish();
+                    finishActivity(GoalActivity.RESULT_CODE_ADD_GOAL);
                 }
             });
         } catch (DescricaoDeMetaInvalidaException e) {

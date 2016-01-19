@@ -15,6 +15,7 @@ public class Meta {
      */
     private String descricao;
     private String categoria; //maneira de categorizar uma Meta, agrupando com outras Metas
+    public static final String SEM_CATEGORIA = "categoria_default";
 
     /*
     Lista de Atividades Associadas a Meta. Significa que para essa meta ser atingida
@@ -47,8 +48,8 @@ public class Meta {
     public Meta (String descricao, double prazo, boolean repetir, String categoria, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException, TempoEstipuladoInvalidoException {
         this(descricao, Double.MAX_VALUE, diaInicio, mesInicio, anoInicio);
         setPrazo(prazo);
+        setCategoria(categoria);
         this.repetir = repetir;
-        this.categoria = categoria;
     }
 
     //Retorna um booleano que diz se a Meta foi Atingida ou não
@@ -172,7 +173,11 @@ public class Meta {
     }
 
     public void setCategoria(String categoria) {
-        this.categoria = categoria;
+        if(!categoria.isEmpty()) {
+            this.categoria = categoria;
+        }else {
+            this.categoria = SEM_CATEGORIA;
+        }
     }
 
     public List<Atividade> getAtividadesAssociadas() {

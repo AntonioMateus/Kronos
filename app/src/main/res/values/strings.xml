@@ -53,6 +53,7 @@
     <!-- Goals -->
     <string name="title_activity_goal">What do you want?</string>
     <string name="button_adicionarMeta">Add New Goal</string>
+    <string name="categoria_default">No Category</string>
 
     <string name="action_settings">Settings</string>
 

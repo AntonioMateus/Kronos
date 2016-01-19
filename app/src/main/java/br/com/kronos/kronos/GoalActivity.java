@@ -20,6 +20,9 @@ import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.adapters.ExpandableAdapter;
 
 public class GoalActivity extends Activity implements View.OnClickListener {
+    private static final int REQUEST_CODE_ADD_GOAL = 0;
+    public static final int RESULT_CODE_ADD_GOAL = 0;
+
     private ImageView _image;
     private float _newAngle, _oldAngle;
     private ProgressBar mProgress;
@@ -29,6 +32,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
 
     private List<String> listGroup;
     private HashMap<String,List<Meta>> mapaCategoriaMetas;
+    private KronosDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +46,8 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         Button buttonAdicionarMeta = (Button) findViewById(R.id.button_adicionarMeta);
         buttonAdicionarMeta.setOnClickListener(this);
 
-        KronosDatabase database = new KronosDatabase(GoalActivity.this);
-
+        this.database = new KronosDatabase(GoalActivity.this);
+        setExpandableList();
         /*
         try {
             //Criacao de metas para teste
@@ -69,7 +73,9 @@ public class GoalActivity extends Activity implements View.OnClickListener {
 
         //listGroup = database.getCategorias(); //Armazena na lista as categorias já existentes
         //mapaCategoriaMetas = database.devolveRelacaoCategoriaMeta();
+    }
 
+    private void setExpandableList() {
         //Mapeia Meta em relacao a Categoria
         List<Meta> metas = database.getMetas();
 
@@ -109,10 +115,19 @@ public class GoalActivity extends Activity implements View.OnClickListener {
         */
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_ADD_GOAL && resultCode == RESULT_CODE_ADD_GOAL) {
+            setExpandableList();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
     public void onClick(View view) {
         if (view.getId() == R.id.button_adicionarMeta) {
             Intent intentAdicionarMeta = new Intent(this, AddGoalActivity.class);
-            startActivity(intentAdicionarMeta);
+            startActivityForResult(intentAdicionarMeta, REQUEST_CODE_ADD_GOAL);
         }
 
         /*

@@ -32,6 +32,9 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         HashMap<String, List<Meta>> mapaCategoriaMetas = new HashMap<>();
         for (Meta meta : metas) {
             String categoria = meta.getCategoria();
+            if (categoria == Meta.SEM_CATEGORIA) {
+                categoria = context.getString(R.string.categoria_default);
+            }
             List<Meta> metasCategoria = mapaCategoriaMetas.get(categoria);
             if(metasCategoria == null){
                 metasCategoria = new LinkedList<>();
