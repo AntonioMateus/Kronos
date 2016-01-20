@@ -15,12 +15,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.com.kronos.database.KronosDatabase;
-import br.com.kronos.kronos.GoalActivity;
 import br.com.kronos.kronos.Meta;
 import br.com.kronos.kronos.R;
 
 public class ExpandableAdapter extends BaseExpandableListAdapter {
-    private List<String> listGroup;
+    private List<String> categorias;
     private HashMap<String, List<Meta>> listData;
     private LayoutInflater inflater;
     private Context context;
@@ -32,7 +31,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         HashMap<String, List<Meta>> mapaCategoriaMetas = new HashMap<>();
         for (Meta meta : metas) {
             String categoria = meta.getCategoria();
-            if (categoria == Meta.SEM_CATEGORIA) {
+            if (categoria.equals(Meta.SEM_CATEGORIA)) {
                 categoria = context.getString(R.string.categoria_default);
             }
             List<Meta> metasCategoria = mapaCategoriaMetas.get(categoria);
@@ -44,24 +43,24 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             mapaCategoriaMetas.put(categoria, metasCategoria);
         }
 
-        this.listGroup = new LinkedList<>(mapaCategoriaMetas.keySet());
+        this.categorias = new LinkedList<>(mapaCategoriaMetas.keySet());
         this.listData = mapaCategoriaMetas;
     }
 
     public int getGroupCount() {
-        return listGroup.size();
+        return categorias.size();
     }
 
     public int getChildrenCount(int groupPosition) {
-        return listData.get(listGroup.get(groupPosition)).size();
+        return listData.get(categorias.get(groupPosition)).size();
     }
 
     public Object getGroup(int groupPosition) {
-        return listGroup.get(groupPosition);
+        return categorias.get(groupPosition);
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return listData.get(listGroup.get(groupPosition)).get(childPosition);
+        return listData.get(categorias.get(groupPosition)).get(childPosition);
     }
 
     public long getGroupId(int groupPosition) {
@@ -88,7 +87,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         else {
             holder = (ViewHolderGroup) convertView.getTag();
         }
-        holder.tvGroup.setText(listGroup.get(groupPosition));
+        holder.tvGroup.setText(categorias.get(groupPosition));
         return convertView;
     }
 
@@ -99,20 +98,19 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.item_expandable_list_view,null);
             holder = new ViewHolderItem();
             convertView.setTag(holder);
-            holder.progressBar_goal = (ProgressBar) convertView.findViewById(R.id.progressBar_goal);
-            holder.tvItem1 = (TextView) convertView.findViewById(R.id.tvItem1);
-            holder.tvItem2 = (TextView) convertView.findViewById(R.id.tvItem2);
-        }
-        else {
+            holder.progressBarGoal = (ProgressBar) convertView.findViewById(R.id.progressBar_goal);
+            holder.textViewGoalName = (TextView) convertView.findViewById(R.id.tvItem1);
+            holder.textViewGoalProgress = (TextView) convertView.findViewById(R.id.tvItem2);
+        }else {
             holder = (ViewHolderItem) convertView.getTag();
         }
-        holder.tvItem1.setText(meta.getDescricao());
+        holder.textViewGoalName.setText(meta.getDescricao());
         KronosDatabase database = new KronosDatabase(this.context);
         int progresso = database.devolveProgressoMeta(meta.getDescricao());
-        holder.progressBar_goal.setIndeterminate(false);
-        holder.progressBar_goal.setProgress(progresso);
-        holder.progressBar_goal.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-        holder.tvItem2.setText("meta "+progresso+"% concluida");
+        holder.progressBarGoal.setIndeterminate(false);
+        holder.progressBarGoal.setProgress(progresso);
+        holder.progressBarGoal.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        holder.textViewGoalProgress.setText(progresso + context.getString(R.string.progresso_meta));
         return convertView;
     }
 
@@ -125,8 +123,8 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     class ViewHolderItem {
-        ProgressBar progressBar_goal;
-        TextView tvItem1;
-        TextView tvItem2;
+        ProgressBar progressBarGoal;
+        TextView textViewGoalName;
+        TextView textViewGoalProgress;
     }
 }

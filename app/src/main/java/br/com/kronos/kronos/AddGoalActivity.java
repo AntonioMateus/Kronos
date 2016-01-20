@@ -156,8 +156,8 @@ public class AddGoalActivity extends Activity implements View.OnClickListener, A
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //Faz o diálogo desaparecer e fecha a Activity
-                    //finish();
                     finishActivity(GoalActivity.RESULT_CODE_ADD_GOAL);
+                    finish();
                 }
             });
         } catch (DescricaoDeMetaInvalidaException e) {

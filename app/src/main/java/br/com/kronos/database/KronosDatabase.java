@@ -441,6 +441,25 @@ public class KronosDatabase extends SQLiteOpenHelper {
         bd.close();
         return atividadesARetornar;
     }
+
+    public List<Meta> getMetas(boolean comAtividadesAssociadas) {
+        SQLiteDatabase leitor = getWritableDatabase();
+        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME,
+                KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO};
+        leitor.query(KronosContract.FeedEntry.TABLE_META_ASSOCIADA_ATIVIDADE_NAME, projecao, null, null, null, null, null);
+
+        List<Meta> metas = getMetas();
+        //TODO
+        /*
+        for (Meta meta : metas) {
+
+        }
+        */
+
+        leitor.close();
+
+        return metas;
+    }
 }
 
 
