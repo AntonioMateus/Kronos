@@ -38,7 +38,7 @@ public class GoalActivity extends Activity implements View.OnClickListener {
     }
 
     private void setExpandableList() {
-        List<Meta> metas = database.getMetas(true); //lista de metas trazidas do banco de dados, com as atividades associadas
+        List<Meta> metas = database.getMetasComTempoAcumulado(); //lista de metas trazidas do banco de dados, com as atividades associadas
 
         ExpandableAdapter expandableAdapter = new ExpandableAdapter(GoalActivity.this, metas);
         expandableListView.setAdapter(expandableAdapter);

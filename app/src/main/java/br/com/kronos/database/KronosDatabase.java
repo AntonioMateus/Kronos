@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class KronosDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
@@ -442,23 +443,57 @@ public class KronosDatabase extends SQLiteOpenHelper {
         return atividadesARetornar;
     }
 
-    public List<Meta> getMetas(boolean comAtividadesAssociadas) {
+    public List<Meta> getMetasComTempoAcumulado() {
         SQLiteDatabase leitor = getWritableDatabase();
-        String[] projecao = {KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME,
-                KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO};
-        leitor.query(KronosContract.FeedEntry.TABLE_META_ASSOCIADA_ATIVIDADE_NAME, projecao, null, null, null, null, null);
+        String sql = "SELECT " + KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO + ", " +
+                KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO + ", " +
+                KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO + ", " +
+                KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA + ", " +
+                KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO +
+                " FROM " + KronosContract.FeedEntry.TABLE_META_ASSOCIADA_ATIVIDADE_NAME + ", " +
+                KronosContract.FeedEntry.TABLE_HISTORICO_NAME + ", " +
+                KronosContract.FeedEntry.TABLE_META_NAME +
+                " WHERE " + KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_ATIVIDADE_NOME + " = " +
+                KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME + " AND " +
+                KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO + " = " +
+                KronosContract.FeedEntry.COLUMN_META_NAME_DESCRICAO;
+        Cursor cursor = leitor.rawQuery(sql, null);
 
-        List<Meta> metas = getMetas();
-        //TODO
-        /*
-        for (Meta meta : metas) {
+        Map<String, Meta> metas = new HashMap<>();
+        //TODO - conferir se a data da atividade esta dentro do prazo de avaliacao da Meta
+        while (cursor.moveToNext()) {
+            String metaDescricao = cursor.getString(0);
+
+            Meta meta = metas.get(metaDescricao);
+            if (meta == null) {
+                double tempoEstipulado = cursor.getDouble(1);
+                String[] data = cursor.getString(2).split("_");
+                int diaInicio = Integer.parseInt(data[0]);
+                int mesInicio = Integer.parseInt(data[1]);
+                int anoInicio = Integer.parseInt(data[2]);
+                try {
+                    meta = new Meta(metaDescricao, tempoEstipulado, diaInicio, mesInicio, anoInicio);
+                } catch (DescricaoDeMetaInvalidaException | TempoEstipuladoInvalidoException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            double atividadeDuracao = cursor.getDouble(4);
+            assert meta != null; //indica que a meta nunca pode ser nula ao chegar a esse ponto
+            meta.setTempoAcumulado(meta.getTempoEstipulado() + atividadeDuracao);
 
         }
-        */
 
+        cursor.close();
         leitor.close();
 
-        return metas;
+        List<Meta> listaDeMetas = new LinkedList<>();
+        for (String metaDescricao : metas.keySet()) {
+            Meta meta = metas.get(metaDescricao);
+            listaDeMetas.add(meta);
+        }
+
+        return listaDeMetas;
     }
 }
 
