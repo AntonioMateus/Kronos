@@ -465,14 +465,15 @@ public class KronosDatabase extends SQLiteOpenHelper {
                 }
             }
 
+            assert meta != null; //indica que a meta nunca pode ser nula ao chegar a esse ponto
             String atividadeData = cursor.getString(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA));
             int datasComparadas = KronosDatasUtils.compararDatas(metaData, atividadeData);
             if (datasComparadas <= 0) {
                 double atividadeDuracao = cursor.getDouble(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO));
-                assert meta != null; //indica que a meta nunca pode ser nula ao chegar a esse ponto
-                meta.setTempoAcumulado(meta.getTempoEstipulado() + atividadeDuracao);
-                metas.put(meta.getDescricao(), meta);
+                meta.setTempoAcumulado(meta.getTempoAcumulado() + atividadeDuracao);
+
             }
+            metas.put(meta.getDescricao(), meta);
         }
 
         cursor.close();

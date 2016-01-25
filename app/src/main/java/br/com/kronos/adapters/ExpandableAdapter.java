@@ -106,7 +106,8 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         }
         holder.textViewGoalName.setText(meta.getDescricao());
         KronosDatabase database = new KronosDatabase(this.context);
-        int progresso = database.devolveProgressoMeta(meta.getDescricao());
+        //int progresso = database.devolveProgressoMeta(meta.getDescricao());
+        int progresso = (int) (100 * (meta.getTempoAcumulado() / meta.getTempoEstipulado()));
         holder.progressBarGoal.setIndeterminate(false);
         holder.progressBarGoal.setProgress(progresso);
         holder.progressBarGoal.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);

@@ -39,6 +39,7 @@ public class Meta {
     public Meta(String descricao, double tempoEstipulado, int diaInicio, int mesInicio, int anoInicio) throws DescricaoDeMetaInvalidaException, TempoEstipuladoInvalidoException {
         setDescricao(descricao);
         setTempoEstipulado(tempoEstipulado);
+        this.categoria = SEM_CATEGORIA;
         atividadesAssociadas = new LinkedList<>();
         this.diaInicio = diaInicio;
         this.mesInicio = mesInicio;
