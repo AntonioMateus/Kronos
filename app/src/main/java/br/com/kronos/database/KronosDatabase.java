@@ -5,13 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import br.com.kronos.exceptions.DescricaoDeMetaInvalidaException;
 import br.com.kronos.exceptions.MetaRepetidaException;
 import br.com.kronos.exceptions.TempoEstipuladoInvalidoException;
 import br.com.kronos.kronos.Atividade;
 import br.com.kronos.kronos.Meta;
+import br.com.kronos.utils.KronosDatasUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,7 +50,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
     public void addAtividadeHistorico(Atividade atividade) {
         SQLiteDatabase bd = this.getWritableDatabase();
 
-        String dataAAdicionar = getDataFormatada(atividade.getDia(), atividade.getMes(), atividade.getAno());
+        String dataAAdicionar = KronosDatasUtils.getDataFormatada(atividade.getDia(), atividade.getMes(), atividade.getAno());
 
         ContentValues tuplaASerAdicionada = new ContentValues();
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME,atividade.getNome());
@@ -84,7 +84,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         }
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_REPETIR, repetir);
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_CATEGORIA, meta.getCategoria());
-        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO, getDataFormatada(meta.getDiaInicio(), meta.getMesInicio(), meta.getAnoInicio()));
+        tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO, KronosDatasUtils.getDataFormatada(meta.getDiaInicio(), meta.getMesInicio(), meta.getAnoInicio()));
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ACUMULADO, meta.getTempoAcumulado());
         tuplaASerAdicionada.put(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO, meta.getTempoEstipulado());
 
@@ -121,7 +121,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
         ContentValues tupla = new ContentValues();
         tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DESCRICAO_META, meta.getDescricao());
         tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_TEMPO_EXCEDIDO, meta.getTempoExcedido());
-        tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA, getDataFormatada(meta.getDiaTermino(), meta.getMesTermino(), meta.getAnoTermino()));
+        tupla.put(KronosContract.FeedEntry.COLUMN_META_CUMPRIDA_NAME_DATA_CUMPRIDA, KronosDatasUtils.getDataFormatada(meta.getDiaTermino(), meta.getMesTermino(), meta.getAnoTermino()));
         bd.insert(KronosContract.FeedEntry.TABLE_META_CUMPRIDA_NAME, null, tupla);
         bd.close();
     }
@@ -313,7 +313,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
 
         String selecao = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME + "=? AND " +
                         KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA + "=?";
-        String[] selecaoArgs = new String[]{atividade.getNome(), getDataFormatada(atividade.getDia(), atividade.getMes(), atividade.getAno())};
+        String[] selecaoArgs = new String[]{atividade.getNome(), KronosDatasUtils.getDataFormatada(atividade.getDia(), atividade.getMes(), atividade.getAno())};
         bd.delete(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, selecao, selecaoArgs);
 
         bd.close();
@@ -358,7 +358,7 @@ public class KronosDatabase extends SQLiteOpenHelper {
                             KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO,
                             KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE};
         String selecao = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA + "=?";
-        String data = getDataFormatada(dia, mes, ano);
+        String data = KronosDatasUtils.getDataFormatada(dia, mes, ano);
         String[] selecaoArgs = {data};
 
         Cursor iteradorTuplas = bd.query(KronosContract.FeedEntry.TABLE_HISTORICO_NAME, projecao, selecao, selecaoArgs,null,null,null,null);
@@ -400,27 +400,13 @@ public class KronosDatabase extends SQLiteOpenHelper {
         ContentValues valores = new ContentValues();
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME, a.getNome());
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO, a.getDuracao());
-        String data = getDataFormatada(a.getDia(), a.getMes(), a.getAno());
+        String data = KronosDatasUtils.getDataFormatada(a.getDia(), a.getMes(), a.getAno());
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA, data);
         valores.put(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_QUALIDADE, a.getQualidade());
 
         String selecao = KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_NOME +" LIKE ?";
         String[] valoresSelecao = {nomeAntigo};
         bd.update ( KronosContract.FeedEntry.TABLE_HISTORICO_NAME, valores, selecao, valoresSelecao);
-    }
-
-    private String getDataFormatada(int dia, int mes, int ano) {
-        String diaBD;
-        if (dia < 10)
-            diaBD = "0" +Integer.toString(dia);
-        else
-            diaBD = Integer.toString(dia);
-        String mesBD;
-        if (mes < 10)
-            mesBD = "0" +Integer.toString(mes);
-        else
-            mesBD = Integer.toString(mes);
-        return diaBD +"_" +mesBD +"_" +ano;
     }
 
 
@@ -462,26 +448,31 @@ public class KronosDatabase extends SQLiteOpenHelper {
         Map<String, Meta> metas = new HashMap<>();
         //TODO - conferir se a data da atividade esta dentro do prazo de avaliacao da Meta
         while (cursor.moveToNext()) {
-            String metaDescricao = cursor.getString(0);
+            String metaDescricao = cursor.getString(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_META_ASSOCIADA_ATIVIDADE_NAME_META_DESCRICAO));
+            String metaData = cursor.getString(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_META_NAME_DATA_INICIO));
+            String[] metaDataSplit = metaData.split("_");
+            int metaDiaInicio = Integer.parseInt(metaDataSplit[0]);
+            int metaMesInicio = Integer.parseInt(metaDataSplit[1]);
+            int metaAnoInicio = Integer.parseInt(metaDataSplit[2]);
 
             Meta meta = metas.get(metaDescricao);
             if (meta == null) {
-                double tempoEstipulado = cursor.getDouble(1);
-                String[] data = cursor.getString(2).split("_");
-                int diaInicio = Integer.parseInt(data[0]);
-                int mesInicio = Integer.parseInt(data[1]);
-                int anoInicio = Integer.parseInt(data[2]);
+                double tempoEstipulado = cursor.getDouble(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_META_NAME_TEMPO_ESTIPULADO));
                 try {
-                    meta = new Meta(metaDescricao, tempoEstipulado, diaInicio, mesInicio, anoInicio);
+                    meta = new Meta(metaDescricao, tempoEstipulado, metaDiaInicio, metaMesInicio, metaAnoInicio);
                 } catch (DescricaoDeMetaInvalidaException | TempoEstipuladoInvalidoException e) {
                     e.printStackTrace();
                 }
             }
 
-            double atividadeDuracao = cursor.getDouble(4);
-            assert meta != null; //indica que a meta nunca pode ser nula ao chegar a esse ponto
-            meta.setTempoAcumulado(meta.getTempoEstipulado() + atividadeDuracao);
-
+            String atividadeData = cursor.getString(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DATA));
+            int datasComparadas = KronosDatasUtils.compararDatas(metaData, atividadeData);
+            if (datasComparadas <= 0) {
+                double atividadeDuracao = cursor.getDouble(cursor.getColumnIndex(KronosContract.FeedEntry.COLUMN_HISTORICO_NAME_DURACAO));
+                assert meta != null; //indica que a meta nunca pode ser nula ao chegar a esse ponto
+                meta.setTempoAcumulado(meta.getTempoEstipulado() + atividadeDuracao);
+                metas.put(meta.getDescricao(), meta);
+            }
         }
 
         cursor.close();
