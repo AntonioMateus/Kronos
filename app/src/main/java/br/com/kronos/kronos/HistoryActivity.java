@@ -3,12 +3,8 @@ package br.com.kronos.kronos;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -22,9 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.kronos.adapters.ViewPagerAdapter;
 import br.com.kronos.chartmakers.AtividadesBarChartMaker;
-import br.com.kronos.chartmakers.ChartMaker;
 import br.com.kronos.chartmakers.DiarioPieChartMaker;
 import br.com.kronos.database.KronosDatabase;
 import br.com.kronos.adapters.HistoryAdapterListView;
@@ -175,6 +169,10 @@ public class HistoryActivity extends Activity {
     }
 
     public void updateListView(){
+        if(itens.size() == 0){
+            return;
+        }
+
         //Atualiza ListView com os cada um dos itens calculados
         HistoryAdapterListView adapterListView = new HistoryAdapterListView(this, itens);
         listView.setAdapter(adapterListView);

@@ -3,6 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- MainActivity -->
+    <dimen name="tabLayout_height">20dp</dimen>
+
     <!-- MyDay Activity -->
     <dimen name="textView_myDay_title">20dp</dimen>
 
